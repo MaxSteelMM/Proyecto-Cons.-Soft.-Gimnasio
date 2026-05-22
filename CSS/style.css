@@ -32,8 +32,6 @@ nav {
     flex-direction: row;
     margin: 20px;
     list-style-type: none;
-    /* Elimina los puntos */
     margin: 0;
-    /* Opcional: elimina el margen por defecto */
     padding: 0;
 }
