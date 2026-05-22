@@ -1,0 +1,39 @@
+@font-face {
+    font-family: "Castor";
+    src: url(/Proyecto_Final/Fonts/CastoroTitling-Regular.ttf)format("truetype");
+}
+
+* {
+    --Font: "Castor";
+    --color1: rgba(0, 0, 0, 0.8);
+    background-color: rgba(156, 234, 255, 1);
+
+}
+
+h1 {
+    font-family: var(--Font);
+    color: var(--color1);
+    text-align: center;
+    margin-top: 20px;
+}
+
+nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+    background-color: #fff;
+
+}
+
+.nav {
+    display: flex;
+    flex-direction: row;
+    margin: 20px;
+    list-style-type: none;
+    /* Elimina los puntos */
+    margin: 0;
+    /* Opcional: elimina el margen por defecto */
+    padding: 0;
+}
