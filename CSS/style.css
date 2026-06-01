@@ -20,9 +20,8 @@ h1 {
     font-family: var(--FontTitulo);
     color: var(--color1);
     display: flex;
-    justify-content: center;
     font-size: 5rem;
-    margin: 20px 0px -20px -20px;
+    margin: 0px 0px -20px -20px;
 }
 h1 .color-mitad {
     color: #98f700; /* Cambia este código por tu color favorito */
@@ -32,7 +31,7 @@ h1 .color-mitad {
 nav {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: space-between;
     gap: 20px;
     margin-top: 20px;
 
@@ -60,4 +59,9 @@ nav {
 }
 .nav li a:hover{
     color: #98f700;
+}
+.nav ul{
+    height: 100%;
+    margin-top: 20px;
+    text-align: center;
 }
