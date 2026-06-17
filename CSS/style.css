@@ -67,16 +67,17 @@ nav {
 .cajaCont{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+    gap: 30px;
 }
 .caja1{
     text-align: center;
-    margin: 20px;
+    padding: 20px;
+    margin-right: 20vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    color: var(--color1); /*Hola*/
+    color: var(--color1);
     border:2px solid rgb(47, 47, 47);
     border-radius: 20px;
 }
@@ -91,6 +92,10 @@ nav {
 .caja1 ul{
     font-family: var(--FontSub);
     font-size: 1rem;
+}
+.caja1 li{
+    text-align: left;
+    text-decoration: none;
 }
 .caja1:hover{
     border:2px solid rgb(107, 255, 0, 1);
@@ -108,4 +113,50 @@ nav {
 }
 .botonC1:hover{
     background-color: rgb(102, 193, 37);
+}
+
+.caja2{
+    text-align: center;
+    padding: 20px;
+    margin-right: 20vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--color1); /*Hola*/
+    border:2px solid rgb(47, 47, 47);
+    border-radius: 20px;
+}
+.caja2 h2{
+    font-family: var(--FontSub);
+    font-size: 2rem;
+}
+.caja2 p{
+    font-family: var(--FontSub);
+    font-size: 1rem;
+}
+.caja2 ul{
+    font-family: var(--FontSub);
+    font-size: 1rem;
+}
+.caja2 li{
+    text-align: left;
+    text-decoration: none;
+}
+.caja2:hover{
+    border:2px solid rgba(255, 150, 20, 1);
+}
+.botonC2{
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: rgba(255, 150, 20, 1);
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+    font-family: var(--FontSub);
+    font-size: 1.2rem;
+    border-radius: 5px;
+}
+.botonC2:hover{
+    background-color: rgba(255, 150, 20, 31);
 }
