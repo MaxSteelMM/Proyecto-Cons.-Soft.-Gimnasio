@@ -11,14 +11,15 @@
 * {
     --FontTitulo: "COD";
     --white: rgb(255, 255, 255);
-    background-color: rgb(0, 0, 0);
+   
     --FontSub: "Sub"
-
-
+}
+body{
+    background-color: var(--black);
 }
 
 :root {
-    --black: #0a0a0a;
+    --black: rgb(0, 0, 0);
     --white: #f5f4f0;
     --VerdeF: rgb(107, 255, 0, 1);
     --gray: #1c1c1c;
@@ -39,6 +40,7 @@ h1 .color-mitad {
 
 
 nav{
+    background-color: var(--black);
     position: fixed;
     top: 0;
     left: 0;
@@ -48,7 +50,6 @@ nav{
     align-items: center;
     justify-content: space-between;
     padding: 1.5rem 4rem;
-    mix-blend-mode: difference;
 }
 
 .menu {
@@ -84,16 +85,18 @@ nav{
 }
 
 .info {
-    margin: auto;
-    color: var(--white)
+    margin-top: 10%;
+    padding: 20%;
+    background-image: url(../Img/fondo.jpg);
+    background-size: cover;
+    background-position: center;
+    color: var(--white);
 }
 #P_img {
     background-color: rgba(255, 255, 255, 0);
     position: relative;
     font-family: var(--FontSub);
     font-size: 3rem;
-    margin-top: -42%;
-    margin-bottom: 42%;
     text-align: center;
     display: flex;
     justify-content: center;
