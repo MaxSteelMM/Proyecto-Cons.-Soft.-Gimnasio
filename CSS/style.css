@@ -1,11 +1,11 @@
 @font-face {
     font-family: "COD";
-    src: url(/Fonts/BlackOpsOne-Regular.ttf)format("truetype");
+    src: url(../Fonts/BlackOpsOne-Regular.ttf)format("truetype");
 }
 
 @font-face {
     font-family: "SUB";
-    src: url(/Fonts/ShareTech-Regular.ttf);
+    src: url(../Fonts/ShareTech-Regular.ttf);
 }
 
 * {
@@ -64,15 +64,24 @@ nav {
     margin-top: 20px;
     text-align: center;
 }
+
+.fondo{
+    color: var(--color1);
+    margin:10rem;
+    background-image: url('img/fondo.jpg');
+    background-size: cover;
+    background-position: center;
+}
 .cajaCont{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 30px;
+    gap: 20px;
+    width: 100%;
 }
+
 .caja1{
     text-align: center;
     padding: 20px;
-    margin-right: 20vh;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -80,26 +89,35 @@ nav {
     color: var(--color1);
     border:2px solid rgb(47, 47, 47);
     border-radius: 20px;
+    width: 100%;
+    min-height: 400px;
+    box-sizing: border-box;
 }
+
 .caja1 h2{
     font-family: var(--FontSub);
-    font-size: 1.5rem;
+    font-size: clamp(1.5rem, 3vw, 2rem);
 }
+
 .caja1 p{
     font-family: var(--FontSub);
-    font-size: 1rem;
+    font-size: clamp(1rem, 1.5vw, 1.2rem);
 }
+
 .caja1 ul{
     font-family: var(--FontSub);
-    font-size: 1rem;
+    font-size: clamp(1rem, 1.5vw, 1.2rem);
 }
+
 .caja1 li{
     text-align: left;
     text-decoration: none;
 }
+
 .caja1:hover{
     border:2px solid rgb(107, 255, 0, 1);
 }
+
 .botonC1{
     display: inline-block;
     margin-top: 20px;
@@ -108,9 +126,10 @@ nav {
     color: rgb(0, 0, 0);
     text-decoration: none;
     font-family: var(--FontSub);
-    font-size: 1.2rem;
+    font-size: clamp(1rem, 1.5vw, 1.2rem);
     border-radius: 5px;
 }
+
 .botonC1:hover{
     background-color: rgb(102, 193, 37);
 }
@@ -118,34 +137,42 @@ nav {
 .caja2{
     text-align: center;
     padding: 20px;
-    margin-right: 20vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    color: var(--color1); /*Hola*/
+    color: var(--color1);
     border:2px solid rgb(47, 47, 47);
     border-radius: 20px;
+    width: 100%;
+    min-height: 400px;
+    box-sizing: border-box;
 }
+
 .caja2 h2{
     font-family: var(--FontSub);
-    font-size: 2rem;
+    font-size:2rem;
 }
+
 .caja2 p{
     font-family: var(--FontSub);
     font-size: 1rem;
 }
+
 .caja2 ul{
     font-family: var(--FontSub);
-    font-size: 1rem;
+    font-size:1rem;
 }
+
 .caja2 li{
     text-align: left;
     text-decoration: none;
 }
+
 .caja2:hover{
     border:2px solid rgba(255, 150, 20, 1);
 }
+
 .botonC2{
     display: inline-block;
     margin-top: 20px;
@@ -154,9 +181,65 @@ nav {
     color: rgb(0, 0, 0);
     text-decoration: none;
     font-family: var(--FontSub);
-    font-size: 1.2rem;
+    font-size: 1rem;
     border-radius: 5px;
 }
+
 .botonC2:hover{
-    background-color: rgba(255, 150, 20, 31);
+    background-color: rgba(255, 150, 20, 0.8);
+}
+
+.caja3{
+    text-align: center;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--color1);
+    border:2px solid rgb(47, 47, 47);
+    border-radius: 20px;
+    width: 100%;
+    min-height: 400px;
+    box-sizing: border-box;
+}
+
+.caja3 h2{
+    font-family: var(--FontSub);
+    font-size:2rem;
+}
+
+.caja3 p{
+    font-family: var(--FontSub);
+    font-size: 1rem;
+}
+
+.caja3 ul{
+    font-family: var(--FontSub);
+    font-size:1rem;
+}
+
+.caja3 li{
+    text-align: left;
+    text-decoration: none;
+}
+
+.caja3:hover{
+    border:2px solid rgba(255, 26, 19, 1);
+}
+
+.botonC3{
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: rgba(255, 26, 19, 1);
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+    font-family: var(--FontSub);
+    font-size: 1rem;
+    border-radius: 5px;
+}
+
+.botonC3:hover{
+    background-color: rgba(255, 150, 20, 0.8);
 }
