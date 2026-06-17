@@ -90,9 +90,11 @@ nav{
 #P_img {
     background-color: rgba(255, 255, 255, 0);
     position: relative;
-    font-family: var(--FontTitulo);
-    font-size: 1rem;
-    margin: -50%, 0, 40%, 0;
+    font-family: var(--FontSub);
+    font-size: 3rem;
+    margin-top: -42%;
+    margin-bottom: 42%;
+    text-align: center;
     display: flex;
     justify-content: center;
 }
