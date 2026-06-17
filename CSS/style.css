@@ -34,7 +34,6 @@ nav {
     justify-content: space-between;
     gap: 20px;
     margin-top: 20px;
-
 }
 
 .menu {
@@ -65,14 +64,17 @@ nav {
     text-align: center;
 }
 
-.fondo{
+.contenedor{
+    font-family: var(--FontSub);
+    width: 100%;
     color: var(--color1);
-    margin:10rem;
-    background-image: url('img/fondo.jpg');
-    background-size: cover;
+    background-image: url('../Img/fondo.jpg');
     background-position: center;
+    margin: 20px 0px 20px 0px;
 }
+
 .cajaCont{
+    margin:0,20px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
@@ -80,6 +82,7 @@ nav {
 }
 
 .caja1{
+    
     text-align: center;
     padding: 20px;
     display: flex;
@@ -96,17 +99,17 @@ nav {
 
 .caja1 h2{
     font-family: var(--FontSub);
-    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-size: 2rem;
 }
 
 .caja1 p{
     font-family: var(--FontSub);
-    font-size: clamp(1rem, 1.5vw, 1.2rem);
+    font-size: 2rem;
 }
 
 .caja1 ul{
     font-family: var(--FontSub);
-    font-size: clamp(1rem, 1.5vw, 1.2rem);
+    font-size: 2rem;
 }
 
 .caja1 li{
@@ -119,14 +122,15 @@ nav {
 }
 
 .botonC1{
+    position: relative;
     display: inline-block;
-    margin-top: 20px;
+    margin-bottom: 20px;
     padding: 10px 20px;
     background-color: rgb(107, 255, 0, 1);
     color: rgb(0, 0, 0);
     text-decoration: none;
     font-family: var(--FontSub);
-    font-size: clamp(1rem, 1.5vw, 1.2rem);
+    font-size: 2rem;
     border-radius: 5px;
 }
 
@@ -156,12 +160,12 @@ nav {
 
 .caja2 p{
     font-family: var(--FontSub);
-    font-size: 1rem;
+    font-size: 2rem;
 }
 
 .caja2 ul{
     font-family: var(--FontSub);
-    font-size:1rem;
+    font-size: 2rem;
 }
 
 .caja2 li{
@@ -174,6 +178,7 @@ nav {
 }
 
 .botonC2{
+    position: relative;
     display: inline-block;
     margin-top: 20px;
     padding: 10px 20px;
@@ -181,7 +186,7 @@ nav {
     color: rgb(0, 0, 0);
     text-decoration: none;
     font-family: var(--FontSub);
-    font-size: 1rem;
+    font-size: 2rem;
     border-radius: 5px;
 }
 
@@ -211,12 +216,12 @@ nav {
 
 .caja3 p{
     font-family: var(--FontSub);
-    font-size: 1rem;
+    font-size: 2rem;
 }
 
 .caja3 ul{
     font-family: var(--FontSub);
-    font-size:1rem;
+    font-size: 2rem;
 }
 
 .caja3 li{
@@ -229,6 +234,7 @@ nav {
 }
 
 .botonC3{
+    position: relative;
     display: inline-block;
     margin-top: 20px;
     padding: 10px 20px;
@@ -236,7 +242,7 @@ nav {
     color: rgb(0, 0, 0);
     text-decoration: none;
     font-family: var(--FontSub);
-    font-size: 1rem;
+    font-size: 2rem;
     border-radius: 5px;
 }
 
