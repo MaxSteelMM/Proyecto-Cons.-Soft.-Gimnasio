@@ -1,11 +1,11 @@
 @font-face {
     font-family: "COD";
-    src: url(/Proyecto_Final/Fonts/BlackOpsOne-Regular.ttf)format("truetype");
+    src: url(/Fonts/BlackOpsOne-Regular.ttf)format("truetype");
 }
 
 @font-face {
     font-family: "SUB";
-    src: url(/Proyecto_Final/Fonts/ShareTech-Regular.ttf);
+    src: url(/Fonts/ShareTech-Regular.ttf);
 }
 
 * {
