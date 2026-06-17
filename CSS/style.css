@@ -79,8 +79,33 @@ nav {
     color: var(--color1); /*Hola*/
     border:2px solid rgb(47, 47, 47);
     border-radius: 20px;
-    
+}
+.caja1 h2{
+    font-family: var(--FontSub);
+    font-size: 1.5rem;
+}
+.caja1 p{
+    font-family: var(--FontSub);
+    font-size: 1rem;
+}
+.caja1 ul{
+    font-family: var(--FontSub);
+    font-size: 1rem;
 }
 .caja1:hover{
     border:2px solid rgb(107, 255, 0, 1);
+}
+.botonC1{
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: rgb(107, 255, 0, 1);
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+    font-family: var(--FontSub);
+    font-size: 1.2rem;
+    border-radius: 5px;
+}
+.botonC1:hover{
+    background-color: rgb(102, 193, 37);
 }
