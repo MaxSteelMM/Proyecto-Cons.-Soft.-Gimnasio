@@ -11,7 +11,6 @@
 * {
     --FontTitulo: "COD";
     --white: rgb(255, 255, 255);
-   
     --FontSub: "Sub"
 }
 body{
@@ -85,13 +84,20 @@ nav{
 }
 
 .info {
-    margin-top: 10%;
-    padding: 20%;
-    background-image: url(../Img/fondo.jpg);
-    background-size: cover;
+    max-height: fit-content;
+    background: url(../Img/fondo.jpg);
     background-position: center;
+    background-size: cover;
     color: var(--white);
-}
+    padding: 4rem 2rem;
+
+}  
+
+.info p {
+        font-family: var(--FontSub);
+        font-size: 2.5rem;
+        display: flex;
+    }
 #P_img {
     background-color: rgba(255, 255, 255, 0);
     position: relative;
@@ -100,6 +106,21 @@ nav{
     text-align: center;
     display: flex;
     justify-content: center;
+}
+.boton-plan{
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: none;
+    color: var(--black);
+    text-decoration: none;
+    font-size: 1.2rem;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+}
+.boton-plan:hover {
+    background-color: var(--VerdeF);
+    color: var(--black);
 }
 .info img {
     position: relative;
@@ -149,6 +170,7 @@ nav{
 .plan-name {
     font-family: var(--FontSub);
     font-size: 1.8rem;
+    color: var(--white);
     letter-spacing: .05em;
 }
 
