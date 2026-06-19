@@ -1,6 +1,6 @@
 @font-face {
     font-family: "COD";
-    src: url(../Fonts/BlackOpsOne-Regular.ttf)format("truetype");
+    src: url(../Fonts/negroOpsOne-Regular.ttf)format("truetype");
 }
 
 @font-face {
@@ -14,11 +14,11 @@
     --FontSub: "Sub"
 }
 body{
-    background-color: var(--black);
+    background-color: var(--negro);
 }
 
 :root {
-    --black: rgb(0, 0, 0);
+    --negro: rgb(0, 0, 0);
     --white: #f5f4f0;
     --VerdeF: rgb(107, 255, 0, 1);
     --gray: #1c1c1c;
@@ -39,7 +39,7 @@ h1 .color-mitad {
 
 
 nav{
-    background-color: var(--black);
+    background-color: var(--negro);
     position: fixed;
     top: 0;
     left: 0;
@@ -112,7 +112,7 @@ nav{
     margin-top: 20px;
     padding: 10px 20px;
     background-color: none;
-    color: var(--black);
+    color: var(--negro);
     text-decoration: none;
     font-size: 1.2rem;
     letter-spacing: .2em;
@@ -120,7 +120,7 @@ nav{
 }
 .boton-plan:hover {
     background-color: var(--VerdeF);
-    color: var(--black);
+    color: var(--negro);
 }
 .info img {
     position: relative;
@@ -159,7 +159,7 @@ nav{
     top: -1px;
     right: 2rem;
     background: var(--VerdeF);
-    color: var(--black);
+    color: var(--negro);
     font-size: .65rem;
     font-weight: 600;
     letter-spacing: .2em;
@@ -231,6 +231,6 @@ nav{
 
 .plan-btn:hover {
     background: var(--VerdeF);
-    color: var(--black);
+    color: var(--negro);
     border-color: var(--VerdeF);
 }
