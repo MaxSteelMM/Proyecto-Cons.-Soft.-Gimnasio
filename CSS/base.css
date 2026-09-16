@@ -1,6 +1,6 @@
 @font-face {
     font-family: "COD";
-    src: url(../Fonts/negroOpsOne-Regular.ttf) format("truetype");
+    src: url(../Fonts/BlackOpsOne-Regular.ttf) format("truetype");
 }
 
 @font-face {
@@ -68,7 +68,7 @@ nav {
     margin-right: 20px;
     text-decoration: none;
     color: var(--white);
-    font-family: var(--FontSub);
+    font-family: 'COD';
     font-size: 1.5rem;
     transition: color 0.3s;
 }

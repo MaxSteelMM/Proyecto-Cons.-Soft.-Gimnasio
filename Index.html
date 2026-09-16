@@ -1,21 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GYM-MLS</title>
+    <title>GYM-MLS | El Templo del Entrenamiento</title>
     <link rel="stylesheet" href="CSS/base.css">
     <link rel="stylesheet" href="CSS/index.css">
 </head>
-
-<body>
+<body style="background-color: var(--negro);">
     <header>
         <nav>
             <div class="titulo">
                 <h1>GYM-<span class="color-mitad">MLS</span></h1>
             </div>
-
             <ul class="menu">
                 <li class="items"><a href="/Perfil.html">Perfil</a></li>
                 <li class="items"><a href="/Comprar.html">Comprar</a></li>
@@ -25,11 +22,48 @@
         </nav>
     </header>
     <main>
-        <div class="info">
-            <p>Accede a nuestro catalogo de productos y ordena lo que mas te guste para empezara entrenar </p>
-            <a href="#contacto" class="boton-plan">Elegir plan</a>
-        </div>
-        <section id="planes">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <h2 class="hero-title">Transforma tu <span class="color-mitad">Cuerpo</span>, <br>Domina tu <span class="color-mitad">Mente</span></h2>
+                <p class="hero-subtitle">Únete a la comunidad más fuerte de la ciudad. Equipamiento de élite, asesoría profesional y resultados garantizados.</p>
+                <div class="hero-btns">
+                    <a href="#planes" class="boton-plan primary">Empezar Ahora</a>
+                    <a href="/Rutinas.html" class="boton-plan secondary">Ver Rutinas</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Benefits Section -->
+        <section class="benefits">
+            <div class="section-title">
+                <h2>¿Por qué elegir <span class="color-mitad">GYM-MLS</span>?</h2>
+            </div>
+            <div class="benefits-grid">
+                <div class="benefit-item">
+                    <div class="benefit-icon">🏋️</div>
+                    <h3>Equipo Pro</h3>
+                    <p>Maquinaria de última generación para maximizar cada repetición.</p>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">🥗</div>
+                    <h3>Nutrición</h3>
+                    <p>Planes alimenticios diseñados por expertos según tu objetivo.</p>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">🔥</div>
+                    <h3>Comunidad</h3>
+                    <p>Entrena con personas que comparten tu pasión y disciplina.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing Section -->
+        <section id="planes" class="pricing">
+            <div class="section-title">
+                <h2>Elige tu <span class="color-mitad">Plan</span></h2>
+                <p>Sin contratos complicados, solo resultados reales.</p>
+            </div>
             <div class="planes-grid">
                 <div class="plan reveal">
                     <div class="plan-name">Básico</div>
@@ -39,11 +73,12 @@
                         <li>Acceso sala de musculación</li>
                         <li>Horario completo</li>
                         <li>Vestuarios</li>
-                        <li>Sin clases grupales</li>
+                        <li class="disabled">Sin clases grupales</li>
                     </ul>
                     <a href="#contacto" class="plan-btn">Elegir plan</a>
                 </div>
-                <div class="plan featured reveal" style="transition-delay:.1s">
+                <div class="plan featured reveal">
+                    <div class="plan-badge">Más Popular</div>
                     <div class="plan-name">Full</div>
                     <div class="plan-price"><sup>$</sup>22.000</div>
                     <div class="plan-period">por mes</div>
@@ -55,7 +90,7 @@
                     </ul>
                     <a href="#contacto" class="plan-btn">Elegir plan</a>
                 </div>
-                <div class="plan reveal" style="transition-delay:.2s">
+                <div class="plan reveal">
                     <div class="plan-name">Pro</div>
                     <div class="plan-price"><sup>$</sup>30.000</div>
                     <div class="plan-period">por mes</div>
@@ -70,9 +105,15 @@
             </div>
         </section>
     </main>
-    <footer>
-
+    <footer class="main-footer">
+        <div class="footer-content">
+            <p>&copy; 2026 GYM-MLS. Todos los derechos reservados.</p>
+            <div class="footer-links">
+                <a href="/Perfil.html">Perfil</a>
+                <a href="/Rutinas.html">Rutinas</a>
+                <a href="/Clases.html">Clases</a>
+            </div>
+        </div>
     </footer>
 </body>
-
 </html>
