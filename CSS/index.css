@@ -1,70 +1,15 @@
-/* Hero Section */
-.hero {
-    height: 90vh;
-    background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url(../Img/fondo.jpg) center/cover no-repeat;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 0 2rem;
-}
-
-.hero-content {
-    max-width: 800px;
-    animation: fadeInUp 1s ease-out;
-}
-
-.hero-title {
-    font-family: 'COD';
-    font-size: clamp(3rem, 8vw, 5rem);
-    color: var(--white);
-    line-height: 1.1;
-    margin-bottom: 1.5rem;
-}
-
-.hero-subtitle {
-    font-family: var(--FontSub);
-    font-size: 1.2rem;
-    color: rgba(255, 255, 255, 0.8);
-    margin-bottom: 2.5rem;
-    line-height: 1.6;
-}
-
-.hero-btns {
-    display: flex;
-    gap: 1.5rem;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-
-.boton-plan {
-    font-family: 'COD';
-    text-transform: uppercase;
-}
-
-.boton-plan.primary {
-    background-color: var(--VerdeF);
-    color: var(--negro);
-    font-weight: bold;
-    border: 2px solid var(--VerdeF);
-}
-
-.boton-plan.secondary {
-    border: 2px solid var(--white);
-    color: var(--white);
-}
-
-.boton-plan.primary:hover {
-    background-color: transparent;
-    color: var(--VerdeF);
+/* Background for Index Page */
+body {
+    background: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)), url(../Img/fondo.jpg) center center / cover no-repeat fixed;
 }
 
 /* Benefits Section */
 .benefits {
     padding: 6rem 2rem;
-    background-color: var(--negro);
+    background-color: transparent; /* Changed to transparent to show background image */
     text-align: center;
 }
+
 
 .section-title {
     margin-bottom: 4rem;
@@ -104,11 +49,6 @@
     border-color: var(--VerdeF);
 }
 
-.benefit-icon {
-    font-size: 3rem;
-    margin-bottom: 1.5rem;
-}
-
 .benefit-item h3 {
     font-family: 'COD';
     color: var(--VerdeF);
@@ -127,7 +67,7 @@
 /* Pricing Section */
 .pricing {
     padding: 6rem 2rem;
-    background-color: var(--negro);
+    background-color: transparent;
 }
 
 .planes-grid {

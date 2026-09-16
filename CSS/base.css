@@ -28,6 +28,7 @@ body {
     background-color: var(--negro);
     color: var(--white);
     font-family: var(--FontSub);
+    padding-top: 100px;
 }
 
 h1 {
