@@ -1,19 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil</title>
-    <link rel="stylesheet" href="/CSS/style.css">
+    <title>Mi Perfil - GYM-MLS</title>
+    <link rel="stylesheet" href="CSS/base.css">
+    <link rel="stylesheet" href="CSS/perfil.css">
 </head>
-<body>
-    <nav>
+<body style="background-color: var(--negro);">
+    <header>
+        <nav>
+            <div class="titulo">
+                <h1>GYM-<span class="color-mitad">MLS</span></h1>
+            </div>
             <ul class="menu">
+                <li class="items"><a href="/Perfil.html">Perfil</a></li>
                 <li class="items"><a href="/Comprar.html">Comprar</a></li>
                 <li class="items"><a href="/Rutinas.html">Rutinas</a></li>
                 <li class="items"><a href="/Clases.html">Clases</a></li>
-                <li class="items"><a href="/Index.html">Inicio</a></li>
             </ul>
         </nav>
+    </header>
+    <main>
+        <section class="info" style="text-align: center; margin-top: 100px;">
+            <h1 style="justify-content: center;">Mi <span class="color-mitad">Perfil</span></h1>
+            <p style="justify-content: center;">Gestiona tu información personal y preferencias de entrenamiento</p>
+        </section>
+
+        <div class="profile-card">
+            <h2 id="titulo" class="titulo principal" style="font-family: var(--FontTitulo); color: var(--white); text-align: center;">Perfil del Atleta</h2>
+            <form id="formulario" class="formulario" style="margin-top: 2rem;">
+                <div style="margin-bottom: 1rem;">
+                    <label style="color: var(--white); font-family: var(--FontSub);">Nombre:</label>
+                    <input id="nombre" class="input-field dato" type="text" placeholder="Ingrese su nombre">
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <label style="color: var(--white); font-family: var(--FontSub);">Contraseña:</label>
+                    <input id="password" class="input-field dato" type="password" placeholder="Ingrese contraseña">
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <label style="color: var(--white); font-family: var(--FontSub);">Foto de perfil:</label>
+                    <input id="foto" class="input-field archivo" type="file" accept="image/png, image/jpeg">
+                </div>
+
+                <div class="actions" style="display: flex; flex-wrap: wrap; justify-content: center; margin-top: 2rem;">
+                    <button type="button" id="btnEditar" class="btn-action">Editar título</button>
+                    <button type="button" id="btnOcultar" class="btn-action">Ocultar/Mostrar título</button>
+                    <button type="button" id="btnPassword" class="btn-action">Ver/Ocultar Contraseña</button>
+                    <button type="button" id="btnColor" class="btn-action">Cambiar Estilos</button>
+                    <button type="button" id="btnClase" class="btn-action">Modificar Clases</button>
+                    <button type="button" id="btnInfo" class="btn-action">Info en Consola</button>
+                </div>
+            </form>
+        </div>
+    </main>
+    <script src="js/perfil.js" defer></script>
 </body>
 </html>

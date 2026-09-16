@@ -1,0 +1,56 @@
+.checkout-container {
+    background-color: var(--gray);
+    padding: 2rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    max-width: 500px;
+    margin: 6rem auto;
+    color: var(--white);
+    font-family: var(--FontSub);
+    text-align: center;
+}
+
+.checkout-container h2 {
+    font-family: var(--FontTitulo);
+    color: var(--white);
+    margin-bottom: 2rem;
+}
+
+.coupon-box {
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.input-coupon {
+    padding: 0.8rem;
+    background-color: var(--negro);
+    border: 1px solid var(--white);
+    color: var(--white);
+    font-family: var(--FontSub);
+    width: 250px;
+}
+
+.btn-coupon {
+    padding: 0.6rem 1.2rem;
+    background-color: var(--VerdeF);
+    color: var(--negro);
+    border: none;
+    cursor: pointer;
+    font-family: var(--FontSub);
+    text-transform: uppercase;
+    font-weight: bold;
+    transition: opacity 0.3s;
+}
+
+.btn-coupon:hover {
+    opacity: 0.8;
+}
+
+.result-message {
+    margin-top: 1rem;
+    font-weight: bold;
+    color: var(--VerdeF);
+}

@@ -22,6 +22,64 @@ body{
     --white: #f5f4f0;
     --VerdeF: rgb(107, 255, 0, 1);
     --gray: #1c1c1c;
+    --red-error: #ff4d4d;
+}
+
+/* Modified styles from PDF exercises adapted to GYM-MLS */
+.destacado {
+    color: var(--negro) !important;
+    background-color: var(--VerdeF) !important;
+    font-weight: bold;
+}
+
+.rojo {
+    color: var(--white) !important;
+    background-color: var(--red-error) !important;
+}
+
+.oculto {
+    display: none !important;
+}
+
+.input-field {
+    display: block;
+    margin-bottom: 1.5rem;
+    padding: 0.8rem;
+    background-color: var(--gray);
+    border: 1px solid var(--white);
+    color: var(--white);
+    font-family: var(--FontSub);
+    width: 100%;
+    max-width: 400px;
+}
+
+.btn-action {
+    display: inline-block;
+    margin: 0.5rem;
+    padding: 0.6rem 1.2rem;
+    background-color: transparent;
+    border: 1px solid var(--VerdeF);
+    color: var(--VerdeF);
+    cursor: pointer;
+    font-family: var(--FontSub);
+    text-transform: uppercase;
+    transition: all 0.3s;
+}
+
+.btn-action:hover {
+    background-color: var(--VerdeF);
+    color: var(--negro);
+}
+
+.profile-card {
+    background-color: var(--gray);
+    padding: 2rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    max-width: 600px;
+    margin: 2rem auto;
+    color: var(--white);
+    font-family: var(--FontSub);
 }
 
 h1 {

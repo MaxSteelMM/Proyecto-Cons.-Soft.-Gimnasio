@@ -1,0 +1,112 @@
+@font-face {
+    font-family: "COD";
+    src: url(../Fonts/negroOpsOne-Regular.ttf) format("truetype");
+}
+
+@font-face {
+    font-family: "SUB";
+    src: url(../Fonts/ShareTech-Regular.ttf);
+}
+
+:root {
+    --negro: rgb(0, 0, 0);
+    --white: #f5f4f0;
+    --VerdeF: rgb(107, 255, 0, 1);
+    --gray: #1c1c1c;
+    --red-error: #ff4d4d;
+    --FontTitulo: "COD";
+    --FontSub: "SUB";
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--negro);
+    color: var(--white);
+    font-family: var(--FontSub);
+}
+
+h1 {
+    font-family: var(--FontTitulo);
+    color: var(--white);
+    display: flex;
+    font-size: 4rem;
+    margin: 0;
+}
+
+h1 .color-mitad {
+    color: var(--VerdeF);
+}
+
+nav {
+    background-color: var(--negro);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem 4rem;
+}
+
+.menu {
+    display: flex;
+    flex-direction: row;
+    list-style-type: none;
+    margin-top: 20px;
+    padding: 0;
+}
+
+.menu li a {
+    display: inline-block;
+    margin-right: 20px;
+    text-decoration: none;
+    color: var(--white);
+    font-family: var(--FontSub);
+    font-size: 1.5rem;
+    transition: color 0.3s;
+}
+
+.menu li a:hover {
+    color: var(--VerdeF);
+}
+
+.info {
+    max-height: fit-content;
+    background: url(../Img/fondo.jpg) center/cover;
+    color: var(--white);
+    padding: 4rem 2rem;
+    text-align: center;
+}
+
+.info p {
+    font-family: var(--FontSub);
+    font-size: 2.5rem;
+    display: flex;
+    justify-content: center;
+}
+
+.boton-plan {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    color: var(--negro);
+    text-decoration: none;
+    font-size: 1.2rem;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    background-color: transparent;
+    border: 1px solid var(--white);
+    transition: all 0.3s;
+}
+
+.boton-plan:hover {
+    background-color: var(--VerdeF);
+    border-color: var(--VerdeF);
+}

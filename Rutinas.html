@@ -1,22 +1,58 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rutinas</title>
-    <link rel="stylesheet" href="/CSS/style.css">
+    <title>Rutinas - GYM-MLS</title>
+    <link rel="stylesheet" href="CSS/base.css">
+    <link rel="stylesheet" href="CSS/rutinas.css">
 </head>
-
-<body>
-    <nav>
+<body style="background-color: var(--negro);">
+    <header>
+        <nav>
+            <div class="titulo">
+                <h1>GYM-<span class="color-mitad">MLS</span></h1>
+            </div>
             <ul class="menu">
                 <li class="items"><a href="/Perfil.html">Perfil</a></li>
                 <li class="items"><a href="/Comprar.html">Comprar</a></li>
+                <li class="items"><a href="/Rutinas.html">Rutinas</a></li>
                 <li class="items"><a href="/Clases.html">Clases</a></li>
-                <li class="items"><a href="/Index.html">Inicio</a></li>
             </ul>
         </nav>
-</body>
+    </header>
+    <main>
+        <section class="info" style="text-align: center; margin-top: 100px;">
+            <h1 style="justify-content: center;">Nuestras <span class="color-mitad">Rutinas</span></h1>
+            <p style="justify-content: center;">Encuentra el plan ideal para tus objetivos físicos</p>
+        </section>
 
+        <div class="routines-container">
+            <div class="filter-bar">
+                <button id="btnFocus" class="btn-action">Destacar Rutinas</button>
+                <button id="btnDim" class="btn-action">Modo Concentración</button>
+                <button id="btnReset" class="btn-action">Restablecer Vista</button>
+            </div>
+
+            <div class="routine-grid">
+                <div class="routine-card" data-type="power">
+                    <h3>Powerlifting</h3>
+                    <p>Enfoque en fuerza máxima: Sentadilla, Press Banca y Peso Muerto.</p>
+                    <span class="routine-tag">Fuerza</span>
+                </div>
+                <div class="routine-card" data-type="hypertrophy">
+                    <h3>Hipertrofia</h3>
+                    <p>Desarrollo muscular optimizado con volumen controlado y alta intensidad.</p>
+                    <span class="routine-tag">Músculo</span>
+                </div>
+                <div class="routine-card" data-type="endurance">
+                    <h3>Resistencia</h3>
+                    <p>Mejora tu capacidad cardiovascular y aguante físico general.</p>
+                    <span class="routine-tag">Cardio</span>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="js/rutinas.js" defer></script>
+</body>
 </html>

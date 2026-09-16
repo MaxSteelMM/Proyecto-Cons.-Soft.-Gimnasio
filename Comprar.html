@@ -1,19 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comprar</title>
-    <link rel="stylesheet" href="/CSS/style.css">
+    <title>Comprar - GYM-MLS</title>
+    <link rel="stylesheet" href="CSS/base.css">
+    <link rel="stylesheet" href="CSS/comprar.css">
 </head>
-<body>
-    <nav>
+<body style="background-color: var(--negro);">
+    <header>
+        <nav>
+            <div class="titulo">
+                <h1>GYM-<span class="color-mitad">MLS</span></h1>
+            </div>
             <ul class="menu">
                 <li class="items"><a href="/Perfil.html">Perfil</a></li>
+                <li class="items"><a href="/Comprar.html">Comprar</a></li>
                 <li class="items"><a href="/Rutinas.html">Rutinas</a></li>
                 <li class="items"><a href="/Clases.html">Clases</a></li>
-                <li class="items"><a href="/Index.html">Inicio</a></li>
             </ul>
         </nav>
+    </header>
+    <main>
+        <section class="info" style="text-align: center; margin-top: 100px;">
+            <h1 style="justify-content: center;">Tienda <span class="color-mitad">MLS</span></h1>
+            <p style="justify-content: center;">Equípate con lo mejor para potenciar tu entrenamiento</p>
+        </section>
+
+        <div class="checkout-container">
+            <h2>Validar Cupón de Descuento</h2>
+            <div class="coupon-box">
+                <input id="coupon-input" class="input-coupon" type="text" placeholder="Ingrese su código de cupón">
+                <button id="coupon-btn" class="btn-coupon">Aplicar Cupón</button>
+            </div>
+            <p id="coupon-result" class="result-message"></p>
+        </div>
+    </main>
+    <script src="js/comprar.js" defer></script>
 </body>
 </html>

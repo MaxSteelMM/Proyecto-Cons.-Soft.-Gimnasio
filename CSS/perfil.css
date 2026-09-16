@@ -1,0 +1,77 @@
+.profile-card {
+    background-color: var(--gray);
+    padding: 2rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    max-width: 600px;
+    margin: 6rem auto;
+    color: var(--white);
+    font-family: var(--FontSub);
+    text-align: center;
+}
+
+.profile-card h2 {
+    font-family: var(--FontTitulo);
+    color: var(--white);
+    margin-bottom: 2rem;
+}
+
+.input-field {
+    display: block;
+    margin-bottom: 1.5rem;
+    padding: 0.8rem;
+    background-color: var(--negro);
+    border: 1px solid var(--white);
+    color: var(--white);
+    font-family: var(--FontSub);
+    width: 100%;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.btn-action {
+    display: inline-block;
+    margin: 0.5rem;
+    padding: 0.6rem 1.2rem;
+    background-color: transparent;
+    border: 1px solid var(--VerdeF);
+    color: var(--VerdeF);
+    cursor: pointer;
+    font-family: var(--FontSub);
+    text-transform: uppercase;
+    transition: all 0.3s;
+}
+
+.btn-action:hover {
+    background-color: var(--VerdeF);
+    color: var(--negro);
+}
+
+/* Classes for PDF Exercise 2 */
+.destacado {
+    color: var(--negro) !important;
+    background-color: var(--VerdeF) !important;
+    font-weight: bold;
+    padding: 5px;
+}
+
+.rojo {
+    color: var(--white) !important;
+    background-color: var(--red-error) !important;
+    padding: 5px;
+}
+
+.oculto {
+    display: none !important;
+}
+
+.principal {
+    border: 2px solid var(--white);
+    padding: 10px;
+}
+
+.tituloEditado {
+    border: 2px dashed var(--VerdeF);
+    color: var(--VerdeF);
+}
