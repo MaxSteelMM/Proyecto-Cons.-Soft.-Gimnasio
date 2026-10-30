@@ -3,38 +3,244 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comprar - GYM-MLS</title>
+    <meta name="theme-color" content="#090b09">
+    <title>Tienda MLS | Equipamiento para entrenar</title>
     <link rel="stylesheet" href="CSS/base.css">
     <link rel="stylesheet" href="CSS/comprar.css">
+    <script src="js/comprar.js" defer></script>
 </head>
 <body>
-    <header>
-        <nav aria-label="Navegación principal">
-            <a class="brand" href="Index.html" aria-label="GYM-MLS, inicio">GYM-<span class="color-mitad">MLS</span></a>
-            <ul class="menu">
-                <li class="items"><a href="Perfil.html">Perfil</a></li>
-                <li class="items"><a href="Comprar.html" aria-current="page">Comprar</a></li>
-                <li class="items"><a href="Rutinas.html">Rutinas</a></li>
-                <li class="items"><a href="Clases.html">Clases</a></li>
-            </ul>
+    <header class="store-header">
+        <nav class="store-nav" aria-label="Navegación principal">
+            <a class="brand" href="#inicio" aria-label="GYM-MLS, inicio">GYM-<span class="color-mitad">MLS</span></a>
+            <button id="menu-toggle" class="menu-toggle" type="button" aria-expanded="false" aria-controls="store-menu" aria-label="Abrir menú">
+                <span></span><span></span><span></span>
+            </button>
+            <div id="store-menu" class="store-menu">
+                <ul class="menu">
+                    <li><a href="#inicio">Inicio</a></li>
+                    <li><a href="#productos">Productos</a></li>
+                    <li><a href="#categorias">Categorías</a></li>
+                    <li><a href="#ofertas" id="offers-link">Ofertas</a></li>
+                    <li><a href="#contacto">Contacto</a></li>
+                </ul>
+                <form id="nav-search-form" class="nav-search" role="search">
+                    <label class="sr-only" for="nav-search">Buscar productos</label>
+                    <input id="nav-search" type="search" placeholder="Buscar productos..." autocomplete="off">
+                    <button type="submit" aria-label="Buscar">⌕</button>
+                </form>
+                <a class="nav-cart" href="#carrito" aria-label="Ir al carrito">
+                    <span aria-hidden="true">🛒</span> Carrito <span id="cart-count" class="cart-count">0</span>
+                </a>
+                <a class="nav-user" href="Perfil.html" aria-label="Ir a mi perfil">👤</a>
+            </div>
         </nav>
     </header>
+
     <main>
-        <section class="info">
-            <h1>Tienda <span class="color-mitad">MLS</span></h1>
-            <p>Equípate con lo mejor para potenciar tu entrenamiento</p>
+        <section id="inicio" class="shop-hero">
+            <div class="hero-content">
+                <p class="eyebrow">ENTRENÁ CON TODO</p>
+                <h1>Tu próximo <span>récord</span> empieza acá.</h1>
+                <p>Indumentaria, suplementos y equipamiento para acompañarte en cada entrenamiento.</p>
+                <div class="hero-actions">
+                    <a class="button button-primary" href="#productos">Comprar ahora</a>
+                    <a class="button button-secondary" href="#categorias">Explorar categorías</a>
+                </div>
+                <p class="demo-notice">Tienda en modo demostración: no se realizan cobros reales.</p>
+            </div>
         </section>
 
-        <div class="checkout-container">
-            <h2>Validar Cupón de Descuento</h2>
-            <div class="coupon-box">
-                <label for="coupon-input">Código de cupón</label>
-                <input id="coupon-input" class="input-coupon" type="text" placeholder="Ingrese su código de cupón">
-                <button id="coupon-btn" class="btn-coupon" type="button">Aplicar Cupón</button>
+        <div id="catalog-notice" class="catalog-notice" role="status" hidden></div>
+
+        <section id="categorias" class="store-section category-section" aria-labelledby="categories-title">
+            <div class="section-heading">
+                <p class="eyebrow">ENCONTRÁ LO QUE BUSCÁS</p>
+                <h2 id="categories-title">Comprá por categoría</h2>
             </div>
-            <p id="coupon-result" class="result-message"></p>
-        </div>
+            <div id="category-list" class="category-grid"></div>
+        </section>
+
+        <section id="productos" class="store-section" aria-labelledby="products-title">
+            <div class="section-heading catalog-heading">
+                <div>
+                    <p class="eyebrow">ELEGÍ TU EQUIPO</p>
+                    <h2 id="products-title">Productos destacados</h2>
+                </div>
+                <p id="products-count" class="products-count" aria-live="polite"></p>
+            </div>
+            <div class="catalog-toolbar">
+                <label for="category-filter">Categoría
+                    <select id="category-filter">
+                        <option value="">Todas</option>
+                    </select>
+                </label>
+                <label for="min-price">Precio desde
+                    <input id="min-price" type="number" min="0" step="1" placeholder="Mínimo">
+                </label>
+                <label for="max-price">Precio hasta
+                    <input id="max-price" type="number" min="0" step="1" placeholder="Máximo">
+                </label>
+                <label for="sort-products">Ordenar por
+                    <select id="sort-products">
+                        <option value="featured">Recomendados</option>
+                        <option value="price-asc">Menor precio</option>
+                        <option value="price-desc">Mayor precio</option>
+                        <option value="popular">Más populares</option>
+                    </select>
+                </label>
+                <button id="clear-filters" class="text-button" type="button">Limpiar filtros</button>
+            </div>
+            <p id="products-message" class="store-message" aria-live="polite">Cargando productos...</p>
+            <div id="products-grid" class="products-grid"></div>
+        </section>
+
+        <section id="carrito" class="store-section cart-section" aria-labelledby="cart-title">
+            <div class="section-heading">
+                <p class="eyebrow">TU SELECCIÓN</p>
+                <h2 id="cart-title">Carrito de compras</h2>
+            </div>
+            <div class="cart-panel">
+                <ul id="cart-items" class="cart-items"></ul>
+                <p id="cart-empty" class="cart-empty">Tu carrito está vacío. ¡Sumá algo para entrenar!</p>
+                <div class="coupon-row">
+                    <label for="coupon-input">¿Tenés un cupón?
+                        <input id="coupon-input" type="text" placeholder="Código de descuento" autocomplete="off">
+                    </label>
+                    <button id="coupon-btn" class="button button-secondary" type="button">Aplicar</button>
+                    <p id="coupon-result" class="coupon-result" aria-live="polite"></p>
+                </div>
+                <div class="cart-totals">
+                    <p>Subtotal <strong id="cart-subtotal">$0</strong></p>
+                    <p id="discount-row" hidden>Descuento <strong id="cart-discount">−$0</strong></p>
+                    <p class="grand-total">Total <strong id="cart-total">$0</strong></p>
+                </div>
+                <div class="cart-actions">
+                    <button id="empty-cart" class="text-button" type="button" disabled>Vaciar carrito</button>
+                    <button id="checkout-btn" class="button button-primary" type="button" disabled>Continuar compra</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="checkout" class="store-section checkout-section" aria-labelledby="checkout-title" hidden>
+            <div class="section-heading">
+                <p class="eyebrow">UNOS PASOS MÁS</p>
+                <h2 id="checkout-title">Finalizar pedido</h2>
+            </div>
+            <div class="checkout-panel">
+                <p class="demo-warning"><strong>Compra de demostración.</strong> No ingreses datos de tarjetas: no se procesarán pagos ni se generará una compra real en la base de datos.</p>
+                <ol class="checkout-progress" aria-label="Etapas de compra">
+                    <li data-progress="1" aria-current="step">Datos</li>
+                    <li data-progress="2">Envío</li>
+                    <li data-progress="3">Entrega</li>
+                    <li data-progress="4">Pago</li>
+                    <li data-progress="5">Revisión</li>
+                </ol>
+                <form id="checkout-form" novalidate>
+                    <fieldset class="checkout-step" data-step="1">
+                        <legend>1. Datos personales</legend>
+                        <div class="form-grid">
+                            <label>Nombre
+                                <input name="nombre" autocomplete="given-name" required>
+                            </label>
+                            <label>Apellido
+                                <input name="apellido" autocomplete="family-name" required>
+                            </label>
+                            <label>Correo electrónico
+                                <input name="email" type="email" autocomplete="email" required>
+                            </label>
+                            <label>Teléfono
+                                <input name="telefono" type="tel" autocomplete="tel" required>
+                            </label>
+                        </div>
+                    </fieldset>
+                    <fieldset class="checkout-step" data-step="2" hidden>
+                        <legend>2. Dirección de envío</legend>
+                        <div class="form-grid">
+                            <label>Provincia
+                                <input name="provincia" autocomplete="address-level1" required>
+                            </label>
+                            <label>Ciudad
+                                <input name="ciudad" autocomplete="address-level2" required>
+                            </label>
+                            <label>Código postal
+                                <input name="codigo_postal" autocomplete="postal-code" required>
+                            </label>
+                            <label>Calle
+                                <input name="calle" autocomplete="street-address" required>
+                            </label>
+                            <label>Número
+                                <input name="numero" autocomplete="address-line2" required>
+                            </label>
+                            <label class="form-wide">Información adicional
+                                <textarea name="adicional" rows="3" placeholder="Piso, departamento, referencias (opcional)"></textarea>
+                            </label>
+                        </div>
+                    </fieldset>
+                    <fieldset class="checkout-step" data-step="3" hidden>
+                        <legend>3. Método de entrega</legend>
+                        <div class="choice-list">
+                            <label class="choice-card"><input type="radio" name="entrega" value="domicilio" required> Envío a domicilio <span>Envío de demostración sin costo</span></label>
+                            <label class="choice-card"><input type="radio" name="entrega" value="sucursal" required> Retiro en sucursal <span>GYM-MLS · Centro</span></label>
+                        </div>
+                    </fieldset>
+                    <fieldset class="checkout-step" data-step="4" hidden>
+                        <legend>4. Método de pago</legend>
+                        <p class="step-help">Elegí una opción para el resumen. No se te pedirán datos financieros.</p>
+                        <div class="choice-list">
+                            <label class="choice-card"><input type="radio" name="pago" value="Tarjeta (simulada)" required> Tarjeta de crédito o débito <span>Solo selección de demostración; no ingreses el número de tarjeta.</span></label>
+                            <label class="choice-card"><input type="radio" name="pago" value="Transferencia (simulada)" required> Transferencia bancaria <span>Las instrucciones reales no están habilitadas.</span></label>
+                            <label class="choice-card"><input type="radio" name="pago" value="Otro método (simulado)" required> Otro método <span>Opción de demostración.</span></label>
+                        </div>
+                    </fieldset>
+                    <fieldset class="checkout-step" data-step="5" hidden>
+                        <legend>5. Revisá tu pedido</legend>
+                        <div id="checkout-summary" class="checkout-summary"></div>
+                        <label class="terms-check"><input name="acepta_demo" type="checkbox" required> Entiendo que este pedido es una demostración y no genera un cobro real.</label>
+                    </fieldset>
+                    <p id="checkout-error" class="form-error" role="alert"></p>
+                    <div class="checkout-actions">
+                        <button id="checkout-cancel" class="text-button" type="button">Volver al carrito</button>
+                        <button id="checkout-back" class="button button-secondary" type="button" hidden>Volver</button>
+                        <button id="checkout-next" class="button button-primary" type="button">Continuar</button>
+                        <button id="confirm-order" class="button button-primary" type="submit" hidden>Confirmar pedido de demostración</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <section id="order-confirmation" class="store-section confirmation-section" aria-labelledby="confirmation-title" hidden>
+            <div class="confirmation-card">
+                <p class="confirmation-icon" aria-hidden="true">✓</p>
+                <p class="eyebrow">PEDIDO DE PRUEBA</p>
+                <h2 id="confirmation-title">¡Gracias por probar la tienda!</h2>
+                <p>Este pedido es simulado. No se realizó ningún cobro ni se guardó una compra real.</p>
+                <p>Número de pedido: <strong id="order-number"></strong></p>
+                <div id="confirmation-summary" class="checkout-summary"></div>
+                <a class="button button-primary" href="#productos">Volver a la tienda</a>
+            </div>
+        </section>
+
+        <section id="ofertas" class="store-section offer-section" aria-label="Promoción">
+            <p>Un impulso extra para tu rutina</p>
+            <h2>Usá <span>MLS2026</span> y obtené 20% OFF</h2>
+            <a class="button button-secondary" href="#carrito">Aplicar en el carrito</a>
+        </section>
     </main>
-    <script src="js/comprar.js" defer></script>
+
+    <footer id="contacto" class="store-footer">
+        <a class="brand" href="#inicio">GYM-<span class="color-mitad">MLS</span></a>
+        <p>Equipamiento para entrenar con confianza.</p>
+        <p>Canal de contacto aún no configurado para esta tienda de demostración.</p>
+        <p class="footer-note">Tienda y checkout en modo demostración. Las compras y pagos no son reales.</p>
+    </footer>
+
+    <dialog id="product-dialog" class="product-dialog" aria-label="Detalles del producto">
+        <div class="dialog-content">
+            <button id="detail-close" class="dialog-close" type="button" aria-label="Cerrar detalles">×</button>
+            <div id="detail-content"></div>
+        </div>
+    </dialog>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
 </body>
 </html>

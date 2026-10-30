@@ -33,7 +33,7 @@ CREATE TABLE CONSULTA (
 
 CREATE TABLE TURNO (
     id_turno INT AUTO_INCREMENT PRIMARY KEY,
-    fecha_hora ,
+    fecha_hora DATETIME,
     estado VARCHAR(20) DEFAULT 'Programado',
     id_usuario INT NOT NULL,
     id_empleado INT NOT NULL,
@@ -89,7 +89,8 @@ INSERT INTO PROVEEDOR (nombre_empresa, contacto) VALUES
 
 INSERT INTO PRODUCTO (nombre, precio, stock, categoria, id_proveedor) VALUES
 ('Proteína Whey 2kg', 45.00, 20, 'Suplementos', 2),
-('Mancuernas 5kg', 25.00, 10, 'Equipamiento', 1);
+('Mancuernas 5kg', 25.00, 10, 'Equipamiento', 1),
+('Remera deportiva MLS', 30.00, 15, 'Indumentaria', 1);
 
 INSERT INTO TURNO (fecha_hora, estado, id_usuario, id_empleado) VALUES
 ('2026-10-25 10:00:00', 'Programado', 1, 1);
