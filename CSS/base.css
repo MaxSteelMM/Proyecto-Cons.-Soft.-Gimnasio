@@ -6,12 +6,14 @@
 @font-face {
     font-family: "SUB";
     src: url(../Fonts/ShareTech-Regular.ttf);
+    font-weight: 400;
+    font-style: normal;
 }
 
 :root {
     --negro: rgb(0, 0, 0);
     --white: #f5f4f0;
-    --VerdeF: rgb(107, 255, 0, 1);
+    --VerdeF: #6bff00;
     --gray: #1c1c1c;
     --red-error: #ff4d4d;
     --FontTitulo: "COD";
@@ -28,18 +30,36 @@ body {
     background-color: var(--negro);
     color: var(--white);
     font-family: var(--FontSub);
-    padding-top: 100px;
+    padding-top: 6rem;
 }
 
 h1 {
     font-family: var(--FontTitulo);
     color: var(--white);
     display: flex;
-    font-size: 4rem;
-    margin: 0;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.25em;
+    font-size: clamp(2rem, 5vw, 4rem);
+    line-height: 1.15;
+    margin: 0 auto;
 }
 
 h1 .color-mitad {
+    color: var(--VerdeF);
+}
+
+.brand {
+    color: var(--white);
+    display: inline-flex;
+    flex-shrink: 0;
+    font-family: var(--FontTitulo);
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    line-height: 1;
+    text-decoration: none;
+}
+
+.brand .color-mitad {
     color: var(--VerdeF);
 }
 
@@ -53,24 +73,25 @@ nav {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 1.5rem 4rem;
+    gap: 1.5rem;
+    padding: 1rem clamp(1rem, 5vw, 4rem);
 }
 
 .menu {
     display: flex;
-    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.5rem 1.25rem;
     list-style-type: none;
-    margin-top: 20px;
     padding: 0;
 }
 
 .menu li a {
     display: inline-block;
-    margin-right: 20px;
     text-decoration: none;
     color: var(--white);
-    font-family: 'COD';
-    font-size: 1.5rem;
+    font-family: var(--FontTitulo);
+    font-size: clamp(0.9rem, 1.5vw, 1.2rem);
     transition: color 0.3s;
 }
 
@@ -79,18 +100,22 @@ nav {
 }
 
 .info {
-    max-height: fit-content;
-    background: url(../Img/fondo.jpg) center/cover;
+    background: url(../Img/fondo.jpg) center / cover;
     color: var(--white);
-    padding: 4rem 2rem;
+    padding: clamp(2.5rem, 7vw, 4rem) 1.25rem;
     text-align: center;
+}
+
+.info h1 {
+    max-width: 100%;
 }
 
 .info p {
     font-family: var(--FontSub);
-    font-size: 2.5rem;
-    display: flex;
-    justify-content: center;
+    font-size: clamp(1.15rem, 3vw, 2rem);
+    line-height: 1.4;
+    margin: 0.75rem auto 0;
+    max-width: 48rem;
 }
 
 .boton-plan {
@@ -110,4 +135,22 @@ nav {
 .boton-plan:hover {
     background-color: var(--VerdeF);
     border-color: var(--VerdeF);
+}
+
+@media (max-width: 640px) {
+    body {
+        padding-top: 7rem;
+    }
+
+    nav {
+        align-items: center;
+        flex-direction: column;
+        gap: 0.65rem;
+        padding: 0.75rem 1rem;
+    }
+
+    .menu {
+        justify-content: center;
+        gap: 0.35rem 1rem;
+    }
 }

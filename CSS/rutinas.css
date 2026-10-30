@@ -1,7 +1,7 @@
 .routines-container {
-    margin: 6rem auto;
+    margin: 2rem auto 4rem;
     max-width: 900px;
-    padding: 2rem;
+    padding: 0 2rem;
     color: var(--white);
     font-family: var(--FontSub);
 }
@@ -69,4 +69,15 @@
 .dimmed {
     opacity: 0.3;
     filter: grayscale(1);
+}
+
+@media (max-width: 640px) {
+    .routines-container {
+        padding: 0 1rem;
+    }
+
+    .filter-bar {
+        gap: 0.5rem;
+        margin-bottom: 2rem;
+    }
 }

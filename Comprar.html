@@ -7,31 +7,30 @@
     <link rel="stylesheet" href="CSS/base.css">
     <link rel="stylesheet" href="CSS/comprar.css">
 </head>
-<body style="background-color: var(--negro);">
+<body>
     <header>
-        <nav>
-            <div class="titulo">
-                <h1>GYM-<span class="color-mitad">MLS</span></h1>
-            </div>
+        <nav aria-label="Navegación principal">
+            <a class="brand" href="Index.html" aria-label="GYM-MLS, inicio">GYM-<span class="color-mitad">MLS</span></a>
             <ul class="menu">
-                <li class="items"><a href="/Perfil.html">Perfil</a></li>
-                <li class="items"><a href="/Comprar.html">Comprar</a></li>
-                <li class="items"><a href="/Rutinas.html">Rutinas</a></li>
-                <li class="items"><a href="/Clases.html">Clases</a></li>
+                <li class="items"><a href="Perfil.html">Perfil</a></li>
+                <li class="items"><a href="Comprar.html" aria-current="page">Comprar</a></li>
+                <li class="items"><a href="Rutinas.html">Rutinas</a></li>
+                <li class="items"><a href="Clases.html">Clases</a></li>
             </ul>
         </nav>
     </header>
     <main>
-        <section class="info" style="text-align: center; margin-top: 100px;">
-            <h1 style="justify-content: center;">Tienda <span class="color-mitad">MLS</span></h1>
-            <p style="justify-content: center;">Equípate con lo mejor para potenciar tu entrenamiento</p>
+        <section class="info">
+            <h1>Tienda <span class="color-mitad">MLS</span></h1>
+            <p>Equípate con lo mejor para potenciar tu entrenamiento</p>
         </section>
 
         <div class="checkout-container">
             <h2>Validar Cupón de Descuento</h2>
             <div class="coupon-box">
+                <label for="coupon-input">Código de cupón</label>
                 <input id="coupon-input" class="input-coupon" type="text" placeholder="Ingrese su código de cupón">
-                <button id="coupon-btn" class="btn-coupon">Aplicar Cupón</button>
+                <button id="coupon-btn" class="btn-coupon" type="button">Aplicar Cupón</button>
             </div>
             <p id="coupon-result" class="result-message"></p>
         </div>

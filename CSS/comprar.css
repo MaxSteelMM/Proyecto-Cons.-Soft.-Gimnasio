@@ -3,8 +3,8 @@
     padding: 2rem;
     border-radius: 8px;
     border: 1px solid rgba(255, 255, 255, 0.1);
-    max-width: 500px;
-    margin: 6rem auto;
+    width: min(100% - 2rem, 500px);
+    margin: 2rem auto 4rem;
     color: var(--white);
     font-family: var(--FontSub);
     text-align: center;
@@ -24,13 +24,17 @@
     gap: 1rem;
 }
 
+.coupon-box label {
+    align-self: flex-start;
+}
+
 .input-coupon {
     padding: 0.8rem;
     background-color: var(--negro);
     border: 1px solid var(--white);
     color: var(--white);
     font-family: var(--FontSub);
-    width: 250px;
+    width: min(100%, 250px);
 }
 
 .btn-coupon {

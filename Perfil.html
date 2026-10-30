@@ -7,43 +7,41 @@
     <link rel="stylesheet" href="CSS/base.css">
     <link rel="stylesheet" href="CSS/perfil.css">
 </head>
-<body style="background-color: var(--negro);">
+<body>
     <header>
-        <nav>
-            <div class="titulo">
-                <h1>GYM-<span class="color-mitad">MLS</span></h1>
-            </div>
+        <nav aria-label="Navegación principal">
+            <a class="brand" href="Index.html" aria-label="GYM-MLS, inicio">GYM-<span class="color-mitad">MLS</span></a>
             <ul class="menu">
-                <li class="items"><a href="/Perfil.html">Perfil</a></li>
-                <li class="items"><a href="/Comprar.html">Comprar</a></li>
-                <li class="items"><a href="/Rutinas.html">Rutinas</a></li>
-                <li class="items"><a href="/Clases.html">Clases</a></li>
+                <li class="items"><a href="Perfil.html" aria-current="page">Perfil</a></li>
+                <li class="items"><a href="Comprar.html">Comprar</a></li>
+                <li class="items"><a href="Rutinas.html">Rutinas</a></li>
+                <li class="items"><a href="Clases.html">Clases</a></li>
             </ul>
         </nav>
     </header>
     <main>
-        <section class="info" style="text-align: center; margin-top: 100px;">
-            <h1 style="justify-content: center;">Mi <span class="color-mitad">Perfil</span></h1>
-            <p style="justify-content: center;">Gestiona tu información personal y preferencias de entrenamiento</p>
+        <section class="info">
+            <h1>Mi <span class="color-mitad">Perfil</span></h1>
+            <p>Gestiona tu información personal y preferencias de entrenamiento</p>
         </section>
 
         <div class="profile-card">
-            <h2 id="titulo" class="titulo principal" style="font-family: var(--FontTitulo); color: var(--white); text-align: center;">Perfil del Atleta</h2>
-            <form id="formulario" class="formulario" style="margin-top: 2rem;">
-                <div style="margin-bottom: 1rem;">
-                    <label style="color: var(--white); font-family: var(--FontSub);">Nombre:</label>
+            <h2 id="titulo" class="titulo principal">Perfil del Atleta</h2>
+            <form id="formulario" class="formulario">
+                <div class="form-field">
+                    <label for="nombre">Nombre:</label>
                     <input id="nombre" class="input-field dato" type="text" placeholder="Ingrese su nombre">
                 </div>
-                <div style="margin-bottom: 1rem;">
-                    <label style="color: var(--white); font-family: var(--FontSub);">Contraseña:</label>
+                <div class="form-field">
+                    <label for="password">Contraseña:</label>
                     <input id="password" class="input-field dato" type="password" placeholder="Ingrese contraseña">
                 </div>
-                <div style="margin-bottom: 1rem;">
-                    <label style="color: var(--white); font-family: var(--FontSub);">Foto de perfil:</label>
+                <div class="form-field">
+                    <label for="foto">Foto de perfil:</label>
                     <input id="foto" class="input-field archivo" type="file" accept="image/png, image/jpeg">
                 </div>
 
-                <div class="actions" style="display: flex; flex-wrap: wrap; justify-content: center; margin-top: 2rem;">
+                <div class="actions">
                     <button type="button" id="btnEditar" class="btn-action">Editar título</button>
                     <button type="button" id="btnOcultar" class="btn-action">Ocultar/Mostrar título</button>
                     <button type="button" id="btnPassword" class="btn-action">Ver/Ocultar Contraseña</button>

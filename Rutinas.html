@@ -7,24 +7,22 @@
     <link rel="stylesheet" href="CSS/base.css">
     <link rel="stylesheet" href="CSS/rutinas.css">
 </head>
-<body style="background-color: var(--negro);">
+<body>
     <header>
-        <nav>
-            <div class="titulo">
-                <h1>GYM-<span class="color-mitad">MLS</span></h1>
-            </div>
+        <nav aria-label="Navegación principal">
+            <a class="brand" href="Index.html" aria-label="GYM-MLS, inicio">GYM-<span class="color-mitad">MLS</span></a>
             <ul class="menu">
-                <li class="items"><a href="/Perfil.html">Perfil</a></li>
-                <li class="items"><a href="/Comprar.html">Comprar</a></li>
-                <li class="items"><a href="/Rutinas.html">Rutinas</a></li>
-                <li class="items"><a href="/Clases.html">Clases</a></li>
+                <li class="items"><a href="Perfil.html">Perfil</a></li>
+                <li class="items"><a href="Comprar.html">Comprar</a></li>
+                <li class="items"><a href="Rutinas.html" aria-current="page">Rutinas</a></li>
+                <li class="items"><a href="Clases.html">Clases</a></li>
             </ul>
         </nav>
     </header>
     <main>
-        <section class="info" style="text-align: center; margin-top: 100px;">
-            <h1 style="justify-content: center;">Nuestras <span class="color-mitad">Rutinas</span></h1>
-            <p style="justify-content: center;">Encuentra el plan ideal para tus objetivos físicos</p>
+        <section class="info">
+            <h1>Nuestras <span class="color-mitad">Rutinas</span></h1>
+            <p>Encuentra el plan ideal para tus objetivos físicos</p>
         </section>
 
         <div class="routines-container">
@@ -35,21 +33,21 @@
             </div>
 
             <div class="routine-grid">
-                <div class="routine-card" data-type="power">
+                <article class="routine-card" data-type="power">
                     <h3>Powerlifting</h3>
                     <p>Enfoque en fuerza máxima: Sentadilla, Press Banca y Peso Muerto.</p>
                     <span class="routine-tag">Fuerza</span>
-                </div>
-                <div class="routine-card" data-type="hypertrophy">
+                </article>
+                <article class="routine-card" data-type="hypertrophy">
                     <h3>Hipertrofia</h3>
                     <p>Desarrollo muscular optimizado con volumen controlado y alta intensidad.</p>
                     <span class="routine-tag">Músculo</span>
-                </div>
-                <div class="routine-card" data-type="endurance">
+                </article>
+                <article class="routine-card" data-type="endurance">
                     <h3>Resistencia</h3>
                     <p>Mejora tu capacidad cardiovascular y aguante físico general.</p>
                     <span class="routine-tag">Cardio</span>
-                </div>
+                </article>
             </div>
         </div>
     </main>

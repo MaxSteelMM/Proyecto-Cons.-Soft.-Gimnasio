@@ -4,7 +4,8 @@
     border-radius: 8px;
     border: 1px solid rgba(255, 255, 255, 0.1);
     max-width: 600px;
-    margin: 6rem auto;
+    width: min(100% - 2rem, 600px);
+    margin: 2rem auto 4rem;
     color: var(--white);
     font-family: var(--FontSub);
     text-align: center;
@@ -16,9 +17,25 @@
     margin-bottom: 2rem;
 }
 
+.formulario {
+    margin-top: 2rem;
+}
+
+.form-field {
+    margin-bottom: 1rem;
+    text-align: left;
+}
+
+.form-field label {
+    color: var(--white);
+    display: block;
+    font-family: var(--FontSub);
+    margin-bottom: 0.4rem;
+}
+
 .input-field {
     display: block;
-    margin-bottom: 1.5rem;
+    margin-bottom: 0;
     padding: 0.8rem;
     background-color: var(--negro);
     border: 1px solid var(--white);
@@ -48,6 +65,13 @@
     color: var(--negro);
 }
 
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
 /* Classes for PDF Exercise 2 */
 .destacado {
     color: var(--negro) !important;
@@ -74,4 +98,14 @@
 .tituloEditado {
     border: 2px dashed var(--VerdeF);
     color: var(--VerdeF);
+}
+
+@media (max-width: 480px) {
+    .profile-card {
+        padding: 1.25rem;
+    }
+
+    .actions .btn-action {
+        width: 100%;
+    }
 }
