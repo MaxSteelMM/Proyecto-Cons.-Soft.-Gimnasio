@@ -8,25 +8,40 @@
     <link rel="stylesheet" href="CSS/index.css">
 </head>
 <body>
-    <header class="main-header">
-        <nav aria-label="Navegación principal" class="navbar">
-            <a class="brand" href="Index.html" aria-label="GYM-MLS, inicio">GYM-<span class="color-mitad">MLS</span></a>
-            <ul class="menu">
-                <li class="items"><a href="Perfil.html">Perfil</a></li>
-                <li class="items"><a href="Comprar.html">Comprar</a></li>
-                <li class="items"><a href="Rutinas.html">Rutinas</a></li>
-                <li class="items"><a href="Clases.html">Clases</a></li>
-            </ul>
-        </nav>
+
+    <!-- Header Único -->
+    <header class="site-header">
+        <div class="header-container">
+           
+
+            <nav class="main-nav">
+                 <a href="Index.html" class="brand-logo">
+                <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M6.5 6.5h11M6.5 17.5h11M4 9v6M20 9v6M7.5 5v14M16.5 5v14" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>GYM-<span class="highlight">MLS</span></span>
+            </a>
+                <ul class="nav-links">
+                    <li><a href="Index.html" class="active">Inicio</a></li>
+                    <li><a href="Perfil.html">Perfil</a></li>
+                    <li><a href="Clases.html">Clases</a></li>
+                    <li><a href="Rutinas.html">Rutinas</a></li>
+                </ul>
+                 <div class="header-action">
+                <a href="Comprar.html" class="btn-outline">CONTACTO</a>
+            </div>
+            </nav>
+
+           
+        </div>
     </header>
 
     <main>
-        <!-- Sección Hero con fondo e información a la derecha -->
         <section class="hero-section">
             <div class="hero-overlay"></div>
             <div class="hero-content">
                 <span class="hero-tagline">TRANSFORMA TU CUALIDAD FÍSICA</span>
-                <h1 class="hero-title">CONSTRUYE TU <span class="color-mitad">MEJOR VERSIÓN</span></h1>
+                <h1 class="hero-title">CONSTRUYE TU <span class="highlight">MEJOR VERSIÓN</span></h1>
                 <p class="hero-description">
                     Equipamiento de alto nivel, entrenadores certificados y un ambiente diseñado para superar todos tus límites diarios.
                 </p>
@@ -37,10 +52,9 @@
             </div>
         </section>
 
-        <!-- Beneficios destacados -->
         <section class="benefits">
             <div class="section-title">
-                <h2>¿Por qué elegir <span class="color-mitad">GYM-MLS</span>?</h2>
+                <h2>¿Por qué elegir <span class="highlight">GYM-MLS</span>?</h2>
                 <p>Ofrecemos la infraestructura y la motivación que necesitas.</p>
             </div>
             <div class="benefits-grid">
@@ -62,10 +76,9 @@
             </div>
         </section>
 
-        <!-- Planes de suscripción -->
         <section id="planes" class="pricing">
             <div class="section-title">
-                <h2>Elige tu <span class="color-mitad">Plan</span></h2>
+                <h2>Elige tu <span class="highlight">Plan</span></h2>
                 <p>Sin contratos ni cláusulas ocultas, solo resultados reales.</p>
             </div>
             <div class="planes-grid">
@@ -117,7 +130,7 @@
 
     <footer class="main-footer">
         <div class="footer-content">
-            <a class="brand" href="Index.html">GYM-<span class="color-mitad">MLS</span></a>
+            <a class="brand-logo" href="Index.html">GYM-<span class="highlight">MLS</span></a>
             <p>&copy; 2026 GYM-MLS. Todos los derechos reservados.</p>
             <div class="footer-links">
                 <a href="Perfil.html">Perfil</a>

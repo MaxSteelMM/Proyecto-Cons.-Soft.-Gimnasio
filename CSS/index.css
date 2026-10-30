@@ -1,33 +1,155 @@
 :root {
-    --primary-color: #ff6b00; /* Naranja principal */
+    --primary-color: #ff6b00;
     --primary-hover: #e05d00;
     --bg-dark: #121212;
     --bg-card: #1e1e1e;
     --text-main: #ffffff;
     --text-muted: #a0a0a0;
     --border-color: #333333;
+    --border-btn: rgba(255, 255, 255, 0.4);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
     background-color: var(--bg-dark);
     color: var(--text-main);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
 }
 
-.color-mitad {
+.highlight {
     color: var(--primary-color);
 }
 
-/* Hero Section */
+/* Ocultar cualquier header viejo heredado de base.css que cause duplicados */
+body > header:not(.site-header),
+body > nav:not(.site-header) {
+    display: none !important;
+}
+
+/* ==========================================
+   Header Moderno y Único
+   ========================================== */
+.site-header {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    z-index: 9999 !important;
+    background: linear-gradient(180deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0) 100%) !important;
+    padding: 1.5rem 0 !important;
+}
+
+.header-container {
+    width: 100% !important;
+    max-width: 1400px !important;
+    margin: 0 auto !important;
+    padding: 0 3rem !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 2rem !important;
+}
+
+.brand-logo {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    text-decoration: none !important;
+    color: var(--text-main) !important;
+    font-weight: 800 !important;
+    font-size: 1.5rem !important;
+    line-height: 1 !important;
+    flex-shrink: 0 !important;
+}
+
+.logo-icon {
+    width: 28px !important;
+    height: 28px !important;
+    stroke: var(--primary-color) !important;
+}
+
+.main-nav {
+    flex: 1 !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
+
+.main-nav .nav-links {
+    display: flex !important;
+    align-items: center !important;
+    list-style: none !important;
+    gap: 2.5rem !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1 !important;
+}
+
+.main-nav .nav-links li {
+    display: flex !important;
+    align-items: center !important;
+}
+
+.main-nav .nav-links a {
+    text-decoration: none !important;
+    color: var(--text-muted) !important;
+    font-size: 0.95rem !important;
+    font-weight: 500 !important;
+    line-height: 1 !important;
+    transition: color 0.3s ease !important;
+}
+
+.main-nav .nav-links a:hover,
+.main-nav .nav-links a.active {
+    color: var(--text-main) !important;
+}
+
+.header-action {
+    display: flex !important;
+    align-items: center !important;
+    flex-shrink: 0 !important;
+}
+
+.btn-outline {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0.75rem 1.5rem !important;
+    border: 1px solid var(--border-btn) !important;
+    color: var(--text-main) !important;
+    text-decoration: none !important;
+    font-size: 0.85rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 1px !important;
+    line-height: 1 !important;
+    text-transform: uppercase !important;
+    white-space: nowrap !important;
+    transition: all 0.3s ease !important;
+}
+
+.btn-outline:hover {
+    border-color: var(--primary-color) !important;
+    background-color: var(--primary-color) !important;
+    color: #fff !important;
+}
+
+/* ==========================================
+   Hero Section
+   ========================================== */
 .hero-section {
     position: relative;
-    min-height: 85vh;
+    min-height: 100vh;
     display: flex;
     align-items: center;
-    justify-content: flex-end; /* Alinea el texto al lado derecho */
-    padding: 2rem 5%;
-    background-image: url('hero-gym.jpg'); /* Reemplaza por la ruta de tu imagen */
+    justify-content: flex-end;
+    padding: 8rem 5% 4rem 5%;
+    background-image: url('../Img/hero.png');
     background-size: cover;
     background-position: center left;
     background-repeat: no-repeat;
@@ -36,7 +158,7 @@ body {
 .hero-overlay {
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: linear-gradient(90deg, rgba(0, 0, 0, 0.2) 0%, rgba(18, 18, 18, 0.95) 60%);
+    background: linear-gradient(90deg, rgba(0, 0, 0, 0.2) 0%, rgba(18, 18, 18, 0.95) 65%);
     z-index: 1;
 }
 
@@ -67,7 +189,9 @@ body {
     margin-bottom: 2rem;
 }
 
-/* Botones */
+/* ==========================================
+   Botones Generales
+   ========================================== */
 .btn {
     display: inline-block;
     padding: 0.8rem 1.8rem;
@@ -96,13 +220,15 @@ body {
     background-color: var(--primary-color);
 }
 
-/* Secciones */
+/* ==========================================
+   Secciones y Tarjetas
+   ========================================== */
 .benefits, .pricing {
-    padding: 4rem 5%;
+    padding: 5rem 5%;
     text-align: center;
 }
 
-.section-title h2, .section-title h1 {
+.section-title h2 {
     font-size: 2.2rem;
     margin-bottom: 0.5rem;
 }
@@ -111,19 +237,18 @@ body {
     color: var(--text-muted);
 }
 
-/* Tarjetas de Beneficios */
-.benefits-grid {
+.benefits-grid, .planes-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 2rem;
     margin-top: 3rem;
 }
 
-.benefit-card {
+.benefit-card, .plan-card {
     background: var(--bg-card);
-    padding: 2rem;
-    border-radius: 8px;
     border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 2rem;
     transition: transform 0.3s ease;
 }
 
@@ -137,19 +262,7 @@ body {
     margin-bottom: 1rem;
 }
 
-/* Grid de Planes */
-.planes-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
-    margin-top: 3rem;
-}
-
 .plan-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    padding: 2rem;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -179,9 +292,14 @@ body {
     margin: 1rem 0;
 }
 
+.plan-period {
+    font-size: 1rem;
+    color: var(--text-muted);
+    font-weight: normal;
+}
+
 .plan-features {
     list-style: none;
-    padding: 0;
     margin: 1.5rem 0;
     text-align: left;
 }
@@ -206,8 +324,60 @@ body {
     text-decoration: none;
     border-radius: 5px;
     font-weight: bold;
+    text-align: center;
 }
 
 .plan-btn.btn-highlight, .plan-btn:hover {
     background: var(--primary-color);
+}
+
+/* ==========================================
+   Footer
+   ========================================== */
+.main-footer {
+    border-top: 1px solid var(--border-color);
+    padding: 2.5rem 5%;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.footer-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+    margin-left: 1.5rem;
+}
+
+.footer-links a:hover {
+    color: var(--text-main);
+}
+
+/* ==========================================
+   Responsive
+   ========================================== */
+@media (max-width: 900px) {
+    .header-container {
+        padding: 0 1.25rem !important;
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+        gap: 1rem !important;
+    }
+
+    .main-nav {
+        order: 3 !important;
+        width: 100% !important;
+    }
+
+    .main-nav .nav-links {
+        gap: 1.25rem !important;
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+    }
 }
