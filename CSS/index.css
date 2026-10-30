@@ -1,290 +1,213 @@
-/* Background for Index Page */
+:root {
+    --primary-color: #ff6b00; /* Naranja principal */
+    --primary-hover: #e05d00;
+    --bg-dark: #121212;
+    --bg-card: #1e1e1e;
+    --text-main: #ffffff;
+    --text-muted: #a0a0a0;
+    --border-color: #333333;
+}
+
 body {
-    background: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)), url(../Img/fondo.jpg) center center / cover no-repeat fixed;
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
 }
 
-/* Benefits Section */
-.benefits {
-    padding: 6rem 2rem;
-    background-color: transparent; /* Changed to transparent to show background image */
-    text-align: center;
+.color-mitad {
+    color: var(--primary-color);
 }
 
-
-.section-title {
-    margin-bottom: 4rem;
-}
-
-.section-title h2 {
-    font-family: 'COD';
-    font-size: clamp(2rem, 5vw, 3rem);
-    color: var(--white);
-    margin-bottom: 1rem;
-}
-
-.section-title h1 {
-    font-size: clamp(2rem, 5vw, 3rem);
-    margin-bottom: 1rem;
-}
-
-.section-title p {
-    font-family: var(--FontSub);
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 1.1rem;
-}
-
-.benefits-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
-    gap: 3rem;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.benefit-item {
-    padding: 2rem;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    background: var(--gray);
-    border-radius: 15px;
-    transition: transform 0.3s, border-color 0.3s;
-}
-
-.benefit-item:hover {
-    transform: translateY(-10px);
-    border-color: var(--VerdeF);
-}
-
-.benefit-item h3 {
-    font-family: 'COD';
-    color: var(--VerdeF);
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-}
-
-.benefit-item p {
-    font-family: var(--FontSub);
-    color: var(--white);
-    font-size: 1rem;
-    line-height: 1.5;
-    opacity: 0.8;
-}
-
-/* Pricing Section */
-.pricing {
-    padding: 6rem 2rem;
-    background-color: transparent;
-}
-
-.planes-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
-    gap: 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.plan {
-    font-family: var(--FontSub);
-    background: var(--gray);
-    border: 1px solid rgba(255, 255, 255, .1);
-    padding: 3rem 2rem;
+/* Hero Section */
+.hero-section {
     position: relative;
-    transition: all .3s ease;
-    text-align: center;
-    border-radius: 15px;
+    min-height: 85vh;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* Alinea el texto al lado derecho */
+    padding: 2rem 5%;
+    background-image: url('hero-gym.jpg'); /* Reemplaza por la ruta de tu imagen */
+    background-size: cover;
+    background-position: center left;
+    background-repeat: no-repeat;
 }
 
-.plan:hover {
-    border-color: var(--VerdeF);
-    transform: scale(1.03);
-    box-shadow: 0 0 20px rgba(107, 255, 0, 0.2);
-}
-
-.plan.featured {
-    border: 2px solid var(--VerdeF);
-    background: linear-gradient(145deg, var(--gray), #252525);
-    transform: scale(1.05);
+.hero-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(90deg, rgba(0, 0, 0, 0.2) 0%, rgba(18, 18, 18, 0.95) 60%);
     z-index: 1;
 }
 
-.plan.featured:hover {
-    box-shadow: 0 0 30px rgba(107, 255, 0, 0.4);
+.hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 550px;
+    text-align: right;
+}
+
+.hero-tagline {
+    color: var(--primary-color);
+    font-weight: 700;
+    letter-spacing: 2px;
+    font-size: 0.9rem;
+}
+
+.hero-title {
+    font-size: 3rem;
+    line-height: 1.1;
+    margin: 0.5rem 0 1rem;
+    text-transform: uppercase;
+}
+
+.hero-description {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+}
+
+/* Botones */
+.btn {
+    display: inline-block;
+    padding: 0.8rem 1.8rem;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background 0.3s ease;
+    margin-left: 0.5rem;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover);
+}
+
+.btn-secondary {
+    border: 2px solid var(--primary-color);
+    color: #fff;
+}
+
+.btn-secondary:hover {
+    background-color: var(--primary-color);
+}
+
+/* Secciones */
+.benefits, .pricing {
+    padding: 4rem 5%;
+    text-align: center;
+}
+
+.section-title h2, .section-title h1 {
+    font-size: 2.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.section-title p {
+    color: var(--text-muted);
+}
+
+/* Tarjetas de Beneficios */
+.benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.benefit-card {
+    background: var(--bg-card);
+    padding: 2rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    transition: transform 0.3s ease;
+}
+
+.benefit-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary-color);
+}
+
+.benefit-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+/* Grid de Planes */
+.planes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.plan-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 2rem;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.plan-card.featured {
+    border: 2px solid var(--primary-color);
+    transform: scale(1.03);
 }
 
 .plan-badge {
     position: absolute;
-    top: -15px;
+    top: -12px;
     left: 50%;
     transform: translateX(-50%);
-    background: var(--VerdeF);
-    color: var(--negro);
-    font-family: 'COD';
-    font-size: .75rem;
-    font-weight: 800;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-    padding: .4rem 1.2rem;
+    background: var(--primary-color);
+    color: #fff;
+    padding: 0.2rem 1rem;
+    font-size: 0.75rem;
+    font-weight: bold;
     border-radius: 20px;
 }
 
-.plan-name {
-    font-family: 'COD';
-    font-size: 1.8rem;
-    color: var(--white);
-    margin-bottom: 1rem;
-}
-
 .plan-price {
-    font-family: 'COD';
-    font-size: clamp(2.5rem, 10vw, 3.5rem);
-    color: var(--VerdeF);
-    line-height: 1;
+    font-size: 2.5rem;
+    font-weight: bold;
     margin: 1rem 0;
-}
-
-.plan-price sup {
-    font-size: 1.5rem;
-    vertical-align: top;
-}
-
-.plan-period {
-    font-size: .8rem;
-    color: var(--white);
-    text-transform: uppercase;
-    opacity: 0.6;
-    margin-bottom: 2rem;
 }
 
 .plan-features {
     list-style: none;
-    margin: 2rem 0;
+    padding: 0;
+    margin: 1.5rem 0;
     text-align: left;
-    display: inline-block;
 }
 
 .plan-features li {
-    font-size: .9rem;
-    color: var(--white);
-    padding: .7rem 0;
-    border-bottom: 1px solid rgba(255, 255, 255, .05);
-    display: flex;
-    align-items: center;
-    gap: .8rem;
-}
-
-.plan-features li::before {
-    content: '✓';
-    color: var(--VerdeF);
-    font-weight: bold;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .plan-features li.disabled {
-    opacity: 0.4;
+    color: var(--text-muted);
     text-decoration: line-through;
 }
 
-.plan-features li.disabled::before {
-    content: '✕';
-    color: var(--red-error);
-}
-
 .plan-btn {
-    font-family: 'COD';
+    margin-top: auto;
     display: block;
-    text-align: center;
-    border: 1px solid rgba(255, 255, 255, .2);
-    padding: 1rem;
+    padding: 0.8rem;
+    background: transparent;
+    border: 1px solid var(--primary-color);
+    color: #fff;
     text-decoration: none;
-    font-size: .8rem;
-    letter-spacing: .2em;
-    text-transform: uppercase;
-    color: var(--white);
-    transition: all .25s;
     border-radius: 5px;
+    font-weight: bold;
 }
 
-.plan-btn:hover {
-    background: var(--VerdeF);
-    color: var(--negro);
-    border-color: var(--VerdeF);
-}
-
-/* Footer */
-.main-footer {
-    padding: 3rem 2rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-    text-align: center;
-}
-
-.footer-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.5rem;
-}
-
-.footer-content p {
-    font-family: var(--FontSub);
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 0.9rem;
-}
-
-.footer-links {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 2rem;
-}
-
-.footer-links a {
-    color: var(--white);
-    text-decoration: none;
-    font-family: var(--FontSub);
-    font-size: 0.9rem;
-    transition: color 0.3s;
-}
-
-.footer-links a:hover {
-    color: var(--VerdeF);
-}
-
-/* Animations */
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.reveal {
-    animation: fadeInUp 1s ease-out both;
-}
-
-@media (max-width: 640px) {
-    .benefits,
-    .pricing {
-        padding: 4rem 1rem;
-    }
-
-    .section-title {
-        margin-bottom: 2.5rem;
-    }
-
-    .plan {
-        padding: 2.5rem 1.5rem;
-    }
-
-    .plan.featured {
-        transform: none;
-    }
-
-    body {
-        background-attachment: scroll;
-    }
+.plan-btn.btn-highlight, .plan-btn:hover {
+    background: var(--primary-color);
 }
