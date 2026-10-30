@@ -865,10 +865,6 @@ body {
     text-align: center;
 }
 
-.store-footer a:not(.brand) {
-    color: var(--shop-accent);
-}
-
 .store-footer .brand {
     font-size: 2rem;
 }
@@ -1103,8 +1099,9 @@ body {
     }
 
     .btn-remove {
-        grid-column: 3;
-        grid-row: 1 / span 2;
+        grid-column: 2 / -1;
+        grid-row: auto;
+        justify-self: start;
     }
 
     .detail-layout {

@@ -154,7 +154,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         } catch (error) {
-            localStorage.removeItem(cartStorageKey);
+            try {
+                localStorage.removeItem(cartStorageKey);
+            } catch (storageError) {
+                console.error('No se pudo limpiar el carrito guardado:', storageError);
+            }
             showToast('El carrito guardado estaba dañado y se limpió.');
             console.error('No se pudo recuperar el carrito:', error);
         }
@@ -303,7 +307,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const popularity = document.createElement('p');
             popularity.className = 'product-popularity';
-            popularity.textContent = `${Number(product.popularidad || 0)} unidades vendidas`;
+            const unitsSold = Number(product.popularidad || 0);
+            popularity.textContent = `${unitsSold} ${unitsSold === 1 ? 'unidad vendida' : 'unidades vendidas'}`;
             card.append(popularity);
 
             const stock = document.createElement('p');
@@ -551,7 +556,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 : null;
         }).filter(Boolean));
         const address = data.get('entrega') === 'domicilio'
-            ? `${data.get('calle')} ${data.get('numero')}, ${data.get('ciudad')}, ${data.get('provincia')} (${data.get('codigo_postal')})`
+            ? `${data.get('calle')} ${data.get('numero')}, ${data.get('ciudad')}, ${data.get('provincia')} (${data.get('codigo_postal')})${data.get('adicional') ? ` · ${data.get('adicional')}` : ''}`
             : 'Retiro en sucursal GYM-MLS · Centro';
         addSummarySection('Comprador', [
             ['Nombre', `${data.get('nombre')} ${data.get('apellido')}`],
@@ -613,8 +618,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 popularidad: Number(product.popularidad || 0),
                 valoracion: product.valoracion == null ? null : Number(product.valoracion)
             }));
+            if (products.some((product) =>
+                !Number.isInteger(product.id_producto) || product.id_producto <= 0 ||
+                !Number.isFinite(product.precio) || product.precio < 0 ||
+                !Number.isInteger(product.stock) || product.stock < 0
+            )) {
+                throw new Error('El catálogo contiene datos de productos inválidos.');
+            }
         } catch (error) {
-            console.error('No se pudo cargar el catálogo de la base de datos:', error);
+            console.warn('Se activa el catálogo de demostración porque falló la conexión:', error);
             products = demoProducts;
             const notice = document.getElementById('catalog-notice');
             notice.textContent = `No se pudo conectar con el catálogo de MySQL (${error.message}). Se muestran productos de ejemplo; el checkout no registra compras reales.`;
