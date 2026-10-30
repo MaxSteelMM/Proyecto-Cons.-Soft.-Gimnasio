@@ -8,8 +8,8 @@
     <link rel="stylesheet" href="CSS/index.css">
 </head>
 <body>
-    <header>
-        <nav aria-label="Navegación principal">
+    <header class="main-header">
+        <nav aria-label="Navegación principal" class="navbar">
             <a class="brand" href="Index.html" aria-label="GYM-MLS, inicio">GYM-<span class="color-mitad">MLS</span></a>
             <ul class="menu">
                 <li class="items"><a href="Perfil.html">Perfil</a></li>
@@ -19,75 +19,105 @@
             </ul>
         </nav>
     </header>
+
     <main>
+        <!-- Sección Hero con fondo e información a la derecha -->
+        <section class="hero-section">
+            <div class="hero-overlay"></div>
+            <div class="hero-content">
+                <span class="hero-tagline">TRANSFORMA TU CUALIDAD FÍSICA</span>
+                <h1 class="hero-title">CONSTRUYE TU <span class="color-mitad">MEJOR VERSIÓN</span></h1>
+                <p class="hero-description">
+                    Equipamiento de alto nivel, entrenadores certificados y un ambiente diseñado para superar todos tus límites diarios.
+                </p>
+                <div class="hero-actions">
+                    <a href="#planes" class="btn btn-primary">Ver Planes</a>
+                    <a href="Clases.html" class="btn btn-secondary">Explorar Clases</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Beneficios destacados -->
         <section class="benefits">
             <div class="section-title">
-                <h1>¿Por qué elegir <span class="color-mitad">GYM-MLS</span>?</h1>
+                <h2>¿Por qué elegir <span class="color-mitad">GYM-MLS</span>?</h2>
+                <p>Ofrecemos la infraestructura y la motivación que necesitas.</p>
             </div>
             <div class="benefits-grid">
-                <article class="benefit-item">
+                <article class="benefit-card">
+                    <div class="benefit-icon">🏋️‍♂️</div>
                     <h3>Equipo Pro</h3>
-                    <p>Maquinaria de última generación para maximizar cada repetición.</p>
+                    <p>Maquinaria biomecánica de última generación para maximizar cada repetición de forma segura.</p>
                 </article>
-                <article class="benefit-item">
+                <article class="benefit-card">
+                    <div class="benefit-icon">🥗</div>
                     <h3>Nutrición</h3>
-                    <p>Planes alimenticios diseñados por expertos según tu objetivo.</p>
+                    <p>Planes alimenticios 100% personalizados por expertos según tu meta deportiva.</p>
                 </article>
-                <article class="benefit-item">
+                <article class="benefit-card">
+                    <div class="benefit-icon">🔥</div>
                     <h3>Comunidad</h3>
-                    <p>Entrena con personas que comparten tu pasión y disciplina.</p>
+                    <p>Entrena en un entorno motivador con personas que comparten tu misma pasión y disciplina.</p>
                 </article>
             </div>
         </section>
 
+        <!-- Planes de suscripción -->
         <section id="planes" class="pricing">
             <div class="section-title">
                 <h2>Elige tu <span class="color-mitad">Plan</span></h2>
-                <p>Sin contratos complicados, solo resultados reales.</p>
+                <p>Sin contratos ni cláusulas ocultas, solo resultados reales.</p>
             </div>
             <div class="planes-grid">
-                <article class="plan reveal">
-                    <div class="plan-name">Básico</div>
-                    <div class="plan-price"><sup>$</sup>15.000</div>
-                    <div class="plan-period">por mes</div>
+                <article class="plan-card">
+                    <div class="plan-header">
+                        <h3 class="plan-name">Básico</h3>
+                        <div class="plan-price"><sup>$</sup>15.000<span class="plan-period">/ mes</span></div>
+                    </div>
                     <ul class="plan-features">
-                        <li>Acceso sala de musculación</li>
-                        <li>Horario completo</li>
-                        <li>Vestuarios</li>
-                        <li class="disabled">Sin clases grupales</li>
+                        <li>Acceso a sala de musculación</li>
+                        <li>Horario libre y completo</li>
+                        <li>Acceso a vestuarios y duchas</li>
+                        <li class="disabled">Clases grupales</li>
                     </ul>
                     <a href="Comprar.html" class="plan-btn">Elegir plan</a>
                 </article>
-                <article class="plan featured reveal">
-                    <div class="plan-badge">Más Popular</div>
-                    <div class="plan-name">Full</div>
-                    <div class="plan-price"><sup>$</sup>22.000</div>
-                    <div class="plan-period">por mes</div>
+
+                <article class="plan-card featured">
+                    <div class="plan-badge">MÁS POPULAR</div>
+                    <div class="plan-header">
+                        <h3 class="plan-name">Full</h3>
+                        <div class="plan-price"><sup>$</sup>22.000<span class="plan-period">/ mes</span></div>
+                    </div>
                     <ul class="plan-features">
-                        <li>Todo del plan Básico</li>
+                        <li>Todo lo del plan Básico</li>
                         <li>Clases grupales ilimitadas</li>
-                        <li>1 sesión personal/mes</li>
-                        <li>Asesoría nutricional</li>
+                        <li>1 sesión personal al mes</li>
+                        <li>Asesoría nutricional inicial</li>
                     </ul>
-                    <a href="Comprar.html" class="plan-btn">Elegir plan</a>
+                    <a href="Comprar.html" class="plan-btn btn-highlight">Elegir plan</a>
                 </article>
-                <article class="plan reveal">
-                    <div class="plan-name">Pro</div>
-                    <div class="plan-price"><sup>$</sup>30.000</div>
-                    <div class="plan-period">por mes</div>
+
+                <article class="plan-card">
+                    <div class="plan-header">
+                        <h3 class="plan-name">Pro</h3>
+                        <div class="plan-price"><sup>$</sup>30.000<span class="plan-period">/ mes</span></div>
+                    </div>
                     <ul class="plan-features">
-                        <li>Todo del plan Full</li>
-                        <li>Entrenamiento personalizado</li>
-                        <li>Plan nutricional completo</li>
-                        <li>Acceso 24/7</li>
+                        <li>Todo lo del plan Full</li>
+                        <li>Entrenamiento personalizado diario</li>
+                        <li>Plan nutricional completo mensual</li>
+                        <li>Acceso 24/7 libre</li>
                     </ul>
                     <a href="Comprar.html" class="plan-btn">Elegir plan</a>
                 </article>
             </div>
         </section>
     </main>
+
     <footer class="main-footer">
         <div class="footer-content">
+            <a class="brand" href="Index.html">GYM-<span class="color-mitad">MLS</span></a>
             <p>&copy; 2026 GYM-MLS. Todos los derechos reservados.</p>
             <div class="footer-links">
                 <a href="Perfil.html">Perfil</a>
