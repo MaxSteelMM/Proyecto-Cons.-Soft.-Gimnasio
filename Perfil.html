@@ -30,25 +30,26 @@
             <form id="formulario" class="formulario">
                 <div class="form-field">
                     <label for="nombre">Nombre:</label>
-                    <input id="nombre" class="input-field dato" type="text" placeholder="Ingrese su nombre">
+                    <input id="nombre" name="nombre" class="input-field dato" type="text" maxlength="100" placeholder="Ingrese su nombre" required>
                 </div>
                 <div class="form-field">
-                    <label for="password">Contraseña:</label>
-                    <input id="password" class="input-field dato" type="password" placeholder="Ingrese contraseña">
+                    <label for="contacto">Contacto:</label>
+                    <input id="contacto" name="contacto" class="input-field dato" type="text" maxlength="100" placeholder="Ingrese su contacto" required>
                 </div>
                 <div class="form-field">
-                    <label for="foto">Foto de perfil:</label>
-                    <input id="foto" class="input-field archivo" type="file" accept="image/png, image/jpeg">
+                    <label for="direccion">Dirección:</label>
+                    <input id="direccion" name="direccion" class="input-field dato" type="text" maxlength="255" placeholder="Ingrese su dirección" required>
                 </div>
-
-                <div class="actions">
-                    <button type="button" id="btnEditar" class="btn-action">Editar título</button>
-                    <button type="button" id="btnOcultar" class="btn-action">Ocultar/Mostrar título</button>
-                    <button type="button" id="btnPassword" class="btn-action">Ver/Ocultar Contraseña</button>
-                    <button type="button" id="btnColor" class="btn-action">Cambiar Estilos</button>
-                    <button type="button" id="btnClase" class="btn-action">Modificar Clases</button>
-                    <button type="button" id="btnInfo" class="btn-action">Info en Consola</button>
+                <div class="form-field">
+                    <label for="fecha_registro">Fecha de registro:</label>
+                    <input id="fecha_registro" name="fecha_registro" class="input-field dato" type="date" required>
                 </div>
+                <div class="form-field">
+                    <label for="email">Email:</label>
+                    <input id="email" name="email" class="input-field dato" type="email" maxlength="100" placeholder="Ingrese su email" required>
+                </div>
+                <p id="mensaje-formulario" role="status" aria-live="polite"></p>
+                <button type="submit" class="btn-action">Agregar perfil</button>
             </form>
         </div>
     </main>

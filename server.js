@@ -17,6 +17,77 @@ const conexion = mysql.createConnection({
 
 const PORT = 3000;
 
+// ======================= CLIENTES =======================
+
+app.post("/clientes", (req, res) => {
+  const { nombre, contacto, direccion, fecha_registro, email } = req.body || {};
+  const campos = { nombre, contacto, direccion, fecha_registro, email };
+
+  if (
+    Object.values(campos).some(
+      (valor) => typeof valor !== "string" || valor.trim() === "",
+    )
+  ) {
+    return res.status(400).json({ error: "Todos los campos son obligatorios" });
+  }
+
+  const datos = Object.fromEntries(
+    Object.entries(campos).map(([campo, valor]) => [campo, valor.trim()]),
+  );
+  const limites = { nombre: 100, contacto: 100, direccion: 255, email: 100 };
+
+  if (
+    Object.entries(limites).some(
+      ([campo, limite]) => datos[campo].length > limite,
+    )
+  ) {
+    return res.status(400).json({ error: "Uno o más campos superan su longitud máxima" });
+  }
+
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(datos.fecha_registro)) {
+    return res.status(400).json({ error: "La fecha de registro no es válida" });
+  }
+
+  const [anio, mes, dia] = datos.fecha_registro.split("-").map(Number);
+  const fecha = new Date(Date.UTC(anio, mes - 1, dia));
+
+  if (
+    anio < 1000 ||
+    fecha.getUTCFullYear() !== anio ||
+    fecha.getUTCMonth() !== mes - 1 ||
+    fecha.getUTCDate() !== dia
+  ) {
+    return res.status(400).json({ error: "La fecha de registro no es válida" });
+  }
+
+  const consulta = `
+    INSERT INTO CLIENTE (nombre, contacto, direccion, fecha_registro, email)
+    VALUES (?, ?, ?, ?, ?)
+  `;
+
+  conexion.query(
+    consulta,
+    [
+      datos.nombre,
+      datos.contacto,
+      datos.direccion,
+      datos.fecha_registro,
+      datos.email,
+    ],
+    (error, resultado) => {
+      if (error) {
+        console.error("Error al agregar el cliente:", error);
+        return res.status(500).json({ error: "Error al agregar el perfil" });
+      }
+
+      res.status(201).json({
+        mensaje: "Perfil agregado correctamente",
+        id_usuario: resultado.insertId,
+      });
+    },
+  );
+});
+
 // ======================= PRODUCTOS =======================
 
 //obtenemos todos los productos
