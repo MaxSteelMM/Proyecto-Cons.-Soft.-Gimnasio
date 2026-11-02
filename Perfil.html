@@ -5,24 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mi Perfil - GYM-MLS</title>
     <link rel="stylesheet" href="CSS/base.css">
+    <link rel="stylesheet" href="CSS/index.css">
+    <link rel="stylesheet" href="CSS/pages.css">
     <link rel="stylesheet" href="CSS/perfil.css">
 </head>
 <body>
-    <header>
-        <nav aria-label="Navegación principal">
-            <a class="brand" href="Index.html" aria-label="GYM-MLS, inicio">GYM-<span class="color-mitad">MLS</span></a>
-            <ul class="menu">
-                <li class="items"><a href="Perfil.html" aria-current="page">Perfil</a></li>
-                <li class="items"><a href="Comprar.html">Comprar</a></li>
-                <li class="items"><a href="Rutinas.html">Rutinas</a></li>
-                <li class="items"><a href="Clases.html">Clases</a></li>
-            </ul>
-        </nav>
+    <header class="site-header">
+        <div class="header-container">
+            <nav class="main-nav" aria-label="Navegación principal">
+                <a href="Index.html" class="brand-logo">
+                    <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                        <path d="M6.5 6.5h11M6.5 17.5h11M4 9v6M20 9v6M7.5 5v14M16.5 5v14" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>GYM-<span class="highlight">MLS</span></span>
+                </a>
+                <ul class="nav-links">
+                    <li><a href="Index.html">Inicio</a></li>
+                    <li><a href="Perfil.html" aria-current="page">Perfil</a></li>
+                    <li><a href="Clases.html">Clases</a></li>
+                    <li><a href="Rutinas.html">Rutinas</a></li>
+                </ul>
+                <div class="header-action"><a href="Comprar.html" class="btn-outline">TIENDA</a></div>
+            </nav>
+        </div>
     </header>
     <main>
-        <section class="info">
-            <h1>Mi <span class="color-mitad">Perfil</span></h1>
-            <p>Gestiona tu información personal y preferencias de entrenamiento</p>
+        <section class="interior-hero">
+            <div class="interior-hero-content">
+                <p class="eyebrow">TU ESPACIO PERSONAL</p>
+                <h1>Mi <span>perfil</span></h1>
+                <p>Gestioná tu información personal y preferencias de entrenamiento.</p>
+            </div>
         </section>
 
         <div class="profile-card">
@@ -53,6 +66,17 @@
             </form>
         </div>
     </main>
+    <footer class="main-footer">
+        <div class="footer-content">
+            <a class="brand-logo" href="Index.html">GYM-<span class="highlight">MLS</span></a>
+            <p>&copy; 2026 GYM-MLS. Todos los derechos reservados.</p>
+            <div class="footer-links">
+                <a href="Perfil.html">Perfil</a>
+                <a href="Rutinas.html">Rutinas</a>
+                <a href="Clases.html">Clases</a>
+            </div>
+        </div>
+    </footer>
     <script src="js/perfil.js" defer></script>
 </body>
 </html>

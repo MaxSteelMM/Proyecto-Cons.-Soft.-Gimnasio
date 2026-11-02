@@ -754,21 +754,6 @@ document.addEventListener('DOMContentLoaded', () => {
         couponButton.click();
     });
 
-    document.getElementById('menu-toggle').addEventListener('click', (event) => {
-        const button = event.currentTarget;
-        const open = button.getAttribute('aria-expanded') !== 'true';
-        button.setAttribute('aria-expanded', String(open));
-        button.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
-        document.getElementById('store-menu').classList.toggle('is-open', open);
-    });
-
-    document.getElementById('store-menu').addEventListener('click', (event) => {
-        if (event.target.closest('a')) {
-            document.getElementById('store-menu').classList.remove('is-open');
-            document.getElementById('menu-toggle').setAttribute('aria-expanded', 'false');
-        }
-    });
-
     document.getElementById('detail-close').addEventListener('click', () => productDialog.close());
     productDialog.addEventListener('click', (event) => {
         if (event.target === productDialog) productDialog.close();

@@ -5,52 +5,249 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rutinas - GYM-MLS</title>
     <link rel="stylesheet" href="CSS/base.css">
+    <link rel="stylesheet" href="CSS/index.css">
+    <link rel="stylesheet" href="CSS/pages.css">
     <link rel="stylesheet" href="CSS/rutinas.css">
 </head>
 <body>
-    <header>
-        <nav aria-label="Navegación principal">
-            <a class="brand" href="Index.html" aria-label="GYM-MLS, inicio">GYM-<span class="color-mitad">MLS</span></a>
-            <ul class="menu">
-                <li class="items"><a href="Perfil.html">Perfil</a></li>
-                <li class="items"><a href="Comprar.html">Comprar</a></li>
-                <li class="items"><a href="Rutinas.html" aria-current="page">Rutinas</a></li>
-                <li class="items"><a href="Clases.html">Clases</a></li>
-            </ul>
-        </nav>
+    <header class="site-header">
+        <div class="header-container">
+            <nav class="main-nav" aria-label="Navegación principal">
+                <a href="Index.html" class="brand-logo">
+                    <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                        <path d="M6.5 6.5h11M6.5 17.5h11M4 9v6M20 9v6M7.5 5v14M16.5 5v14" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>GYM-<span class="highlight">MLS</span></span>
+                </a>
+                <ul class="nav-links">
+                    <li><a href="Index.html">Inicio</a></li>
+                    <li><a href="Perfil.html">Perfil</a></li>
+                    <li><a href="Clases.html">Clases</a></li>
+                    <li><a href="Rutinas.html" aria-current="page">Rutinas</a></li>
+                </ul>
+                <div class="header-action"><a href="Comprar.html" class="btn-outline">TIENDA</a></div>
+            </nav>
+        </div>
     </header>
     <main>
-        <section class="info">
-            <h1>Nuestras <span class="color-mitad">Rutinas</span></h1>
-            <p>Encuentra el plan ideal para tus objetivos físicos</p>
+        <section class="interior-hero routine-hero">
+            <div class="interior-hero-content">
+                <p class="eyebrow">ENTRENAMIENTO CON PROPÓSITO</p>
+                <h1>Nuestras <span>rutinas</span></h1>
+                <p>Encontrá el enfoque que mejor se adapta a tus objetivos y avanzá a tu propio ritmo.</p>
+            </div>
         </section>
 
         <div class="routines-container">
-            <div class="filter-bar">
-                <button id="btnFocus" class="btn-action">Destacar Rutinas</button>
-                <button id="btnDim" class="btn-action">Modo Concentración</button>
-                <button id="btnReset" class="btn-action">Restablecer Vista</button>
+            <div class="interior-section-heading">
+                <h2>Elegí tu enfoque</h2>
+                <p>Seleccioná un objetivo para ver la rutina que corresponde.</p>
+            </div>
+            <div class="routine-options" role="group" aria-label="Elegir rutina">
+                <button class="routine-option" type="button" data-routine-select="power" aria-pressed="false" aria-controls="routine-power">
+                    <span class="routine-option-title">Powerlifting</span>
+                    <span class="routine-option-goal">Fuerza máxima</span>
+                    <span class="routine-option-frequency">3 días por semana</span>
+                </button>
+                <button class="routine-option" type="button" data-routine-select="hypertrophy" aria-pressed="false" aria-controls="routine-hypertrophy">
+                    <span class="routine-option-title">Hipertrofia</span>
+                    <span class="routine-option-goal">Desarrollo muscular</span>
+                    <span class="routine-option-frequency">4 días por semana</span>
+                </button>
+                <button class="routine-option" type="button" data-routine-select="endurance" aria-pressed="false" aria-controls="routine-endurance">
+                    <span class="routine-option-title">Resistencia</span>
+                    <span class="routine-option-goal">Capacidad cardiovascular</span>
+                    <span class="routine-option-frequency">3 días por semana</span>
+                </button>
             </div>
 
-            <div class="routine-grid">
-                <article class="routine-card" data-type="power">
-                    <h3>Powerlifting</h3>
-                    <p>Enfoque en fuerza máxima: Sentadilla, Press Banca y Peso Muerto.</p>
-                    <span class="routine-tag">Fuerza</span>
+            <p id="routine-selection-status" class="routine-selection-status" role="status" aria-live="polite">Elegí una rutina para ver sus ejercicios.</p>
+
+            <div class="routine-details">
+                <article id="routine-power" class="routine-detail" data-routine-panel="power" aria-labelledby="routine-power-title" hidden>
+                    <div class="routine-detail-heading">
+                        <div>
+                            <span class="routine-tag">Fuerza · 3 días por semana</span>
+                            <h3 id="routine-power-title">Powerlifting – Fuerza máxima</h3>
+                        </div>
+                        <p>Objetivo: aumentar la fuerza máxima en los tres movimientos principales: sentadilla, press banca y peso muerto.</p>
+                    </div>
+                    <label class="training-days-control" for="days-power">
+                        Días de entrenamiento por semana
+                        <select id="days-power" data-training-days>
+                            <option value="2">2 días</option>
+                            <option value="3" selected>3 días</option>
+                            <option value="4">4 días</option>
+                            <option value="5">5 días</option>
+                            <option value="6">6 días</option>
+                        </select>
+                    </label>
+                    <div class="workout-grid">
+                        <section class="workout-day">
+                            <h4>Día 1 – Sentadilla y piernas</h4>
+                            <ul>
+                                <li>Sentadilla con barra: 4 × 5.</li>
+                                <li>Prensa de piernas: 3 × 8.</li>
+                                <li>Peso muerto rumano: 3 × 8.</li>
+                                <li>Extensiones de cuádriceps: 3 × 12.</li>
+                                <li>Abdominales: 3 × 15.</li>
+                            </ul>
+                        </section>
+                        <section class="workout-day">
+                            <h4>Día 2 – Press banca y tren superior</h4>
+                            <ul>
+                                <li>Press banca: 4 × 5.</li>
+                                <li>Press militar: 3 × 6.</li>
+                                <li>Remo con barra: 3 × 8.</li>
+                                <li>Fondos: 3 × 8.</li>
+                                <li>Curl de bíceps: 3 × 10.</li>
+                            </ul>
+                        </section>
+                        <section class="workout-day">
+                            <h4>Día 3 – Peso muerto y fuerza general</h4>
+                            <ul>
+                                <li>Peso muerto: 4 × 4.</li>
+                                <li>Sentadilla frontal: 3 × 6.</li>
+                                <li>Press banca con pausa: 3 × 5.</li>
+                                <li>Dominadas: 3 × 8.</li>
+                                <li>Plancha: 3 × 40 segundos.</li>
+                            </ul>
+                        </section>
+                    </div>
+                    <p class="workout-rest">Descanso: 3 a 5 minutos en los ejercicios principales y 1 a 2 minutos en los complementarios.</p>
                 </article>
-                <article class="routine-card" data-type="hypertrophy">
-                    <h3>Hipertrofia</h3>
-                    <p>Desarrollo muscular optimizado con volumen controlado y alta intensidad.</p>
-                    <span class="routine-tag">Músculo</span>
+
+                <article id="routine-hypertrophy" class="routine-detail" data-routine-panel="hypertrophy" aria-labelledby="routine-hypertrophy-title" hidden>
+                    <div class="routine-detail-heading">
+                        <div>
+                            <span class="routine-tag">Músculo · 4 días por semana</span>
+                            <h3 id="routine-hypertrophy-title">Hipertrofia – Desarrollo muscular</h3>
+                        </div>
+                        <p>Objetivo: aumentar el tamaño muscular mediante ejercicios con volumen controlado e intensidad elevada.</p>
+                    </div>
+                    <label class="training-days-control" for="days-hypertrophy">
+                        Días de entrenamiento por semana
+                        <select id="days-hypertrophy" data-training-days>
+                            <option value="2">2 días</option>
+                            <option value="3">3 días</option>
+                            <option value="4" selected>4 días</option>
+                            <option value="5">5 días</option>
+                            <option value="6">6 días</option>
+                        </select>
+                    </label>
+                    <div class="workout-grid">
+                        <section class="workout-day">
+                            <h4>Día 1 – Pecho y tríceps</h4>
+                            <ul>
+                                <li>Press banca: 4 × 8-10.</li>
+                                <li>Press inclinado con mancuernas: 3 × 10.</li>
+                                <li>Aperturas en polea: 3 × 12.</li>
+                                <li>Extensión de tríceps en polea: 3 × 12.</li>
+                                <li>Press francés: 3 × 10.</li>
+                            </ul>
+                        </section>
+                        <section class="workout-day">
+                            <h4>Día 2 – Espalda y bíceps</h4>
+                            <ul>
+                                <li>Jalón al pecho: 4 × 10.</li>
+                                <li>Remo con barra: 3 × 10.</li>
+                                <li>Remo en polea: 3 × 12.</li>
+                                <li>Curl de bíceps: 3 × 10.</li>
+                                <li>Curl martillo: 3 × 12.</li>
+                            </ul>
+                        </section>
+                        <section class="workout-day">
+                            <h4>Día 3 – Piernas</h4>
+                            <ul>
+                                <li>Sentadilla: 4 × 10.</li>
+                                <li>Prensa: 3 × 12.</li>
+                                <li>Peso muerto rumano: 3 × 10.</li>
+                                <li>Curl femoral: 3 × 12.</li>
+                                <li>Elevación de gemelos: 4 × 15.</li>
+                            </ul>
+                        </section>
+                        <section class="workout-day">
+                            <h4>Día 4 – Hombros y abdomen</h4>
+                            <ul>
+                                <li>Press militar: 3 × 10.</li>
+                                <li>Elevaciones laterales: 4 × 12.</li>
+                                <li>Pájaros con mancuernas: 3 × 12.</li>
+                                <li>Encogimientos de hombros: 3 × 12.</li>
+                                <li>Crunch abdominal: 3 × 15.</li>
+                                <li>Elevaciones de piernas: 3 × 12.</li>
+                            </ul>
+                        </section>
+                    </div>
+                    <p class="workout-rest">Descanso: 60 a 120 segundos entre series. Trabajar cerca del fallo muscular, manteniendo una buena técnica.</p>
                 </article>
-                <article class="routine-card" data-type="endurance">
-                    <h3>Resistencia</h3>
-                    <p>Mejora tu capacidad cardiovascular y aguante físico general.</p>
-                    <span class="routine-tag">Cardio</span>
+
+                <article id="routine-endurance" class="routine-detail" data-routine-panel="endurance" aria-labelledby="routine-endurance-title" hidden>
+                    <div class="routine-detail-heading">
+                        <div>
+                            <span class="routine-tag">Cardio · 3 días por semana</span>
+                            <h3 id="routine-endurance-title">Resistencia – Capacidad cardiovascular</h3>
+                        </div>
+                        <p>Objetivo: mejorar la capacidad cardiovascular, la respiración y el aguante físico general.</p>
+                    </div>
+                    <label class="training-days-control" for="days-endurance">
+                        Días de entrenamiento por semana
+                        <select id="days-endurance" data-training-days>
+                            <option value="2">2 días</option>
+                            <option value="3" selected>3 días</option>
+                            <option value="4">4 días</option>
+                            <option value="5">5 días</option>
+                            <option value="6">6 días</option>
+                        </select>
+                    </label>
+                    <div class="workout-grid">
+                        <section class="workout-day">
+                            <h4>Día 1 – Resistencia aeróbica</h4>
+                            <ul>
+                                <li>Caminata rápida: 10 minutos.</li>
+                                <li>Trote continuo: 20 minutos.</li>
+                                <li>Bicicleta fija: 10 minutos.</li>
+                                <li>Caminata suave: 5 minutos.</li>
+                            </ul>
+                        </section>
+                        <section class="workout-day">
+                            <h4>Día 2 – Resistencia y velocidad</h4>
+                            <ul>
+                                <li>Calentamiento: 5 minutos.</li>
+                                <li>Correr rápido: 1 minuto.</li>
+                                <li>Caminar: 2 minutos.</li>
+                                <li>Repetir el circuito 6 veces.</li>
+                                <li>Saltar la soga: 3 × 1 minuto.</li>
+                                <li>Bicicleta fija: 10 minutos suaves.</li>
+                            </ul>
+                        </section>
+                        <section class="workout-day">
+                            <h4>Día 3 – Resistencia general</h4>
+                            <ul>
+                                <li>Bicicleta fija: 15 minutos.</li>
+                                <li>Caminata inclinada: 10 minutos.</li>
+                                <li>Saltar la soga: 3 × 2 minutos.</li>
+                                <li>Circuito de sentadillas sin peso: 3 × 15.</li>
+                                <li>Flexiones de brazos: 3 × 10.</li>
+                                <li>Plancha: 3 × 30 segundos.</li>
+                            </ul>
+                        </section>
+                    </div>
+                    <p class="workout-rest">Descanso: 1 a 2 minutos entre ejercicios. Mantener una intensidad moderada y aumentar progresivamente la duración.</p>
                 </article>
             </div>
         </div>
     </main>
+    <footer class="main-footer">
+        <div class="footer-content">
+            <a class="brand-logo" href="Index.html">GYM-<span class="highlight">MLS</span></a>
+            <p>&copy; 2026 GYM-MLS. Todos los derechos reservados.</p>
+            <div class="footer-links">
+                <a href="Perfil.html">Perfil</a>
+                <a href="Rutinas.html">Rutinas</a>
+                <a href="Clases.html">Clases</a>
+            </div>
+        </div>
+    </footer>
     <script src="js/rutinas.js" defer></script>
 </body>
 </html>

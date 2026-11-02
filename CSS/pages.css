@@ -1,0 +1,166 @@
+:root {
+    --primary-color: #ff6b00;
+    --primary-hover: #e05d00;
+    --bg-dark: #121212;
+    --bg-card: #1e1e1e;
+    --text-main: #ffffff;
+    --text-muted: #a0a0a0;
+    --border-color: #333333;
+}
+
+body {
+    background: var(--bg-dark);
+    color: var(--text-main);
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.interior-hero {
+    align-items: center;
+    background:
+        linear-gradient(90deg, rgba(0, 0, 0, 0.9), rgba(18, 18, 18, 0.72)),
+        url("../Img/hero.png") center / cover;
+    display: flex;
+    min-height: min(460px, 62vh);
+    padding: 8rem max(1.25rem, calc((100% - 1200px) / 2)) 4rem;
+}
+
+.routine-hero {
+    background-image:
+        linear-gradient(90deg, rgba(0, 0, 0, 0.88), rgba(18, 18, 18, 0.42)),
+        url("../Img/rutinas-gym.png");
+    background-position: center 54%;
+}
+
+.interior-hero-content {
+    max-width: 720px;
+}
+
+.interior-hero .eyebrow {
+    color: var(--primary-color);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.17em;
+    margin-bottom: 0.8rem;
+}
+
+.interior-hero h1 {
+    display: block;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    line-height: 1.08;
+    margin: 0;
+    text-align: left;
+    text-transform: uppercase;
+}
+
+.interior-hero h1 span {
+    color: var(--primary-color);
+}
+
+.interior-hero p:last-child {
+    color: var(--text-muted);
+    font-size: clamp(1.05rem, 2vw, 1.2rem);
+    line-height: 1.6;
+    margin-top: 1.1rem;
+    max-width: 42rem;
+}
+
+.interior-section {
+    margin: 0 auto;
+    max-width: 1200px;
+    padding: clamp(3rem, 7vw, 5rem) 1.25rem;
+}
+
+.interior-section-heading {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.interior-section-heading h2 {
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    margin-bottom: 0.5rem;
+}
+
+.interior-section-heading p {
+    color: var(--text-muted);
+}
+
+.interior-grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+}
+
+.interior-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.75rem;
+    transition: border-color 0.25s, transform 0.25s;
+}
+
+.interior-card:hover {
+    border-color: var(--primary-color);
+    transform: translateY(-4px);
+}
+
+.interior-card h3 {
+    color: var(--primary-color);
+    font-size: 1.25rem;
+    margin-bottom: 0.7rem;
+}
+
+.interior-card p {
+    color: var(--text-muted);
+    line-height: 1.6;
+}
+
+.site-header .main-nav .nav-links a[aria-current="page"] {
+    color: var(--text-main) !important;
+}
+
+.main-footer {
+    border-top: 1px solid var(--border-color);
+    padding: 2.5rem 5%;
+}
+
+.footer-content {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: space-between;
+    margin: 0 auto;
+    max-width: 1200px;
+}
+
+.footer-content > p {
+    color: var(--text-muted);
+}
+
+.footer-links a {
+    color: var(--text-muted);
+    margin-left: 1.5rem;
+    text-decoration: none;
+}
+
+.footer-links a:hover {
+    color: var(--primary-color);
+}
+
+@media (max-width: 600px) {
+    .interior-hero {
+        min-height: 390px;
+        padding-top: 10rem;
+    }
+
+    .footer-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem 1rem;
+    }
+
+    .footer-links a {
+        margin-left: 0;
+    }
+}

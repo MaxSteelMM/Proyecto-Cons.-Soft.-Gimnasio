@@ -3,38 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#090b09">
+    <meta name="theme-color" content="#121212">
     <title>Tienda MLS | Equipamiento para entrenar</title>
     <link rel="stylesheet" href="CSS/base.css">
+    <link rel="stylesheet" href="CSS/index.css">
     <link rel="stylesheet" href="CSS/comprar.css">
     <script src="js/comprar.js" defer></script>
 </head>
 <body>
-    <header class="store-header">
-        <nav class="store-nav" aria-label="Navegación principal">
-            <a class="brand" href="#inicio" aria-label="GYM-MLS, inicio">GYM-<span class="color-mitad">MLS</span></a>
-            <button id="menu-toggle" class="menu-toggle" type="button" aria-expanded="false" aria-controls="store-menu" aria-label="Abrir menú">
-                <span></span><span></span><span></span>
-            </button>
-            <div id="store-menu" class="store-menu">
-                <ul class="menu">
-                    <li><a href="../Index.html">Inicio</a></li>
-                    <li><a href="#productos">Productos</a></li>
-                    <li><a href="#categorias">Categorías</a></li>
-                    <li><a href="#ofertas" id="offers-link">Ofertas</a></li>
-                    <li><a href="#contacto">Contacto</a></li>
-                </ul>
-                <form id="nav-search-form" class="nav-search" role="search">
-                    <label class="sr-only" for="nav-search">Buscar productos</label>
-                    <input id="nav-search" type="search" placeholder="Buscar productos..." autocomplete="off">
-                    <button type="submit" aria-label="Buscar">⌕</button>
-                </form>
-                <a class="nav-cart" href="#carrito" aria-label="Ir al carrito">
-                    <span aria-hidden="true">🛒</span> Carrito <span id="cart-count" class="cart-count">0</span>
+    <header class="site-header">
+        <div class="header-container">
+            <nav class="main-nav" aria-label="Navegación principal">
+                <a href="Index.html" class="brand-logo">
+                    <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                        <path d="M6.5 6.5h11M6.5 17.5h11M4 9v6M20 9v6M7.5 5v14M16.5 5v14" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>GYM-<span class="highlight">MLS</span></span>
                 </a>
-                <a class="nav-user" href="Perfil.html" aria-label="Ir a mi perfil">👤</a>
-            </div>
-        </nav>
+                <ul class="nav-links">
+                    <li><a href="Index.html">Inicio</a></li>
+                    <li><a href="Perfil.html">Perfil</a></li>
+                    <li><a href="Clases.html">Clases</a></li>
+                    <li><a href="Rutinas.html">Rutinas</a></li>
+                </ul>
+                <div class="header-action"><a href="Comprar.html" class="btn-outline" aria-current="page">TIENDA</a></div>
+            </nav>
+        </div>
     </header>
 
     <main>
@@ -52,6 +46,23 @@
         </section>
 
         <div id="catalog-notice" class="catalog-notice" role="status" hidden></div>
+
+        <section class="shop-tools" aria-label="Herramientas de la tienda">
+            <nav class="shop-shortcuts" aria-label="Secciones de la tienda">
+                <a href="#productos">Productos</a>
+                <a href="#categorias">Categorías</a>
+                <a href="#ofertas" id="offers-link">Ofertas</a>
+                <a href="#contacto">Contacto</a>
+            </nav>
+            <form id="nav-search-form" class="nav-search" role="search">
+                <label class="sr-only" for="nav-search">Buscar productos</label>
+                <input id="nav-search" type="search" placeholder="Buscar productos..." autocomplete="off">
+                <button type="submit" aria-label="Buscar">⌕</button>
+            </form>
+            <a class="nav-cart" href="#carrito" aria-label="Ir al carrito">
+                <span aria-hidden="true">🛒</span> Carrito <span id="cart-count" class="cart-count">0</span>
+            </a>
+        </section>
 
         <section id="categorias" class="store-section category-section" aria-labelledby="categories-title">
             <div class="section-heading">

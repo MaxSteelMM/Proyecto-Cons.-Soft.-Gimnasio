@@ -5,23 +5,68 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clases - GYM-MLS</title>
     <link rel="stylesheet" href="CSS/base.css">
+    <link rel="stylesheet" href="CSS/index.css">
+    <link rel="stylesheet" href="CSS/pages.css">
 </head>
 <body>
-    <header>
-        <nav aria-label="Navegación principal">
-            <a class="brand" href="Index.html" aria-label="GYM-MLS, inicio">GYM-<span class="color-mitad">MLS</span></a>
-            <ul class="menu">
-                <li class="items"><a href="Perfil.html">Perfil</a></li>
-                <li class="items"><a href="Comprar.html">Comprar</a></li>
-                <li class="items"><a href="Rutinas.html">Rutinas</a></li>
-                <li class="items"><a href="Clases.html" aria-current="page">Clases</a></li>
-            </ul>
-        </nav>
+    <header class="site-header">
+        <div class="header-container">
+            <nav class="main-nav" aria-label="Navegación principal">
+                <a href="Index.html" class="brand-logo">
+                    <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                        <path d="M6.5 6.5h11M6.5 17.5h11M4 9v6M20 9v6M7.5 5v14M16.5 5v14" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>GYM-<span class="highlight">MLS</span></span>
+                </a>
+                <ul class="nav-links">
+                    <li><a href="Index.html">Inicio</a></li>
+                    <li><a href="Perfil.html">Perfil</a></li>
+                    <li><a href="Clases.html" aria-current="page">Clases</a></li>
+                    <li><a href="Rutinas.html">Rutinas</a></li>
+                </ul>
+                <div class="header-action"><a href="Comprar.html" class="btn-outline">TIENDA</a></div>
+            </nav>
+        </div>
     </header>
     <main>
-        <section class="info">
-            <h1>Clases</h1>
+        <section class="interior-hero">
+            <div class="interior-hero-content">
+                <p class="eyebrow">ENTRENÁ A TU MANERA</p>
+                <h1>Nuestras <span>clases</span></h1>
+                <p>Elegí una actividad, encontrá tu ritmo y entrená junto a una comunidad que te acompaña.</p>
+            </div>
+        </section>
+        <section class="interior-section" aria-labelledby="classes-title">
+            <div class="interior-section-heading">
+                <h2 id="classes-title">Una actividad para cada objetivo</h2>
+                <p>Explorá distintas formas de moverte y llevar tu entrenamiento más lejos.</p>
+            </div>
+            <div class="interior-grid">
+                <article class="interior-card">
+                    <h3>Fuerza</h3>
+                    <p>Ejercicios con resistencia para desarrollar fuerza, técnica y confianza en cada repetición.</p>
+                </article>
+                <article class="interior-card">
+                    <h3>Acondicionamiento</h3>
+                    <p>Sesiones dinámicas para trabajar tu resistencia y mantenerte en movimiento.</p>
+                </article>
+                <article class="interior-card">
+                    <h3>Movilidad</h3>
+                    <p>Prácticas enfocadas en movilidad y control corporal para complementar tu entrenamiento.</p>
+                </article>
+            </div>
         </section>
     </main>
-  </body>
+    <footer class="main-footer">
+        <div class="footer-content">
+            <a class="brand-logo" href="Index.html">GYM-<span class="highlight">MLS</span></a>
+            <p>&copy; 2026 GYM-MLS. Todos los derechos reservados.</p>
+            <div class="footer-links">
+                <a href="Perfil.html">Perfil</a>
+                <a href="Rutinas.html">Rutinas</a>
+                <a href="Clases.html">Clases</a>
+            </div>
+        </div>
+    </footer>
+</body>
 </html>
