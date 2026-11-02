@@ -21,6 +21,10 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+body.site-page {
+    padding-top: 0;
+}
+
 .highlight {
     color: var(--primary-color);
 }
@@ -113,7 +117,37 @@ body > nav:not(.site-header) {
 .header-action {
     display: flex !important;
     align-items: center !important;
+    gap: 0.75rem !important;
     flex-shrink: 0 !important;
+}
+
+.profile-icon-link {
+    align-items: center;
+    border: 1px solid var(--border-btn);
+    border-radius: 50%;
+    color: var(--text-main);
+    display: inline-flex;
+    height: 2.75rem;
+    justify-content: center;
+    transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+    width: 2.75rem;
+}
+
+.profile-icon-link svg {
+    height: 1.35rem;
+    width: 1.35rem;
+}
+
+.profile-icon-link:hover,
+.profile-icon-link[aria-current="page"] {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    color: #fff;
+}
+
+.profile-icon-link:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 3px;
 }
 
 .btn-outline {

@@ -1,67 +1,169 @@
 .profile-card {
-    background-color: var(--gray);
-    padding: 2rem;
-    border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    width: min(100% - 2rem, 600px);
-    margin: 2rem auto 4rem;
-    color: var(--white);
-    font-family: var(--FontSub);
-    text-align: center;
+    background: linear-gradient(145deg, #202020, #191919);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    color: var(--text-main);
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    margin: -1.5rem auto 4rem;
+    max-width: 760px;
+    padding: clamp(1.4rem, 4vw, 2.5rem);
+    position: relative;
+    text-align: left;
+    width: calc(100% - 2.5rem);
 }
 
-.profile-card h2 {
-    font-family: var(--FontTitulo);
-    color: var(--white);
-    margin-bottom: 2rem;
+.profile-card .titulo.principal {
+    border: 0;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-main);
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 1.45rem;
+    font-weight: 700;
+    justify-content: flex-start;
+    margin-bottom: 1.5rem;
+    padding: 0 0 1rem;
 }
 
 .formulario {
-    margin-top: 2rem;
+    display: grid;
+    gap: 1.1rem 1.25rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: 0;
+}
+
+.formulario.is-login-mode {
+    grid-template-columns: minmax(0, 1fr);
+    margin: 0 auto;
+    max-width: 420px;
 }
 
 .form-field {
-    margin-bottom: 1rem;
     text-align: left;
 }
 
 .form-field label {
-    color: var(--white);
+    color: #dedede;
     display: block;
-    font-family: var(--FontSub);
-    margin-bottom: 0.4rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 0.45rem;
 }
 
 .input-field {
     display: block;
-    margin-bottom: 0;
-    padding: 0.8rem;
-    background-color: var(--negro);
-    border: 1px solid var(--white);
-    color: var(--white);
-    font-family: var(--FontSub);
+    background: #151515;
+    border: 1px solid #3b3b3b;
+    border-radius: 6px;
+    color: var(--text-main);
+    font: inherit;
+    font-size: 0.95rem;
+    min-height: 2.9rem;
+    padding: 0.7rem 0.8rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
     width: 100%;
-    max-width: 400px;
-    margin-left: auto;
-    margin-right: auto;
+}
+
+.input-field::placeholder {
+    color: #858585;
+}
+
+.input-field:focus {
+    background-color: #202020;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.14);
+    outline: none;
+}
+
+.input-field:-webkit-autofill,
+.input-field:-webkit-autofill:hover,
+.input-field:-webkit-autofill:focus {
+    -webkit-text-fill-color: var(--text-main);
+    box-shadow: 0 0 0 1000px #151515 inset;
+    transition: background-color 9999s ease-out;
+}
+
+#mensaje-formulario {
+    align-self: center;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    grid-column: 1 / -1;
+    line-height: 1.5;
+    min-height: 1.4em;
+}
+
+.profile-form-actions {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    grid-column: 1 / -1;
+    justify-content: flex-end;
 }
 
 .btn-action {
-    display: inline-block;
-    margin: 0.5rem;
-    padding: 0.6rem 1.2rem;
-    background-color: transparent;
-    border: 1px solid var(--VerdeF);
-    color: var(--VerdeF);
+    background: var(--primary-color);
+    border: 1px solid var(--primary-color);
+    border-radius: 6px;
+    color: #fff;
     cursor: pointer;
-    font-family: var(--FontSub);
+    font: inherit;
+    font-size: 0.9rem;
+    font-weight: 700;
+    padding: 0.75rem 1.2rem;
     text-transform: uppercase;
-    transition: all 0.3s;
+    transition: background-color 0.2s, border-color 0.2s, transform 0.2s;
+}
+
+.btn-action.btn-secondary {
+    background: transparent;
+    border-color: #555;
+    color: #dedede;
+}
+
+.btn-action.btn-secondary:hover {
+    background: #303030;
+    border-color: #777;
 }
 
 .btn-action:hover {
-    background-color: var(--VerdeF);
-    color: var(--negro);
+    background: var(--primary-hover);
+    border-color: var(--primary-hover);
+    transform: translateY(-1px);
+}
+
+.profile-account-note {
+    border-top: 1px solid var(--border-color);
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-top: 1.5rem;
+    padding-top: 1.1rem;
+    text-align: center;
+}
+
+.profile-account-note > span {
+    color: var(--text-muted);
+}
+
+.profile-mode-toggle {
+    background: none;
+    border: 0;
+    color: var(--primary-color);
+    cursor: pointer;
+    font: inherit;
+    font-weight: 600;
+    margin-left: 0.25rem;
+    padding: 0.25rem;
+}
+
+.profile-mode-toggle:hover {
+    color: #ff8a36;
+    text-decoration: underline;
+}
+
+.profile-mode-toggle:focus-visible {
+    border-radius: 3px;
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
 }
 
 .actions {
@@ -69,6 +171,7 @@
     flex-wrap: wrap;
     justify-content: center;
     margin-top: 2rem;
+    gap: 0.5rem;
 }
 
 /* Classes for PDF Exercise 2 */
@@ -101,7 +204,26 @@
 
 @media (max-width: 480px) {
     .profile-card {
+        margin-top: -1rem;
         padding: 1.25rem;
+    }
+
+    .formulario {
+        grid-template-columns: 1fr;
+    }
+
+    #mensaje-formulario,
+    .profile-form-actions {
+        grid-column: 1;
+    }
+
+    .profile-form-actions {
+        flex-direction: column;
+        justify-content: stretch;
+    }
+
+    .profile-form-actions .btn-action {
+        width: 100%;
     }
 
     .actions .btn-action {
