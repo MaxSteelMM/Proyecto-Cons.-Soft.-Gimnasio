@@ -19,7 +19,11 @@
                     </svg>
                     <span>GYM-<span class="highlight">MLS</span></span>
                 </a>
-                <ul class="nav-links">
+                <button class="nav-menu-toggle" type="button" aria-expanded="false" aria-controls="primary-links">
+                    <span class="nav-menu-icon" aria-hidden="true"></span>
+                    <span class="nav-menu-label">Menú</span>
+                </button>
+                <ul id="primary-links" class="nav-links">
                     <li><a href="Index.html">Inicio</a></li>
                     <li><a href="Clases.html">Clases</a></li>
                     <li><a href="Rutinas.html" aria-current="page">Rutinas</a></li>
@@ -255,6 +259,7 @@
             </div>
         </div>
     </footer>
+    <script src="js/navigation.js" defer></script>
     <script src="js/rutinas.js" defer></script>
 </body>
 </html>

@@ -90,7 +90,16 @@ INSERT INTO PROVEEDOR (nombre_empresa, contacto) VALUES
 INSERT INTO PRODUCTO (nombre, precio, stock, categoria, id_proveedor) VALUES
 ('Proteína Whey 2kg', 45.00, 20, 'Suplementos', 2),
 ('Mancuernas 5kg', 25.00, 10, 'Equipamiento', 1),
-('Remera deportiva MLS', 30.00, 15, 'Indumentaria', 1);
+('Remera deportiva MLS', 30.00, 15, 'Indumentaria', 1),
+('Short deportivo MLS', 26.00, 12, 'Indumentaria', 1),
+('Barra olimpica estandar 20 kg', 180.00, 5, 'Equipamiento', 1),
+('Discos olimpicos 10 kg (par)', 80.00, 8, 'Equipamiento', 1),
+('Kettlebell 12 kg', 38.00, 8, 'Equipamiento', 1),
+('Bandas elasticas de resistencia (set de 5)', 18.00, 12, 'Accesorios', 1),
+('Cuerda para saltar con rulemanes', 15.00, 10, 'Accesorios', 1),
+('Guantes de entrenamiento antideslizantes', 20.00, 12, 'Accesorios', 1),
+('Colchoneta fitness antideslizante', 24.00, 10, 'Accesorios', 1),
+('Botella deportiva 750 ml', 12.00, 15, 'Accesorios', 1);
 
 INSERT INTO TURNO (fecha_hora, estado, id_usuario, id_empleado) VALUES
 ('2026-10-25 10:00:00', 'Programado', 1, 1);

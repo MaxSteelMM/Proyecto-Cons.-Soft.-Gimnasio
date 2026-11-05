@@ -14,15 +14,19 @@
         <div class="header-container">
            
 
-            <nav class="main-nav">
+            <nav class="main-nav" aria-label="Navegación principal">
                  <a href="Index.html" class="brand-logo">
                 <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                     <path d="M6.5 6.5h11M6.5 17.5h11M4 9v6M20 9v6M7.5 5v14M16.5 5v14" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
                 <span>GYM-<span class="highlight">MLS</span></span>
             </a>
-                <ul class="nav-links">
-                    <li><a href="Index.html" class="active">Inicio</a></li>
+                <button class="nav-menu-toggle" type="button" aria-expanded="false" aria-controls="primary-links">
+                    <span class="nav-menu-icon" aria-hidden="true"></span>
+                    <span class="nav-menu-label">Menú</span>
+                </button>
+                <ul id="primary-links" class="nav-links">
+                    <li><a href="Index.html" class="active" aria-current="page">Inicio</a></li>
                     <li><a href="Clases.html">Clases</a></li>
                     <li><a href="Rutinas.html">Rutinas</a></li>
                 </ul>
@@ -45,7 +49,7 @@
         <section class="hero-section">
             <div class="hero-overlay"></div>
             <div class="hero-content">
-                <span class="hero-tagline">TRANSFORMA TU CUALIDAD FÍSICA</span>
+                <span class="hero-tagline">TRANSFORMÁ TU CONDICIÓN FÍSICA</span>
                 <h1 class="hero-title">CONSTRUYE TU <span class="highlight">MEJOR VERSIÓN</span></h1>
                 <p class="hero-description">
                     Equipamiento de alto nivel, entrenadores certificados y un ambiente diseñado para superar todos tus límites diarios.
@@ -83,8 +87,8 @@
 
         <section id="planes" class="pricing">
             <div class="section-title">
-                <h2>Elige tu <span class="highlight">Plan</span></h2>
-                <p>Sin contratos ni cláusulas ocultas, solo resultados reales.</p>
+                <h2>Elegí tu <span class="highlight">plan</span></h2>
+                <p>Conocé las opciones disponibles y registrá tu perfil para consultar por una membresía.</p>
             </div>
             <div class="planes-grid">
                 <article class="plan-card">
@@ -98,7 +102,7 @@
                         <li>Acceso a vestuarios y duchas</li>
                         <li class="disabled">Clases grupales</li>
                     </ul>
-                    <a href="Comprar.html" class="plan-btn">Elegir plan</a>
+                    <a href="Perfil.html" class="plan-btn">Crear perfil</a>
                 </article>
 
                 <article class="plan-card featured">
@@ -113,7 +117,7 @@
                         <li>1 sesión personal al mes</li>
                         <li>Asesoría nutricional inicial</li>
                     </ul>
-                    <a href="Comprar.html" class="plan-btn btn-highlight">Elegir plan</a>
+                    <a href="Perfil.html" class="plan-btn btn-highlight">Crear perfil</a>
                 </article>
 
                 <article class="plan-card">
@@ -127,7 +131,7 @@
                         <li>Plan nutricional completo mensual</li>
                         <li>Acceso 24/7 libre</li>
                     </ul>
-                    <a href="Comprar.html" class="plan-btn">Elegir plan</a>
+                    <a href="Perfil.html" class="plan-btn">Crear perfil</a>
                 </article>
             </div>
         </section>
@@ -144,5 +148,6 @@
             </div>
         </div>
     </footer>
+    <script src="js/navigation.js" defer></script>
 </body>
 </html>

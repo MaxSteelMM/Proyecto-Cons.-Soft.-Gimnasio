@@ -19,7 +19,11 @@
                     </svg>
                     <span>GYM-<span class="highlight">MLS</span></span>
                 </a>
-                <ul class="nav-links">
+                <button class="nav-menu-toggle" type="button" aria-expanded="false" aria-controls="primary-links">
+                    <span class="nav-menu-icon" aria-hidden="true"></span>
+                    <span class="nav-menu-label">Menú</span>
+                </button>
+                <ul id="primary-links" class="nav-links">
                     <li><a href="Index.html">Inicio</a></li>
                     <li><a href="Clases.html">Clases</a></li>
                     <li><a href="Rutinas.html">Rutinas</a></li>
@@ -41,7 +45,7 @@
             <div class="interior-hero-content">
                 <p class="eyebrow">TU ESPACIO PERSONAL</p>
                 <h1>Mi <span>perfil</span></h1>
-                <p>Gestioná tu información personal y preferencias de entrenamiento.</p>
+                <p>Registrá tus datos para crear un perfil de cliente en GYM-MLS.</p>
             </div>
         </section>
 
@@ -53,22 +57,18 @@
                     <input id="nombre" name="nombre" class="input-field dato" type="text" maxlength="100" placeholder="Ingrese su nombre" required>
                 </div>
                 <div class="form-field">
-                    <label for="contrasena">Contraseña:</label>
-                    <input id="contrasena" name="contrasena" class="input-field dato" type="password" autocomplete="new-password" placeholder="Ingrese su contraseña" required>
-                </div>
-                <div class="form-field" data-registration-field>
                     <label for="contacto">Contacto:</label>
                     <input id="contacto" name="contacto" class="input-field dato" type="text" maxlength="100" placeholder="Ingrese su contacto" required>
                 </div>
-                <div class="form-field" data-registration-field>
+                <div class="form-field">
                     <label for="direccion">Dirección:</label>
                     <input id="direccion" name="direccion" class="input-field dato" type="text" maxlength="255" placeholder="Ingrese su dirección" required>
                 </div>
-                <div class="form-field" data-registration-field>
+                <div class="form-field">
                     <label for="fecha_registro">Fecha de registro:</label>
                     <input id="fecha_registro" name="fecha_registro" class="input-field dato" type="date" required>
                 </div>
-                <div class="form-field" data-registration-field>
+                <div class="form-field">
                     <label for="email">Email:</label>
                     <input id="email" name="email" class="input-field dato" type="email" maxlength="100" placeholder="Ingrese su email" required>
                 </div>
@@ -78,10 +78,6 @@
                 </div>
                 <p id="mensaje-formulario" role="status" aria-live="polite"></p>
             </form>
-            <p class="profile-account-note">
-                <span id="account-prompt">¿Ya tenés una cuenta?</span>
-                <button id="mode-toggle" class="profile-mode-toggle" type="button">Iniciá sesión</button>
-            </p>
         </div>
     </main>
     <footer class="main-footer">
@@ -95,6 +91,7 @@
             </div>
         </div>
     </footer>
+    <script src="js/navigation.js" defer></script>
     <script src="js/perfil.js" defer></script>
 </body>
 </html>

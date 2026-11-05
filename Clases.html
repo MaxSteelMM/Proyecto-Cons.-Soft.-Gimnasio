@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="CSS/base.css">
     <link rel="stylesheet" href="CSS/index.css">
     <link rel="stylesheet" href="CSS/pages.css">
+    <link rel="stylesheet" href="CSS/clases.css">
 </head>
 <body class="site-page">
     <header class="site-header">
@@ -18,7 +19,11 @@
                     </svg>
                     <span>GYM-<span class="highlight">MLS</span></span>
                 </a>
-                <ul class="nav-links">
+                <button class="nav-menu-toggle" type="button" aria-expanded="false" aria-controls="primary-links">
+                    <span class="nav-menu-icon" aria-hidden="true"></span>
+                    <span class="nav-menu-label">Menú</span>
+                </button>
+                <ul id="primary-links" class="nav-links">
                     <li><a href="Index.html">Inicio</a></li>
                     <li><a href="Clases.html" aria-current="page">Clases</a></li>
                     <li><a href="Rutinas.html">Rutinas</a></li>
@@ -36,32 +41,104 @@
         </div>
     </header>
     <main>
-        <section class="interior-hero">
-            <div class="interior-hero-content">
-                <p class="eyebrow">ENTRENÁ A TU MANERA</p>
-                <h1>Nuestras <span>clases</span></h1>
-                <p>Elegí una actividad, encontrá tu ritmo y entrená junto a una comunidad que te acompaña.</p>
+        <section class="interior-hero classes-hero">
+            <div class="classes-hero-content">
+                <p class="eyebrow"><span aria-hidden="true"></span> MOVETE A TU MANERA</p>
+                <h1>Encontrá tu <span>ritmo.</span></h1>
+                <p>Entrená con energía, aprendé nuevos movimientos y hacé que cada sesión cuente. Hay más de una forma de avanzar.</p>
+                <div class="classes-hero-actions">
+                    <a class="classes-button classes-button-primary" href="#modalidades">Explorar modalidades</a>
+                    <a class="classes-button classes-button-secondary" href="Rutinas.html">Ver rutinas</a>
+                </div>
+                <ul class="classes-hero-tags" aria-label="Enfoques de entrenamiento">
+                    <li>Fuerza</li>
+                    <li>Cardio</li>
+                    <li>Movilidad</li>
+                </ul>
             </div>
         </section>
-        <section class="interior-section" aria-labelledby="classes-title">
-            <div class="interior-section-heading">
-                <h2 id="classes-title">Una actividad para cada objetivo</h2>
-                <p>Explorá distintas formas de moverte y llevar tu entrenamiento más lejos.</p>
+
+        <section class="classes-highlights" aria-label="Beneficios de entrenar en grupo">
+            <article>
+                <span class="classes-highlight-icon" aria-hidden="true">01</span>
+                <div><h2>A tu nivel</h2><p>Elegí una intensidad que te resulte cómoda.</p></div>
+            </article>
+            <article>
+                <span class="classes-highlight-icon" aria-hidden="true">02</span>
+                <div><h2>Con variedad</h2><p>Alterná fuerza, cardio y recuperación.</p></div>
+            </article>
+            <article>
+                <span class="classes-highlight-icon" aria-hidden="true">03</span>
+                <div><h2>En comunidad</h2><p>Compartí el esfuerzo y celebrá tus avances.</p></div>
+            </article>
+        </section>
+
+        <section id="modalidades" class="classes-section" aria-labelledby="classes-title">
+            <div class="classes-section-heading">
+                <div>
+                    <p class="classes-eyebrow">ELEGÍ TU ENFOQUE</p>
+                    <h2 id="classes-title">Una clase para cada energía</h2>
+                </div>
+                <p>Explorá distintos formatos y encontrá el que mejor acompaña tus objetivos.</p>
             </div>
-            <div class="interior-grid">
-                <article class="interior-card">
-                    <h3>Fuerza</h3>
-                    <p>Ejercicios con resistencia para desarrollar fuerza, técnica y confianza en cada repetición.</p>
+            <div class="classes-grid">
+                <article class="class-card class-card-featured">
+                    <div class="class-card-top"><span class="class-icon" aria-hidden="true">↗</span><span class="class-number">01</span></div>
+                    <p class="class-type">FUERZA</p>
+                    <h3>Fuerza y técnica</h3>
+                    <p>Construí una base sólida con ejercicios de resistencia, buena técnica y progresiones a tu ritmo.</p>
+                    <span class="class-focus">FOCO <strong>Control · Potencia</strong></span>
                 </article>
-                <article class="interior-card">
-                    <h3>Acondicionamiento</h3>
-                    <p>Sesiones dinámicas para trabajar tu resistencia y mantenerte en movimiento.</p>
+                <article class="class-card">
+                    <div class="class-card-top"><span class="class-icon" aria-hidden="true">✳</span><span class="class-number">02</span></div>
+                    <p class="class-type">CUERPO COMPLETO</p>
+                    <h3>Entrenamiento funcional</h3>
+                    <p>Combiná movimientos variados para desarrollar coordinación, estabilidad y fuerza útil.</p>
+                    <span class="class-focus">FOCO <strong>Movimiento · Equilibrio</strong></span>
                 </article>
-                <article class="interior-card">
-                    <h3>Movilidad</h3>
-                    <p>Prácticas enfocadas en movilidad y control corporal para complementar tu entrenamiento.</p>
+                <article class="class-card">
+                    <div class="class-card-top"><span class="class-icon" aria-hidden="true">⤴</span><span class="class-number">03</span></div>
+                    <p class="class-type">CARDIO</p>
+                    <h3>Intervalos</h3>
+                    <p>Alterná momentos de actividad y recuperación para poner a prueba tu resistencia.</p>
+                    <span class="class-focus">FOCO <strong>Ritmo · Resistencia</strong></span>
+                </article>
+                <article class="class-card">
+                    <div class="class-card-top"><span class="class-icon" aria-hidden="true">◌</span><span class="class-number">04</span></div>
+                    <p class="class-type">RECUPERACIÓN</p>
+                    <h3>Movilidad y estiramiento</h3>
+                    <p>Dedicale tiempo al rango de movimiento, la respiración y el cuidado de tu cuerpo.</p>
+                    <span class="class-focus">FOCO <strong>Movilidad · Bienestar</strong></span>
+                </article>
+                <article class="class-card">
+                    <div class="class-card-top"><span class="class-icon" aria-hidden="true">⌁</span><span class="class-number">05</span></div>
+                    <p class="class-type">ESTABILIDAD</p>
+                    <h3>Core y postura</h3>
+                    <p>Fortalecé la zona media con ejercicios de estabilidad y control corporal.</p>
+                    <span class="class-focus">FOCO <strong>Centro · Estabilidad</strong></span>
+                </article>
+                <article class="class-card">
+                    <div class="class-card-top"><span class="class-icon" aria-hidden="true">⚡</span><span class="class-number">06</span></div>
+                    <p class="class-type">ACONDICIONAMIENTO</p>
+                    <h3>Resistencia general</h3>
+                    <p>Un formato dinámico para mantenerte en movimiento y desafiar tu capacidad aeróbica.</p>
+                    <span class="class-focus">FOCO <strong>Energía · Constancia</strong></span>
                 </article>
             </div>
+        </section>
+
+        <section class="classes-start" aria-labelledby="classes-start-title">
+            <div class="classes-start-copy">
+                <p class="classes-eyebrow">TU PRÓXIMO PASO</p>
+                <h2 id="classes-start-title">¿No sabés por dónde empezar?</h2>
+                <p>Probá una modalidad que te interese, escuchá a tu cuerpo y ajustá la intensidad. No hace falta tener experiencia para comenzar.</p>
+                <a class="classes-button classes-button-primary" href="Rutinas.html">Encontrá tu rutina</a>
+            </div>
+            <aside class="classes-schedule-note">
+                <span class="schedule-note-icon" aria-hidden="true">i</span>
+                <h3>Horarios y disponibilidad</h3>
+                <p>Esta página presenta modalidades de entrenamiento; no publica una grilla horaria. Consultá los horarios y cupos disponibles en recepción.</p>
+            </aside>
         </section>
     </main>
     <footer class="main-footer">
@@ -75,5 +152,6 @@
             </div>
         </div>
     </footer>
+    <script src="js/navigation.js" defer></script>
 </body>
 </html>

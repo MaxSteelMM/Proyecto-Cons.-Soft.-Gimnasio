@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="CSS/base.css">
     <link rel="stylesheet" href="CSS/index.css">
     <link rel="stylesheet" href="CSS/comprar.css">
+    <script src="js/navigation.js" defer></script>
     <script src="js/comprar.js" defer></script>
 </head>
 <body>
@@ -20,7 +21,11 @@
                     </svg>
                     <span>GYM-<span class="highlight">MLS</span></span>
                 </a>
-                <ul class="nav-links">
+                <button class="nav-menu-toggle" type="button" aria-expanded="false" aria-controls="primary-links">
+                    <span class="nav-menu-icon" aria-hidden="true"></span>
+                    <span class="nav-menu-label">Menú</span>
+                </button>
+                <ul id="primary-links" class="nav-links">
                     <li><a href="Index.html">Inicio</a></li>
                     <li><a href="Clases.html">Clases</a></li>
                     <li><a href="Rutinas.html">Rutinas</a></li>
@@ -48,17 +53,19 @@
                     <a class="button button-primary" href="#productos">Comprar ahora</a>
                     <a class="button button-secondary" href="#categorias">Explorar categorías</a>
                 </div>
-                <p class="demo-notice">Tienda en modo demostración: no se realizan cobros reales.</p>
+                <p class="demo-notice">El catálogo se consulta en el servidor. Los nuevos precios y stocks son datos de demostración: verificá el inventario antes de registrar un pedido. No se procesan pagos.</p>
             </div>
         </section>
 
-        <div id="catalog-notice" class="catalog-notice" role="status" hidden></div>
+        <div id="catalog-notice" class="catalog-notice" role="status" hidden>
+            <p id="catalog-notice-text"></p>
+            <button id="retry-catalog" class="button button-secondary" type="button">Volver a intentar</button>
+        </div>
 
         <section class="shop-tools" aria-label="Herramientas de la tienda">
             <nav class="shop-shortcuts" aria-label="Secciones de la tienda">
                 <a href="#productos">Productos</a>
                 <a href="#categorias">Categorías</a>
-                <a href="#ofertas" id="offers-link">Ofertas</a>
                 <a href="#contacto">Contacto</a>
             </nav>
             <form id="nav-search-form" class="nav-search" role="search">
@@ -66,9 +73,14 @@
                 <input id="nav-search" type="search" placeholder="Buscar productos..." autocomplete="off">
                 <button type="submit" aria-label="Buscar">⌕</button>
             </form>
-            <a class="nav-cart" href="#carrito" aria-label="Ir al carrito">
-                <span aria-hidden="true">🛒</span> Carrito <span id="cart-count" class="cart-count">0</span>
-            </a>
+            <div class="shop-quick-actions">
+                <button id="favorites-toggle" class="shop-favorites-button" type="button" aria-pressed="false">
+                    <span aria-hidden="true">♡</span> Guardados <span id="favorites-count" class="cart-count">0</span>
+                </button>
+                <a class="nav-cart" href="#carrito" aria-label="Ir al carrito">
+                    <span aria-hidden="true">🛒</span> Carrito <span id="cart-count" class="cart-count">0</span>
+                </a>
+            </div>
         </section>
 
         <section id="categorias" class="store-section category-section" aria-labelledby="categories-title">
@@ -99,12 +111,20 @@
                 <label for="max-price">Precio hasta
                     <input id="max-price" type="number" min="0" step="1" placeholder="Máximo">
                 </label>
+                <label class="filter-checkbox" for="in-stock-only">
+                    <input id="in-stock-only" type="checkbox">
+                    Solo disponibles
+                </label>
+                <label class="filter-checkbox" for="favorites-only">
+                    <input id="favorites-only" type="checkbox">
+                    Solo guardados
+                </label>
                 <label for="sort-products">Ordenar por
                     <select id="sort-products">
                         <option value="featured">Recomendados</option>
                         <option value="price-asc">Menor precio</option>
                         <option value="price-desc">Mayor precio</option>
-                        <option value="popular">Más populares</option>
+                        <option value="name">Nombre A-Z</option>
                     </select>
                 </label>
                 <button id="clear-filters" class="text-button" type="button">Limpiar filtros</button>
@@ -121,22 +141,15 @@
             <div class="cart-panel">
                 <ul id="cart-items" class="cart-items"></ul>
                 <p id="cart-empty" class="cart-empty">Tu carrito está vacío. ¡Sumá algo para entrenar!</p>
-                <div class="coupon-row">
-                    <label for="coupon-input">¿Tenés un cupón?
-                        <input id="coupon-input" type="text" placeholder="Código de descuento" autocomplete="off">
-                    </label>
-                    <button id="coupon-btn" class="button button-secondary" type="button">Aplicar</button>
-                    <p id="coupon-result" class="coupon-result" aria-live="polite"></p>
-                </div>
                 <div class="cart-totals">
                     <p>Subtotal <strong id="cart-subtotal">$0</strong></p>
-                    <p id="discount-row" hidden>Descuento <strong id="cart-discount">−$0</strong></p>
                     <p class="grand-total">Total <strong id="cart-total">$0</strong></p>
                 </div>
                 <div class="cart-actions">
                     <button id="empty-cart" class="text-button" type="button" disabled>Vaciar carrito</button>
                     <button id="checkout-btn" class="button button-primary" type="button" disabled>Continuar compra</button>
                 </div>
+                <p class="cart-notice">El total usa los precios del catálogo, incluidos los valores de demostración. Verificá el inventario antes de registrar el pedido. El sitio no procesa pagos.</p>
             </div>
         </section>
 
@@ -146,11 +159,11 @@
                 <h2 id="checkout-title">Finalizar pedido</h2>
             </div>
             <div class="checkout-panel">
-                <p class="demo-warning"><strong>Compra de demostración.</strong> No ingreses datos de tarjetas: no se procesarán pagos ni se generará una compra real en la base de datos.</p>
+                <p class="demo-warning"><strong>Pedido con registro real.</strong> Al confirmar se registran el cliente y las compras en la base de datos. El catálogo incluye precios y stocks de demostración que deben verificarse antes de confirmar. El sitio no procesa pagos: no ingreses datos financieros.</p>
                 <ol class="checkout-progress" aria-label="Etapas de compra">
                     <li data-progress="1" aria-current="step">Datos</li>
-                    <li data-progress="2">Envío</li>
-                    <li data-progress="3">Entrega</li>
+                    <li data-progress="2">Entrega</li>
+                    <li data-progress="3">Dirección</li>
                     <li data-progress="4">Pago</li>
                     <li data-progress="5">Revisión</li>
                 </ol>
@@ -159,69 +172,64 @@
                         <legend>1. Datos personales</legend>
                         <div class="form-grid">
                             <label>Nombre
-                                <input name="nombre" autocomplete="given-name" required>
+                                <input name="nombre" autocomplete="given-name" maxlength="49" required>
                             </label>
                             <label>Apellido
-                                <input name="apellido" autocomplete="family-name" required>
+                                <input name="apellido" autocomplete="family-name" maxlength="49" required>
                             </label>
                             <label>Correo electrónico
-                                <input name="email" type="email" autocomplete="email" required>
+                                <input name="email" type="email" autocomplete="email" maxlength="100" required>
                             </label>
                             <label>Teléfono
-                                <input name="telefono" type="tel" autocomplete="tel" required>
+                                <input name="telefono" type="tel" autocomplete="tel" maxlength="100" required>
                             </label>
                         </div>
                     </fieldset>
                     <fieldset class="checkout-step" data-step="2" hidden>
-                        <legend>2. Dirección de envío</legend>
-                        <div class="form-grid">
-                            <label>Provincia
-                                <input name="provincia" autocomplete="address-level1" required>
-                            </label>
-                            <label>Ciudad
-                                <input name="ciudad" autocomplete="address-level2" required>
-                            </label>
-                            <label>Código postal
-                                <input name="codigo_postal" autocomplete="postal-code" required>
-                            </label>
-                            <label>Calle
-                                <input name="calle" autocomplete="street-address" required>
-                            </label>
-                            <label>Número
-                                <input name="numero" autocomplete="address-line2" required>
-                            </label>
-                            <label class="form-wide">Información adicional
-                                <textarea name="adicional" rows="3" placeholder="Piso, departamento, referencias (opcional)"></textarea>
-                            </label>
+                        <legend>2. Método de entrega</legend>
+                        <div class="choice-list">
+                            <label class="choice-card"><input type="radio" name="entrega" value="domicilio" required> Envío a domicilio <span>Coordiná la entrega con el gimnasio.</span></label>
+                            <label class="choice-card"><input type="radio" name="entrega" value="sucursal" required> Retiro en sucursal <span>GYM-MLS · Centro</span></label>
                         </div>
                     </fieldset>
                     <fieldset class="checkout-step" data-step="3" hidden>
-                        <legend>3. Método de entrega</legend>
-                        <div class="choice-list">
-                            <label class="choice-card"><input type="radio" name="entrega" value="domicilio" required> Envío a domicilio <span>Envío de demostración sin costo</span></label>
-                            <label class="choice-card"><input type="radio" name="entrega" value="sucursal" required> Retiro en sucursal <span>GYM-MLS · Centro</span></label>
+                        <legend>3. Dirección de envío</legend>
+                        <div class="form-grid">
+                            <label>Provincia
+                                <input name="provincia" autocomplete="address-level1" maxlength="45">
+                            </label>
+                            <label>Ciudad
+                                <input name="ciudad" autocomplete="address-level2" maxlength="45">
+                            </label>
+                            <label>Código postal
+                                <input name="codigo_postal" autocomplete="postal-code" maxlength="12">
+                            </label>
+                            <label>Calle
+                                <input name="calle" autocomplete="street-address" maxlength="70">
+                            </label>
+                            <label>Número
+                                <input name="numero" autocomplete="address-line2" maxlength="10">
+                            </label>
+                            <label class="form-wide">Información adicional
+                                <textarea name="adicional" rows="3" maxlength="60" placeholder="Piso, departamento, referencias (opcional)"></textarea>
+                            </label>
                         </div>
                     </fieldset>
                     <fieldset class="checkout-step" data-step="4" hidden>
                         <legend>4. Método de pago</legend>
-                        <p class="step-help">Elegí una opción para el resumen. No se te pedirán datos financieros.</p>
-                        <div class="choice-list">
-                            <label class="choice-card"><input type="radio" name="pago" value="Tarjeta (simulada)" required> Tarjeta de crédito o débito <span>Solo selección de demostración; no ingreses el número de tarjeta.</span></label>
-                            <label class="choice-card"><input type="radio" name="pago" value="Transferencia (simulada)" required> Transferencia bancaria <span>Las instrucciones reales no están habilitadas.</span></label>
-                            <label class="choice-card"><input type="radio" name="pago" value="Otro método (simulado)" required> Otro método <span>Opción de demostración.</span></label>
-                        </div>
+                        <p class="step-help">No se reciben ni procesan pagos en este sitio. Coordiná el pago directamente con el gimnasio; nunca ingreses datos de tarjetas.</p>
                     </fieldset>
                     <fieldset class="checkout-step" data-step="5" hidden>
                         <legend>5. Revisá tu pedido</legend>
                         <div id="checkout-summary" class="checkout-summary"></div>
-                        <label class="terms-check"><input name="acepta_demo" type="checkbox" required> Entiendo que este pedido es una demostración y no genera un cobro real.</label>
+                        <label class="terms-check"><input name="acepta_demo" type="checkbox" required> Entiendo que el pedido se registra en la base de datos, pero el sitio no procesa pagos.</label>
                     </fieldset>
                     <p id="checkout-error" class="form-error" role="alert"></p>
                     <div class="checkout-actions">
                         <button id="checkout-cancel" class="text-button" type="button">Volver al carrito</button>
                         <button id="checkout-back" class="button button-secondary" type="button" hidden>Volver</button>
                         <button id="checkout-next" class="button button-primary" type="button">Continuar</button>
-                        <button id="confirm-order" class="button button-primary" type="submit" hidden>Confirmar pedido de demostración</button>
+                        <button id="confirm-order" class="button button-primary" type="submit" hidden>Registrar pedido</button>
                     </div>
                 </form>
             </div>
@@ -230,27 +238,22 @@
         <section id="order-confirmation" class="store-section confirmation-section" aria-labelledby="confirmation-title" hidden>
             <div class="confirmation-card">
                 <p class="confirmation-icon" aria-hidden="true">✓</p>
-                <p class="eyebrow">PEDIDO DE PRUEBA</p>
-                <h2 id="confirmation-title">¡Gracias por probar la tienda!</h2>
-                <p>Este pedido es simulado. No se realizó ningún cobro ni se guardó una compra real.</p>
-                <p>Número de pedido: <strong id="order-number"></strong></p>
+                <p class="eyebrow">PEDIDO REGISTRADO</p>
+                <h2 id="confirmation-title">¡Listo! Tu pedido quedó registrado.</h2>
+                <p>Las compras se guardaron en la base de datos. No se realizó ningún cobro.</p>
+                <p>Referencias: <strong id="order-number"></strong></p>
                 <div id="confirmation-summary" class="checkout-summary"></div>
                 <a class="button button-primary" href="#productos">Volver a la tienda</a>
             </div>
         </section>
 
-        <section id="ofertas" class="store-section offer-section" aria-label="Promoción">
-            <p>Un impulso extra para tu rutina</p>
-            <h2>Usá <span>MLS2026</span> y obtené 20% OFF</h2>
-            <a class="button button-secondary" href="#carrito">Aplicar en el carrito</a>
-        </section>
     </main>
 
     <footer id="contacto" class="store-footer">
         <a class="brand" href="#inicio">GYM-<span class="color-mitad">MLS</span></a>
         <p>Equipamiento para entrenar con confianza.</p>
-        <p>Canal de contacto aún no configurado para esta tienda de demostración.</p>
-        <p class="footer-note">Tienda y checkout en modo demostración. Las compras y pagos no son reales.</p>
+        <p>Canal de contacto aún no configurado para esta tienda.</p>
+        <p class="footer-note">Los pedidos confirmados se registran en la base de datos. No se procesan pagos.</p>
     </footer>
 
     <dialog id="product-dialog" class="product-dialog" aria-label="Detalles del producto">

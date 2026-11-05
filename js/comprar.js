@@ -7,22 +7,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchInput = document.getElementById('nav-search');
     const minPriceInput = document.getElementById('min-price');
     const maxPriceInput = document.getElementById('max-price');
+    const inStockOnly = document.getElementById('in-stock-only');
+    const favoritesOnly = document.getElementById('favorites-only');
+    const favoritesToggle = document.getElementById('favorites-toggle');
+    const favoritesCount = document.getElementById('favorites-count');
     const sortSelect = document.getElementById('sort-products');
     const cartItems = document.getElementById('cart-items');
     const cartEmpty = document.getElementById('cart-empty');
     const cartCount = document.getElementById('cart-count');
     const cartSubtotal = document.getElementById('cart-subtotal');
-    const cartDiscount = document.getElementById('cart-discount');
-    const discountRow = document.getElementById('discount-row');
     const cartTotal = document.getElementById('cart-total');
     const checkoutButton = document.getElementById('checkout-btn');
-    const couponInput = document.getElementById('coupon-input');
-    const couponButton = document.getElementById('coupon-btn');
-    const couponResult = document.getElementById('coupon-result');
     const checkoutSection = document.getElementById('checkout');
     const checkoutForm = document.getElementById('checkout-form');
     const checkoutError = document.getElementById('checkout-error');
     const checkoutSteps = Array.from(document.querySelectorAll('.checkout-step'));
+    const addressStep = checkoutSteps.find((fieldset) => fieldset.dataset.step === '3');
     const checkoutBack = document.getElementById('checkout-back');
     const checkoutCancel = document.getElementById('checkout-cancel');
     const checkoutNext = document.getElementById('checkout-next');
@@ -32,7 +32,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const detailContent = document.getElementById('detail-content');
     const toast = document.getElementById('toast');
     const cart = new Map();
+    const favorites = new Set();
     const cartStorageKey = 'gym-mls-cart';
+    const favoritesStorageKey = 'gym-mls-favorites';
     const imageAssets = {
         clothing: {
             src: 'Img/productos/remera-deportiva.jpg',
@@ -56,44 +58,45 @@ document.addEventListener('DOMContentLoaded', () => {
             credit: 'Nenad Stojkovic',
             license: 'CC BY 2.0',
             licenseUrl: 'https://creativecommons.org/licenses/by/2.0/'
+        },
+        barbell: {
+            src: 'Img/productos/barra-olimpica.jpg',
+            alt: 'Barra de pesas preparada para un ejercicio de hombros',
+            source: 'https://commons.wikimedia.org/wiki/File:Watch_me_lift_(5048019).jpg',
+            credit: 'Airman 1st Class Jovante Johnson / U.S. Air Force',
+            license: 'Dominio público'
+        },
+        resistanceBands: {
+            src: 'Img/productos/bandas-elasticas.png',
+            alt: 'Ilustración de un ejercicio con bandas elásticas de resistencia',
+            source: 'https://commons.wikimedia.org/wiki/File:Back-flyes-with-resistance-bands-1.png',
+            credit: 'Everkinetic',
+            license: 'CC BY-SA 3.0',
+            licenseUrl: 'https://creativecommons.org/licenses/by-sa/3.0/'
+        },
+        accessories: {
+            src: 'Img/productos/cuerda-saltar.jpg',
+            alt: 'Cuerda para saltar junto a otros accesorios de entrenamiento',
+            source: 'https://commons.wikimedia.org/wiki/File:Exercise_equipment_(rubber_ball,_light-weight_dumbbells,_jump_rope).jpg',
+            credit: 'CDC / Debora Cartagena',
+            license: 'Dominio público'
         }
     };
     const descriptions = {
         indumentaria: 'Prendas cómodas y resistentes para acompañar tus entrenamientos.',
         suplementos: 'Suplementación deportiva para complementar tu rutina.',
-        equipamiento: 'Elementos confiables para entrenar en el gimnasio o en casa.'
+        equipamiento: 'Elementos confiables para entrenar en el gimnasio o en casa.',
+        accesorios: 'Accesorios prácticos para sumar variedad a tu entrenamiento.'
     };
-    const demoProducts = [
-        {
-            id_producto: 1,
-            nombre: 'Proteína Whey 2kg',
-            precio: 45,
-            stock: 20,
-            categoria: 'Suplementos',
-            popularidad: 1
-        },
-        {
-            id_producto: 2,
-            nombre: 'Mancuernas 5kg',
-            precio: 25,
-            stock: 10,
-            categoria: 'Equipamiento',
-            popularidad: 0
-        },
-        {
-            id_producto: 3,
-            nombre: 'Remera deportiva MLS',
-            precio: 30,
-            stock: 15,
-            categoria: 'Indumentaria',
-            popularidad: 0
-        }
-    ];
     let products = [];
     let searchTerm = '';
-    let appliedCoupon = false;
     let checkoutStep = 1;
     let toastTimer;
+    let pendingCheckout = null;
+    let checkoutBlocked = false;
+    let catalogLoadError = '';
+    let catalogReady = false;
+    const apiBase = 'http://localhost:3000';
 
     const formatPrice = (price) => new Intl.NumberFormat('es-AR', {
         style: 'currency',
@@ -105,11 +108,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const getImage = (product) => {
         const description = `${product.categoria || ''} ${product.nombre}`.toLocaleLowerCase('es');
-        if (/ropa|indumentaria|remera|camiseta|legging|short|clothing/.test(description)) {
+        if (/ropa|indumentaria|remera|camiseta|legging|calza|short|clothing/.test(description)) {
             return imageAssets.clothing;
         }
         if (/suplement|prote[ií]na|creatina|whey/.test(description)) {
             return imageAssets.supplement;
+        }
+        if (/banda|el[aá]stica|resistencia/.test(description)) {
+            return imageAssets.resistanceBands;
+        }
+        if (/cuerda|saltar|accesorios|botella|guantes|colchoneta/.test(description)) {
+            return imageAssets.accessories;
+        }
+        if (/barra|discos|ol[ií]mpic/.test(description)) {
+            return imageAssets.barbell;
         }
         return imageAssets.weights;
     };
@@ -121,6 +133,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const getPrice = (product) => Number(product.precio);
 
+    const requestJson = async (url, options) => {
+        let response;
+        try {
+            response = await fetch(`${apiBase}${url}`, options);
+        } catch (error) {
+            error.isNetworkError = true;
+            throw error;
+        }
+
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok) {
+            const error = new Error(result.error || `El servidor respondió ${response.status}.`);
+            error.status = response.status;
+            throw error;
+        }
+        return result;
+    };
+
     const showToast = (message) => {
         toast.textContent = message;
         toast.classList.add('visible');
@@ -128,11 +158,15 @@ document.addEventListener('DOMContentLoaded', () => {
         toastTimer = window.setTimeout(() => toast.classList.remove('visible'), 2600);
     };
 
+    const setOrderLocked = (locked) => {
+        document.getElementById('productos').inert = locked;
+        document.getElementById('carrito').inert = locked;
+    };
+
     const saveCart = () => {
         try {
             localStorage.setItem(cartStorageKey, JSON.stringify({
-                items: Array.from(cart, ([id, item]) => ({ id, cantidad: item.cantidad })),
-                coupon: appliedCoupon ? 'MLS2026' : ''
+                items: Array.from(cart, ([id, item]) => ({ id, cantidad: item.cantidad }))
             }));
         } catch (error) {
             showToast('No se pudo guardar el carrito en este navegador.');
@@ -144,8 +178,6 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const stored = JSON.parse(localStorage.getItem(cartStorageKey) || '{}');
             if (!stored || !Array.isArray(stored.items)) return;
-            appliedCoupon = stored.coupon === 'MLS2026';
-            couponInput.value = appliedCoupon ? 'MLS2026' : '';
             stored.items.forEach((item) => {
                 const id = Number(item.id);
                 const cantidad = Number(item.cantidad);
@@ -164,6 +196,58 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    const saveFavorites = () => {
+        try {
+            localStorage.setItem(favoritesStorageKey, JSON.stringify(Array.from(favorites)));
+        } catch (error) {
+            console.error('No se pudieron guardar los favoritos:', error);
+            showToast('No se pudieron guardar los favoritos en este navegador.');
+        }
+    };
+
+    const restoreFavorites = () => {
+        try {
+            const stored = JSON.parse(localStorage.getItem(favoritesStorageKey) || '[]');
+            if (!Array.isArray(stored)) {
+                throw new Error('El formato guardado no es una lista.');
+            }
+            stored.forEach((value) => {
+                const id = Number(value);
+                if (Number.isSafeInteger(id) && id > 0) favorites.add(id);
+            });
+        } catch (error) {
+            console.error('No se pudieron recuperar los favoritos:', error);
+            try {
+                localStorage.removeItem(favoritesStorageKey);
+            } catch (storageError) {
+                console.error('No se pudieron limpiar los favoritos guardados:', storageError);
+            }
+            showToast('Los favoritos guardados no eran válidos y se limpiaron.');
+        }
+    };
+
+    const renderFavoritesCount = () => {
+        favoritesCount.textContent = String(favorites.size);
+        favoritesToggle.setAttribute('aria-pressed', String(favoritesOnly.checked));
+        favoritesToggle.setAttribute(
+            'aria-label',
+            `${favoritesOnly.checked ? 'Mostrar todos los productos' : 'Filtrar por favoritos'}, ${favorites.size} guardados`
+        );
+    };
+
+    const toggleFavorite = (id) => {
+        if (favorites.has(id)) {
+            favorites.delete(id);
+            showToast('Producto quitado de tus guardados.');
+        } else {
+            favorites.add(id);
+            showToast('Producto guardado en tus favoritos.');
+        }
+        saveFavorites();
+        renderFavoritesCount();
+        renderProducts();
+    };
+
     const getVisibleProducts = () => {
         const category = categoryFilter.value;
         const min = minPriceInput.value === '' ? null : Number(minPriceInput.value);
@@ -176,13 +260,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const price = getPrice(product);
             const matchesMin = min === null || price >= min;
             const matchesMax = max === null || price <= max;
-            return matchesSearch && matchesCategory && matchesMin && matchesMax;
+            const matchesStock = !inStockOnly.checked || Number(product.stock) > 0;
+            const matchesFavorites = !favoritesOnly.checked || favorites.has(Number(product.id_producto));
+            return matchesSearch && matchesCategory && matchesMin && matchesMax &&
+                matchesStock && matchesFavorites;
         });
 
         if (sortSelect.value === 'price-asc') filtered.sort((a, b) => getPrice(a) - getPrice(b));
         if (sortSelect.value === 'price-desc') filtered.sort((a, b) => getPrice(b) - getPrice(a));
-        if (sortSelect.value === 'popular') {
-            filtered.sort((a, b) => Number(b.popularidad || 0) - Number(a.popularidad || 0));
+        if (sortSelect.value === 'name') {
+            filtered.sort((a, b) => a.nombre.localeCompare(b.nombre, 'es', { sensitivity: 'base' }));
         }
         return filtered;
     };
@@ -256,14 +343,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const visible = getVisibleProducts();
         productsGrid.replaceChildren();
         productsCount.textContent = `${visible.length} de ${products.length} productos`;
+        renderFavoritesCount();
 
         if (products.length === 0) {
-            productsMessage.textContent = 'No hay productos disponibles.';
+            productsMessage.textContent = catalogLoadError || 'No hay productos disponibles.';
             productsMessage.hidden = false;
             return;
         }
         if (visible.length === 0) {
-            productsMessage.textContent = 'No encontramos productos con esos filtros.';
+            productsMessage.textContent = favoritesOnly.checked && favorites.size === 0
+                ? 'Todavía no guardaste productos. Marcá el corazón de un producto para encontrarlo acá.'
+                : 'No encontramos productos con esos filtros. Probá cambiar los filtros.';
             productsMessage.hidden = false;
             return;
         }
@@ -274,6 +364,18 @@ document.addEventListener('DOMContentLoaded', () => {
             card.className = 'product-card';
             const image = appendProductImage(card, product);
             appendImageCredit(card, image);
+
+            const favoriteButton = document.createElement('button');
+            favoriteButton.className = 'favorite-toggle';
+            favoriteButton.type = 'button';
+            favoriteButton.dataset.productId = String(product.id_producto);
+            favoriteButton.setAttribute('aria-pressed', String(favorites.has(Number(product.id_producto))));
+            favoriteButton.setAttribute(
+                'aria-label',
+                `${favorites.has(Number(product.id_producto)) ? 'Quitar' : 'Guardar'} ${product.nombre} ${favorites.has(Number(product.id_producto)) ? 'de' : 'en'} favoritos`
+            );
+            favoriteButton.textContent = favorites.has(Number(product.id_producto)) ? '♥' : '♡';
+            card.append(favoriteButton);
 
             const name = document.createElement('h3');
             name.textContent = product.nombre;
@@ -289,28 +391,6 @@ document.addEventListener('DOMContentLoaded', () => {
             description.textContent = describeProduct(product);
             card.append(description);
 
-            const rating = document.createElement('p');
-            rating.className = 'product-rating';
-            if (Number.isFinite(Number(product.valoracion)) && Number(product.valoracion) > 0) {
-                const value = Number(product.valoracion);
-                rating.textContent = `${'★'.repeat(Math.max(0, Math.min(5, Math.round(value))))}${'☆'.repeat(5 - Math.max(0, Math.min(5, Math.round(value))))} `;
-                const ratingLabel = document.createElement('span');
-                ratingLabel.textContent = `${value.toFixed(1)}${product.cantidad_resenas ? ` (${product.cantidad_resenas} reseñas)` : ''}`;
-                rating.append(ratingLabel);
-            } else {
-                rating.textContent = '☆☆☆☆☆ ';
-                const ratingLabel = document.createElement('span');
-                ratingLabel.textContent = 'Sin reseñas';
-                rating.append(ratingLabel);
-            }
-            card.append(rating);
-
-            const popularity = document.createElement('p');
-            popularity.className = 'product-popularity';
-            const unitsSold = Number(product.popularidad || 0);
-            popularity.textContent = `${unitsSold} ${unitsSold === 1 ? 'unidad vendida' : 'unidades vendidas'}`;
-            card.append(popularity);
-
             const stock = document.createElement('p');
             stock.className = 'product-stock';
             stock.textContent = Number(product.stock) > 0
@@ -322,19 +402,8 @@ document.addEventListener('DOMContentLoaded', () => {
             priceRow.className = 'product-price-row';
             const price = document.createElement('span');
             price.className = 'product-price';
-            const hasDiscount = Number(product.precio_anterior) > getPrice(product);
             price.textContent = formatPrice(getPrice(product));
             priceRow.append(price);
-            if (hasDiscount) {
-                const oldPrice = document.createElement('span');
-                oldPrice.className = 'old-price';
-                oldPrice.textContent = formatPrice(Number(product.precio_anterior));
-                priceRow.append(oldPrice);
-                const badge = document.createElement('span');
-                badge.className = 'discount-badge';
-                badge.textContent = `-${Math.round((1 - getPrice(product) / Number(product.precio_anterior)) * 100)}%`;
-                priceRow.append(badge);
-            }
             card.append(priceRow);
 
             const selected = cart.get(Number(product.id_producto));
@@ -400,6 +469,18 @@ document.addEventListener('DOMContentLoaded', () => {
             name.textContent = product.nombre;
             row.append(name);
 
+            const quantityControl = document.createElement('div');
+            quantityControl.className = 'cart-quantity-control';
+            const decreaseButton = document.createElement('button');
+            decreaseButton.className = 'quantity-stepper';
+            decreaseButton.type = 'button';
+            decreaseButton.dataset.action = 'decrease';
+            decreaseButton.dataset.productId = String(id);
+            decreaseButton.disabled = quantity <= 1;
+            decreaseButton.setAttribute('aria-label', `Reducir cantidad de ${product.nombre}`);
+            decreaseButton.textContent = '−';
+            quantityControl.append(decreaseButton);
+
             const quantityInput = document.createElement('input');
             quantityInput.className = 'cart-quantity';
             quantityInput.type = 'number';
@@ -408,7 +489,18 @@ document.addEventListener('DOMContentLoaded', () => {
             quantityInput.value = String(quantity);
             quantityInput.dataset.productId = String(id);
             quantityInput.setAttribute('aria-label', `Cantidad de ${product.nombre}`);
-            row.append(quantityInput);
+            quantityControl.append(quantityInput);
+
+            const increaseButton = document.createElement('button');
+            increaseButton.className = 'quantity-stepper';
+            increaseButton.type = 'button';
+            increaseButton.dataset.action = 'increase';
+            increaseButton.dataset.productId = String(id);
+            increaseButton.disabled = quantity >= Number(product.stock);
+            increaseButton.setAttribute('aria-label', `Aumentar cantidad de ${product.nombre}`);
+            increaseButton.textContent = '+';
+            quantityControl.append(increaseButton);
+            row.append(quantityControl);
 
             const itemSubtotalLabel = document.createElement('span');
             itemSubtotalLabel.className = 'cart-item-subtotal';
@@ -425,14 +517,17 @@ document.addEventListener('DOMContentLoaded', () => {
             cartItems.append(row);
         });
 
-        const discount = appliedCoupon ? subtotal * 0.2 : 0;
-        cartEmpty.hidden = cart.size > 0;
+        cartEmpty.hidden = totalItems > 0;
+        cartEmpty.textContent = cart.size > 0 && !catalogReady
+            ? 'No se pudo verificar la disponibilidad del carrito. Intentá cargar el catálogo nuevamente.'
+            : 'Tu carrito está vacío. ¡Sumá algo para entrenar!';
         cartCount.textContent = String(totalItems);
         cartSubtotal.textContent = formatPrice(subtotal);
-        cartDiscount.textContent = `−${formatPrice(discount)}`;
-        discountRow.hidden = !appliedCoupon;
-        cartTotal.textContent = formatPrice(subtotal - discount);
-        checkoutButton.disabled = cart.size === 0;
+        cartTotal.textContent = formatPrice(subtotal);
+        checkoutButton.disabled = cart.size === 0 || !catalogReady || Array.from(cart).some(([id, item]) => {
+            const product = products.find((entry) => Number(entry.id_producto) === id);
+            return !product || item.cantidad > Number(product.stock);
+        });
         document.getElementById('empty-cart').disabled = cart.size === 0;
         saveCart();
     };
@@ -495,7 +590,7 @@ document.addEventListener('DOMContentLoaded', () => {
         [
             'Producto seleccionado para tu rutina.',
             'Disponibilidad sujeta al stock informado.',
-            'Envío o retiro disponibles en el flujo de demostración.'
+            'Consultá las opciones de entrega con el gimnasio.'
         ].forEach((feature) => {
             const item = document.createElement('li');
             item.textContent = feature;
@@ -565,9 +660,9 @@ document.addEventListener('DOMContentLoaded', () => {
         ]);
         addSummarySection('Entrega y pago', [
             ['Entrega', address],
-            ['Método de pago', data.get('pago')]
+            ['Pago', 'No se procesa en el sitio; coordiná el pago con el gimnasio.']
         ]);
-        addSummarySection('Total', [['Total de demostración', cartTotal.textContent]]);
+        addSummarySection('Total', [['Total del pedido', cartTotal.textContent]]);
     };
 
     const showCheckoutStep = (step) => {
@@ -589,8 +684,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const validateCurrentStep = () => {
         const active = checkoutSteps.find((fieldset) => Number(fieldset.dataset.step) === checkoutStep);
-        const invalid = Array.from(active.querySelectorAll('input, textarea'))
-            .find((input) => !input.checkValidity());
+        const fields = Array.from(active.querySelectorAll('input, textarea'));
+        const invalid = fields.find((input) => !input.checkValidity());
         if (invalid) {
             invalid.reportValidity();
             return false;
@@ -599,13 +694,18 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const loadProducts = async () => {
-        restoreCart();
+        let catalogLoaded = false;
+        const notice = document.getElementById('catalog-notice');
+        const noticeText = document.getElementById('catalog-notice-text');
+        const retryButton = document.getElementById('retry-catalog');
+        catalogReady = false;
+        retryButton.disabled = true;
+        if (products.length === 0) {
+            noticeText.textContent = 'Conectando con el catálogo...';
+            notice.hidden = false;
+        }
         try {
-            const response = await fetch('http://localhost:3000/productos');
-            const result = await response.json();
-            if (!response.ok) {
-                throw new Error(result.error || `El servidor respondió ${response.status}.`);
-            }
+            const result = await requestJson('/productos');
             if (!Array.isArray(result)) {
                 throw new Error('La respuesta de productos no tiene el formato esperado.');
             }
@@ -613,10 +713,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 ...product,
                 id_producto: Number(product.id_producto),
                 precio: Number(product.precio),
-                precio_anterior: product.precio_anterior == null ? null : Number(product.precio_anterior),
-                stock: Number(product.stock),
-                popularidad: Number(product.popularidad || 0),
-                valoracion: product.valoracion == null ? null : Number(product.valoracion)
+                stock: Number(product.stock)
             }));
             if (products.some((product) =>
                 !Number.isInteger(product.id_producto) || product.id_producto <= 0 ||
@@ -625,26 +722,44 @@ document.addEventListener('DOMContentLoaded', () => {
             )) {
                 throw new Error('El catálogo contiene datos de productos inválidos.');
             }
+            catalogLoaded = true;
+            catalogReady = true;
+            catalogLoadError = '';
+            notice.hidden = true;
+            favorites.forEach((id) => {
+                if (!products.some((product) => Number(product.id_producto) === id)) {
+                    favorites.delete(id);
+                }
+            });
+            saveFavorites();
         } catch (error) {
-            console.warn('Se activa el catálogo de demostración porque falló la conexión:', error);
-            products = demoProducts;
-            const notice = document.getElementById('catalog-notice');
-            notice.textContent = `No se pudo conectar con el catálogo de MySQL (${error.message}). Se muestran productos de ejemplo; el checkout no registra compras reales.`;
+            console.error('No se pudo cargar el catálogo de la base de datos:', error);
+            products = [];
+            catalogLoadError = 'No se pudieron cargar los productos. Verificá la conexión con el servidor e intentá recargar la página.';
+            noticeText.textContent = `No se pudo cargar el catálogo desde el servidor. ${error.message}`;
             notice.hidden = false;
+        } finally {
+            retryButton.disabled = false;
         }
 
         const availableIds = new Set(products.map((product) => Number(product.id_producto)));
         let removedItems = false;
-        cart.forEach((item, id) => {
-            if (!availableIds.has(id)) {
-                cart.delete(id);
-                removedItems = true;
-            } else {
-                const product = products.find((entry) => Number(entry.id_producto) === id);
-                item.cantidad = Math.min(item.cantidad, Number(product.stock));
-                if (item.cantidad <= 0) cart.delete(id);
-            }
-        });
+        if (catalogLoaded) {
+            cart.forEach((item, id) => {
+                if (!availableIds.has(id)) {
+                    cart.delete(id);
+                    removedItems = true;
+                } else {
+                    const product = products.find((entry) => Number(entry.id_producto) === id);
+                    if (!product || Number(product.stock) <= 0) {
+                        cart.delete(id);
+                        removedItems = true;
+                    } else {
+                        item.cantidad = Math.min(item.cantidad, Number(product.stock));
+                    }
+                }
+            });
+        }
         if (removedItems) showToast('Se quitaron del carrito productos que ya no están disponibles.');
 
         renderCategories();
@@ -653,6 +768,11 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     productsGrid.addEventListener('click', (event) => {
+        const favoriteButton = event.target.closest('.favorite-toggle');
+        if (favoriteButton) {
+            toggleFavorite(Number(favoriteButton.dataset.productId));
+            return;
+        }
         const addButton = event.target.closest('.btn-add');
         if (addButton) {
             const id = Number(addButton.dataset.productId);
@@ -691,40 +811,44 @@ document.addEventListener('DOMContentLoaded', () => {
 
     cartItems.addEventListener('click', (event) => {
         const button = event.target.closest('.btn-remove');
-        if (!button) return;
-        cart.delete(Number(button.dataset.productId));
+        if (button) {
+            cart.delete(Number(button.dataset.productId));
+            renderCart();
+            renderProducts();
+            showToast('Producto quitado del carrito.');
+            return;
+        }
+
+        const stepper = event.target.closest('.quantity-stepper');
+        if (!stepper || stepper.disabled) return;
+        const id = Number(stepper.dataset.productId);
+        const item = cart.get(id);
+        const product = products.find((entry) => Number(entry.id_producto) === id);
+        if (!item || !product) return;
+        const change = stepper.dataset.action === 'increase' ? 1 : -1;
+        const nextQuantity = item.cantidad + change;
+        if (nextQuantity < 1 || nextQuantity > Number(product.stock)) return;
+        item.cantidad = nextQuantity;
         renderCart();
         renderProducts();
-        showToast('Producto quitado del carrito.');
     });
 
     document.getElementById('empty-cart').addEventListener('click', () => {
         cart.clear();
-        appliedCoupon = false;
-        couponInput.value = '';
-        couponResult.textContent = '';
         renderCart();
         renderProducts();
         showToast('Carrito vaciado.');
     });
 
-    couponButton.addEventListener('click', () => {
-        if (couponInput.value.trim().toUpperCase() !== 'MLS2026') {
-            appliedCoupon = false;
-            couponResult.textContent = 'Cupón inválido. Revisá el código e intentá de nuevo.';
-            couponResult.classList.add('error');
-        } else {
-            appliedCoupon = true;
-            couponInput.value = 'MLS2026';
-            couponResult.textContent = '¡Cupón aplicado! Se descontó el 20% del subtotal.';
-            couponResult.classList.remove('error');
-        }
-        renderCart();
-    });
-
-    [categoryFilter, minPriceInput, maxPriceInput, sortSelect].forEach((control) => {
+    [categoryFilter, minPriceInput, maxPriceInput, sortSelect, inStockOnly, favoritesOnly].forEach((control) => {
         control.addEventListener('input', renderProducts);
         control.addEventListener('change', renderProducts);
+    });
+
+    favoritesToggle.addEventListener('click', () => {
+        favoritesOnly.checked = !favoritesOnly.checked;
+        renderProducts();
+        document.getElementById('productos').scrollIntoView({ behavior: 'smooth' });
     });
 
     searchInput.addEventListener('input', () => {
@@ -745,15 +869,13 @@ document.addEventListener('DOMContentLoaded', () => {
         categoryFilter.value = '';
         minPriceInput.value = '';
         maxPriceInput.value = '';
+        inStockOnly.checked = false;
+        favoritesOnly.checked = false;
         sortSelect.value = 'featured';
         renderProducts();
     });
 
-    document.getElementById('offers-link').addEventListener('click', () => {
-        couponInput.value = 'MLS2026';
-        couponButton.click();
-    });
-
+    document.getElementById('retry-catalog').addEventListener('click', loadProducts);
     document.getElementById('detail-close').addEventListener('click', () => productDialog.close());
     productDialog.addEventListener('click', (event) => {
         if (event.target === productDialog) productDialog.close();
@@ -762,6 +884,10 @@ document.addEventListener('DOMContentLoaded', () => {
     checkoutButton.addEventListener('click', () => {
         if (cart.size === 0) {
             showToast('Agregá productos antes de continuar.');
+            return;
+        }
+        if (!catalogReady) {
+            showToast('No se pudo verificar el catálogo. Volvé a intentarlo cuando se restablezca la conexión.');
             return;
         }
         checkoutSection.hidden = false;
@@ -785,37 +911,162 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     checkoutCancel.addEventListener('click', () => {
+        if (pendingCheckout?.customerId || checkoutBlocked) {
+            showToast('Completá o verificá el pedido en curso antes de salir.');
+            return;
+        }
         checkoutSection.hidden = true;
         document.getElementById('carrito').scrollIntoView({ behavior: 'smooth' });
     });
 
-    checkoutForm.addEventListener('submit', (event) => {
+    checkoutForm.querySelectorAll('[name="entrega"]').forEach((option) => {
+        option.addEventListener('change', () => {
+            const requiresAddress = option.value === 'domicilio' && option.checked;
+            addressStep.querySelectorAll('input, textarea').forEach((field) => {
+                field.required = requiresAddress && field.name !== 'adicional';
+            });
+        });
+    });
+
+    checkoutForm.addEventListener('submit', async (event) => {
         event.preventDefault();
         if (checkoutStep !== 5 || !validateCurrentStep()) return;
         if (cart.size === 0) {
             checkoutError.textContent = 'El carrito está vacío. Agregá productos para continuar.';
-            checkoutSection.hidden = true;
             return;
         }
 
-        const orderNumber = `MLS-DEMO-${Date.now().toString().slice(-8)}`;
-        document.getElementById('order-number').textContent = orderNumber;
-        const confirmationSummary = document.getElementById('confirmation-summary');
-        confirmationSummary.replaceChildren(...Array.from(
-            document.getElementById('checkout-summary').childNodes,
-            (node) => node.cloneNode(true)
-        ));
-        cart.clear();
-        appliedCoupon = false;
-        couponInput.value = '';
-        couponResult.textContent = '';
-        checkoutSection.hidden = true;
-        orderConfirmation.hidden = false;
-        renderCart();
-        renderProducts();
-        orderConfirmation.scrollIntoView({ behavior: 'smooth' });
+        if (checkoutBlocked) {
+            checkoutError.textContent = 'No se puede confirmar el estado del último envío. Revisá las compras del cliente antes de volver a intentarlo.';
+            return;
+        }
+
+        if (!pendingCheckout) {
+            pendingCheckout = {
+                customerId: null,
+                items: Array.from(cart, ([id, item]) => ({ id, cantidad: item.cantidad })),
+                purchases: []
+            };
+        }
+
+        setOrderLocked(true);
+        confirmOrder.disabled = true;
+        checkoutNext.disabled = true;
+        checkoutCancel.disabled = true;
+        checkoutBack.disabled = true;
+        confirmOrder.textContent = 'Registrando...';
+        checkoutError.textContent = '';
+
+        try {
+            if (!pendingCheckout.customerId) {
+                const formData = new FormData(checkoutForm);
+                const delivery = formData.get('entrega');
+                const address = delivery === 'domicilio'
+                    ? `${formData.get('calle')} ${formData.get('numero')}, ${formData.get('ciudad')}, ${formData.get('provincia')} (${formData.get('codigo_postal')})${formData.get('adicional') ? ` · ${formData.get('adicional')}` : ''}`
+                    : 'Retiro en sucursal GYM-MLS · Centro';
+                if (address.length > 255) {
+                    throw new Error('La dirección supera los 255 caracteres permitidos.');
+                }
+
+                const today = new Date();
+                const registrationDate = [
+                    today.getFullYear(),
+                    String(today.getMonth() + 1).padStart(2, '0'),
+                    String(today.getDate()).padStart(2, '0')
+                ].join('-');
+                const customer = await requestJson('/clientes', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        nombre: `${formData.get('nombre').trim()} ${formData.get('apellido').trim()}`,
+                        contacto: formData.get('telefono').trim(),
+                        direccion: address,
+                        fecha_registro: registrationDate,
+                        email: formData.get('email').trim()
+                    })
+                });
+                if (!Number.isInteger(Number(customer.id_usuario)) || Number(customer.id_usuario) <= 0) {
+                    checkoutBlocked = true;
+                    throw new Error('El servidor no devolvió un identificador de cliente válido.');
+                }
+                pendingCheckout.customerId = Number(customer.id_usuario);
+                checkoutBack.disabled = true;
+                checkoutCancel.disabled = true;
+            }
+
+            for (const item of pendingCheckout.items) {
+                if (pendingCheckout.purchases.some((purchase) => purchase.id_producto === item.id)) {
+                    continue;
+                }
+                const purchase = await requestJson('/compras', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        id_usuario: pendingCheckout.customerId,
+                        id_producto: item.id,
+                        cantidad: item.cantidad
+                    })
+                });
+                if (!Number.isInteger(Number(purchase.id_compra)) || Number(purchase.id_compra) <= 0) {
+                    checkoutBlocked = true;
+                    throw new Error('El servidor no confirmó el identificador de una compra.');
+                }
+                pendingCheckout.purchases.push({
+                    id_producto: item.id,
+                    id_compra: Number(purchase.id_compra)
+                });
+            }
+
+            document.getElementById('order-number').textContent =
+                `Cliente ${pendingCheckout.customerId} · Compras ${pendingCheckout.purchases.map((purchase) => purchase.id_compra).join(', ')}`;
+            const confirmationSummary = document.getElementById('confirmation-summary');
+            confirmationSummary.replaceChildren(...Array.from(
+                document.getElementById('checkout-summary').childNodes,
+                (node) => node.cloneNode(true)
+            ));
+            pendingCheckout = null;
+            checkoutBlocked = false;
+            setOrderLocked(false);
+            cart.clear();
+            checkoutSection.hidden = true;
+            orderConfirmation.hidden = false;
+            renderCart();
+            renderProducts();
+            orderConfirmation.scrollIntoView({ behavior: 'smooth' });
+            loadProducts();
+        } catch (error) {
+            console.error('No se pudo completar el pedido:', error);
+            if (error.isNetworkError) checkoutBlocked = true;
+            const completedCount = pendingCheckout?.purchases.length || 0;
+            const totalCount = pendingCheckout?.items.length || 0;
+            const purchaseRefs = pendingCheckout?.purchases
+                .map((purchase) => purchase.id_compra)
+                .join(', ') || 'ninguna';
+            if (checkoutBlocked) {
+                confirmOrder.textContent = 'Pedido pendiente de verificación';
+                checkoutError.textContent = `No se pudo confirmar el resultado del último envío. ${completedCount} de ${totalCount} compras tienen confirmación (referencias: ${purchaseRefs})${pendingCheckout?.customerId ? ` para el cliente ${pendingCheckout.customerId}` : ''}. No reenvíes el pedido hasta verificar su estado.`;
+            } else if (pendingCheckout?.customerId) {
+                confirmOrder.textContent = `Reintentar compras pendientes (${completedCount}/${totalCount})`;
+                checkoutError.textContent = `No se completaron todas las compras: ${completedCount} de ${totalCount} registradas (referencias: ${purchaseRefs}) para el cliente ${pendingCheckout.customerId}. ${error.message}`;
+            } else {
+                pendingCheckout = null;
+                setOrderLocked(false);
+                checkoutError.textContent = error.message || 'No se pudo registrar el pedido.';
+            }
+        } finally {
+            confirmOrder.disabled = checkoutBlocked;
+            checkoutNext.disabled = false;
+            checkoutCancel.disabled = Boolean(checkoutBlocked || pendingCheckout?.customerId);
+            checkoutBack.disabled = Boolean(checkoutBlocked || pendingCheckout?.customerId);
+            if (pendingCheckout?.customerId && !checkoutBlocked) {
+                confirmOrder.textContent = `Reintentar compras pendientes (${pendingCheckout.purchases.length}/${pendingCheckout.items.length})`;
+            } else if (!checkoutBlocked && !pendingCheckout) {
+                confirmOrder.textContent = 'Registrar pedido';
+            }
+        }
     });
 
-    renderCart();
+    restoreCart();
+    restoreFavorites();
     loadProducts();
 });
