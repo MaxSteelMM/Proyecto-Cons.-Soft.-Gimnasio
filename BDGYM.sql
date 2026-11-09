@@ -71,7 +71,7 @@ CREATE TABLE COMPRA (
     CONSTRAINT fk_compra_cliente FOREIGN KEY (id_usuario)
         REFERENCES CLIENTE(id_usuario) ON DELETE CASCADE,
     CONSTRAINT fk_compra_producto FOREIGN KEY (id_producto)
-        REFERENCES PRODUCTO(id_producto) ON DELETE CASCADE
+        REFERENCES PRODUCTO(id_producto) ON DELETE RESTRICT
 ) ENGINE=InnoDB;
 
 

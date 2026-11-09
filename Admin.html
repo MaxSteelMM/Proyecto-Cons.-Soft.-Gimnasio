@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#121212">
+    <title>Administrar productos | GYM-MLS</title>
+    <link rel="stylesheet" href="CSS/base.css">
+    <link rel="stylesheet" href="CSS/admin.css">
+    <script src="js/admin.js" defer></script>
+</head>
+<body class="admin-page">
+    <header class="admin-header">
+        <a class="brand" href="Comprar.html">GYM-<span class="color-mitad">MLS</span></a>
+        <a class="admin-back-link" href="Comprar.html">Volver a la tienda</a>
+    </header>
+    <main class="admin-main">
+        <section class="admin-intro">
+            <p class="admin-eyebrow">GESTIÓN DE INVENTARIO</p>
+            <h1>Administrar productos</h1>
+            <p>Iniciá sesión como administrador para agregar, editar o eliminar productos del catálogo.</p>
+        </section>
+
+        <section id="login-panel" class="admin-panel login-panel" aria-labelledby="login-title">
+            <h2 id="login-title">Acceso de administrador</h2>
+            <form id="login-form" class="admin-form">
+                <label for="username">Usuario
+                    <input id="username" name="username" autocomplete="username" maxlength="100" required>
+                </label>
+                <label for="password">Contraseña
+                    <input id="password" name="password" type="password" autocomplete="current-password" maxlength="200" required>
+                </label>
+                <button class="admin-button admin-button-primary" type="submit">Iniciar sesión</button>
+                <p id="login-message" class="admin-message" role="alert" aria-live="polite"></p>
+            </form>
+        </section>
+
+        <section id="management-panel" class="admin-panel" aria-labelledby="management-title" hidden>
+            <div class="admin-panel-heading">
+                <div>
+                    <h2 id="management-title">Inventario</h2>
+                    <p>Sesión iniciada como <strong id="admin-username"></strong>.</p>
+                </div>
+                <button id="logout-button" class="admin-button admin-button-secondary" type="button">Cerrar sesión</button>
+            </div>
+
+            <form id="product-form" class="admin-form product-form">
+                <h3 id="product-form-title">Agregar producto</h3>
+                <input id="product-id" name="id_producto" type="hidden">
+                <label for="product-name">Nombre
+                    <input id="product-name" name="nombre" maxlength="100" required>
+                </label>
+                <label for="product-price">Precio
+                    <input id="product-price" name="precio" type="number" min="0" max="99999999.99" step="0.01" required>
+                </label>
+                <label for="product-stock">Stock
+                    <input id="product-stock" name="stock" type="number" min="0" max="2147483647" step="1" required>
+                </label>
+                <label for="product-category">Categoría
+                    <input id="product-category" name="categoria" maxlength="50">
+                </label>
+                <label for="product-provider">Proveedor
+                    <select id="product-provider" name="id_proveedor">
+                        <option value="">Sin proveedor</option>
+                    </select>
+                </label>
+                <div class="admin-form-actions">
+                    <button id="save-product" class="admin-button admin-button-primary" type="submit">Agregar producto</button>
+                    <button id="cancel-edit" class="admin-button admin-button-secondary" type="button" hidden>Cancelar edición</button>
+                </div>
+                <p id="product-message" class="admin-message" role="status" aria-live="polite"></p>
+            </form>
+
+            <div class="admin-inventory">
+                <h3>Productos registrados</h3>
+                <p id="inventory-message" class="admin-message" role="status" aria-live="polite"></p>
+                <div class="admin-table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th scope="col">Producto</th>
+                                <th scope="col">Precio</th>
+                                <th scope="col">Stock</th>
+                                <th scope="col">Categoría</th>
+                                <th scope="col">Proveedor</th>
+                                <th scope="col">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="products-table-body"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

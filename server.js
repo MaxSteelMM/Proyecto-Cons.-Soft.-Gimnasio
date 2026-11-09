@@ -2,20 +2,217 @@
 const express = require("express");
 const cors = require("cors");
 const mysql = require("mysql2");
+const session = require("express-session");
+const MySQLStore = require("express-mysql-session")(session);
+const bcrypt = require("bcryptjs");
+const crypto = require("node:crypto");
+
+require("dotenv").config();
 
 const app = express();
 
-app.use(cors());
+const dbConfig = {
+  host: process.env.DB_HOST || "127.0.0.1",
+  port: Number(process.env.DB_PORT || 3306),
+  user: process.env.DB_USER || "root",
+  password: process.env.DB_PASSWORD ?? "",
+  database: process.env.DB_NAME || "gestion_gimnasio",
+};
+const allowedOrigins = (
+  process.env.FRONTEND_ORIGINS ||
+  "http://localhost:5500,http://127.0.0.1:5500"
+)
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+const isLocalDevelopmentOrigin = (origin) => {
+  if (process.env.NODE_ENV === "production") return false;
+  try {
+    const url = new URL(origin);
+    return (
+      url.protocol === "http:" &&
+      (url.hostname === "localhost" || url.hostname === "127.0.0.1")
+    );
+  } catch {
+    return false;
+  }
+};
+const sessionSecret = process.env.SESSION_SECRET || crypto.randomBytes(32).toString("hex");
+
+if (process.env.NODE_ENV === "production" && !process.env.SESSION_SECRET) {
+  throw new Error("SESSION_SECRET es obligatorio en producción");
+}
+if (process.env.NODE_ENV === "production") {
+  app.set("trust proxy", 1);
+}
+
+app.use(
+  cors({
+    origin(origin, callback) {
+      if (!origin || allowedOrigins.includes(origin) || isLocalDevelopmentOrigin(origin)) {
+        return callback(null, true);
+      }
+      return callback(null, false);
+    },
+    credentials: true,
+  }),
+);
 app.use(express.json());
 
 const conexion = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "messi",
-  database: "gestion_gimnasio",
+  ...dbConfig,
+});
+const sessionStore = new MySQLStore(dbConfig);
+
+sessionStore.on("error", (error) => {
+  console.error("Error en el almacenamiento de sesiones:", error);
 });
 
+app.use(
+  session({
+    name: "gym-mls.sid",
+    secret: sessionSecret,
+    store: sessionStore,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 8 * 60 * 60 * 1000,
+    },
+  }),
+);
+
 const PORT = 3000;
+
+const requireAdmin = (req, res, next) => {
+  if (req.session.role !== "admin") {
+    return res.status(401).json({ error: "Iniciá sesión como administrador" });
+  }
+  next();
+};
+
+const isValidProductId = (id) =>
+  /^[1-9]\d*$/.test(id) && Number(id) <= 2147483647;
+
+const validateProduct = (body) => {
+  const { nombre, precio, stock, categoria, id_proveedor } = body || {};
+
+  if (typeof nombre !== "string" || nombre.trim() === "" || nombre.trim().length > 100) {
+    return "El nombre es obligatorio y no puede superar los 100 caracteres";
+  }
+  if (
+    typeof precio !== "number" ||
+    !Number.isFinite(precio) ||
+    precio < 0 ||
+    precio > 99999999.99 ||
+    Math.round(precio * 100) / 100 !== precio
+  ) {
+    return "El precio debe ser un número entre 0 y 99.999.999,99 con hasta dos decimales";
+  }
+  if (!Number.isInteger(stock) || stock < 0 || stock > 2147483647) {
+    return "El stock debe ser un entero mayor o igual a cero";
+  }
+  if (
+    categoria !== undefined &&
+    categoria !== null &&
+    (typeof categoria !== "string" || categoria.trim().length > 50)
+  ) {
+    return "La categoría no puede superar los 50 caracteres";
+  }
+  if (
+    id_proveedor !== undefined &&
+    id_proveedor !== null &&
+    (!Number.isInteger(id_proveedor) || id_proveedor <= 0 || id_proveedor > 2147483647)
+  ) {
+    return "El proveedor seleccionado no es válido";
+  }
+  return null;
+};
+
+const productValues = (body) => [
+  body.nombre.trim(),
+  body.precio,
+  body.stock,
+  typeof body.categoria === "string" && body.categoria.trim()
+    ? body.categoria.trim()
+    : null,
+  body.id_proveedor ?? null,
+];
+
+// ======================= ADMINISTRACIÓN =======================
+
+app.get("/admin/session", (req, res) => {
+  res.status(200).json({
+    authenticated: req.session.role === "admin",
+    username: req.session.role === "admin" ? req.session.username : null,
+  });
+});
+
+app.post("/admin/login", async (req, res) => {
+  const adminUsername = process.env.ADMIN_USERNAME;
+  const passwordHash = process.env.ADMIN_PASSWORD_HASH;
+
+  if (!adminUsername || !passwordHash) {
+    return res.status(503).json({
+      error: "El administrador no está configurado. Revisá las variables del archivo .env.",
+    });
+  }
+  if (
+    typeof req.body?.username !== "string" ||
+    typeof req.body?.password !== "string" ||
+    req.body.username.length > 100 ||
+    req.body.password.length > 200
+  ) {
+    return res.status(400).json({ error: "Ingresá un usuario y una contraseña válidos" });
+  }
+  if (!/^\$2[aby]\$\d{2}\$[./A-Za-z0-9]{53}$/.test(passwordHash)) {
+    console.error("ADMIN_PASSWORD_HASH no contiene un hash bcrypt válido");
+    return res.status(503).json({ error: "La configuración de acceso del administrador no es válida" });
+  }
+
+  try {
+    const passwordMatches = await bcrypt.compare(req.body.password, passwordHash);
+    if (req.body.username !== adminUsername || !passwordMatches) {
+      return res.status(401).json({ error: "Usuario o contraseña incorrectos" });
+    }
+
+    req.session.regenerate((error) => {
+      if (error) {
+        console.error("Error al iniciar la sesión del administrador:", error);
+        return res.status(500).json({ error: "No se pudo iniciar la sesión" });
+      }
+      req.session.role = "admin";
+      req.session.username = adminUsername;
+      req.session.save((saveError) => {
+        if (saveError) {
+          console.error("Error al guardar la sesión del administrador:", saveError);
+          return res.status(500).json({ error: "No se pudo guardar la sesión" });
+        }
+        res.status(200).json({ authenticated: true, username: adminUsername });
+      });
+    });
+  } catch (error) {
+    console.error("Error al validar el acceso del administrador:", error);
+    res.status(500).json({ error: "No se pudo validar el acceso" });
+  }
+});
+
+app.post("/admin/logout", (req, res) => {
+  req.session.destroy((error) => {
+    if (error) {
+      console.error("Error al cerrar la sesión del administrador:", error);
+      return res.status(500).json({ error: "No se pudo cerrar la sesión" });
+    }
+    res.clearCookie("gym-mls.sid", {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+    });
+    res.status(200).json({ mensaje: "Sesión cerrada" });
+  });
+});
 
 // ======================= CLIENTES =======================
 
@@ -106,6 +303,9 @@ app.get("/productos", (req, res) => {
 //obtenemos un producto por su id
 app.get("/productos/:id", (req, res) => {
   const { id } = req.params;
+  if (!isValidProductId(id)) {
+    return res.status(400).json({ error: "El ID del producto no es válido" });
+  }
   const consulta = `SELECT * FROM PRODUCTO WHERE id_producto = ?`;
 
   conexion.query(consulta, [id], (error, resultado) => {
@@ -120,25 +320,38 @@ app.get("/productos/:id", (req, res) => {
   });
 });
 
-//agregar producto
-app.post("/productos", (req, res) => {
-  const { nombre, precio, stock, categoria, id_proveedor } = req.body;
+app.get("/proveedores", (req, res) => {
+  conexion.query(
+    "SELECT id_proveedor, nombre_empresa FROM PROVEEDOR ORDER BY nombre_empresa",
+    (error, resultado) => {
+      if (error) {
+        console.error("Error al obtener los proveedores:", error);
+        return res.status(500).json({ error: "Error al obtener los proveedores" });
+      }
+      res.status(200).json(resultado);
+    },
+  );
+});
 
-  if (nombre === undefined || precio === undefined || stock === undefined) {
-    return res
-      .status(400)
-      .json({ error: "El nombre, el precio y el stock son obligatorios" });
+//agregar producto
+app.post("/productos", requireAdmin, (req, res) => {
+  const validationError = validateProduct(req.body);
+  if (validationError) {
+    return res.status(400).json({ error: validationError });
   }
 
   const consulta = `INSERT INTO PRODUCTO (nombre, precio, stock, categoria, id_proveedor) VALUES (?, ?, ?, ?, ?)`;
 
   conexion.query(
     consulta,
-    [nombre, precio, stock, categoria ?? null, id_proveedor ?? null],
+    productValues(req.body),
     (error, resultado) => {
       if (error) {
         console.error("Error al agregar el producto:", error);
-        return res.status(500).json({ error: "Error al agregar" });
+        if (error.code === "ER_NO_REFERENCED_ROW_2") {
+          return res.status(400).json({ error: "El proveedor seleccionado no existe" });
+        }
+        return res.status(500).json({ error: "Error al agregar el producto" });
       }
       res.status(201).json({
         mensaje: "Producto creado correctamente",
@@ -149,25 +362,28 @@ app.post("/productos", (req, res) => {
 });
 
 //actualizar producto
-app.put("/productos/:id", (req, res) => {
+app.put("/productos/:id", requireAdmin, (req, res) => {
   const { id } = req.params;
-  const { nombre, precio, stock, categoria, id_proveedor } = req.body;
-
-  if (nombre === undefined || precio === undefined || stock === undefined) {
-    return res
-      .status(400)
-      .json({ error: "El nombre, el precio y el stock son obligatorios" });
+  if (!isValidProductId(id)) {
+    return res.status(400).json({ error: "El ID del producto no es válido" });
+  }
+  const validationError = validateProduct(req.body);
+  if (validationError) {
+    return res.status(400).json({ error: validationError });
   }
 
   const consulta = `UPDATE PRODUCTO SET nombre = ?, precio = ?, stock = ?, categoria = ?, id_proveedor = ? WHERE id_producto = ?`;
 
   conexion.query(
     consulta,
-    [nombre, precio, stock, categoria ?? null, id_proveedor ?? null, id],
+    [...productValues(req.body), id],
     (error, resultado) => {
       if (error) {
         console.error("Error al actualizar el producto:", error);
-        return res.status(500).json({ error: "Error al actualizar" });
+        if (error.code === "ER_NO_REFERENCED_ROW_2") {
+          return res.status(400).json({ error: "El proveedor seleccionado no existe" });
+        }
+        return res.status(500).json({ error: "Error al actualizar el producto" });
       }
       if (resultado.affectedRows === 0) {
         //affectedRows indica cuántas filas fueron afectadas por la consulta
@@ -179,20 +395,47 @@ app.put("/productos/:id", (req, res) => {
 });
 
 //eliminar producto
-app.delete("/productos/:id", (req, res) => {
+app.delete("/productos/:id", requireAdmin, (req, res) => {
   const { id } = req.params;
-  const consulta = `DELETE FROM PRODUCTO WHERE id_producto = ?`;
+  if (!isValidProductId(id)) {
+    return res.status(400).json({ error: "El ID del producto no es válido" });
+  }
 
-  conexion.query(consulta, [id], (error, resultado) => {
-    if (error) {
-      console.error("Error al eliminar el producto:", error);
-      return res.status(500).json({ error: "Error al eliminar" });
-    }
-    if (resultado.affectedRows === 0) {
-      return res.status(404).json({ error: "Producto no encontrado" });
-    }
-    res.status(200).json({ mensaje: "Producto eliminado correctamente" });
-  });
+  conexion.query(
+    "SELECT COUNT(*) AS cantidad FROM COMPRA WHERE id_producto = ?",
+    [id],
+    (countError, filas) => {
+      if (countError) {
+        console.error("Error al verificar las compras del producto:", countError);
+        return res.status(500).json({ error: "No se pudo verificar el historial del producto" });
+      }
+      if (Number(filas[0].cantidad) > 0) {
+        return res.status(409).json({
+          error: "No se puede eliminar un producto con compras registradas; editá su stock o nombre para conservar el historial",
+        });
+      }
+
+      conexion.query(
+        "DELETE FROM PRODUCTO WHERE id_producto = ?",
+        [id],
+        (error, resultado) => {
+          if (error) {
+            console.error("Error al eliminar el producto:", error);
+            if (error.code === "ER_ROW_IS_REFERENCED_2") {
+              return res.status(409).json({
+                error: "No se puede eliminar un producto con compras registradas",
+              });
+            }
+            return res.status(500).json({ error: "Error al eliminar el producto" });
+          }
+          if (resultado.affectedRows === 0) {
+            return res.status(404).json({ error: "Producto no encontrado" });
+          }
+          res.status(200).json({ mensaje: "Producto eliminado correctamente" });
+        },
+      );
+    },
+  );
 });
 
 // ======================= COMPRAS =======================
@@ -436,6 +679,16 @@ app.get("/consultas/mensajes-pendientes", (req, res) => {
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`servidor escuchando en http://localhost:${PORT}`);
+conexion.connect((error) => {
+  if (error) {
+    console.error(
+      `No se pudo conectar a MySQL en ${dbConfig.host} con el usuario ${dbConfig.user}. Revisá que MySQL esté iniciado y que DB_HOST, DB_USER, DB_PASSWORD y DB_NAME sean correctos.`,
+      error,
+    );
+    process.exit(1);
+  }
+
+  app.listen(PORT, () => {
+    console.log(`servidor escuchando en http://localhost:${PORT}`);
+  });
 });
