@@ -46,10 +46,8 @@ El backend actual registra compras, pero no actualiza automáticamente el stock.
 
 ## Catálogo de demostración
 
-Se añadieron diez productos al catálogo de la base local mediante el endpoint existente. Sus precios y cantidades son valores de demostración: verificá y actualizá esos datos antes de usar la tienda con inventario o ventas reales. Para nuevas instalaciones, los mismos artículos están incluidos en `BDGYM.sql`.
+El catálogo de demostración incluye 15 productos nuevos de equipamiento, 15 de indumentaria y 15 de suplementos y alimentos deportivos. Sus precios y cantidades son valores de demostración: verificá y actualizá esos datos antes de usar la tienda con inventario o ventas reales. Para nuevas instalaciones, esos artículos están incluidos en `BDGYM.sql`.
 
-Las imágenes de producto están guardadas localmente en `Img/productos/`:
+La tienda muestra fotografías locales de Wikimedia Commons para los productos con imágenes pertinentes disponibles bajo licencias abiertas. Cada foto incluye en la tienda el enlace a su fuente, la atribución y la licencia. Las ilustraciones vectoriales propias se mantienen como alternativa para cualquier producto sin fotografía:
 
-- `barra-olimpica.jpg`: Airman 1st Class Jovante Johnson / U.S. Air Force, dominio público. [Fuente](https://commons.wikimedia.org/wiki/File:Watch_me_lift_(5048019).jpg).
-- `bandas-elasticas.png`: Everkinetic, [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/). [Fuente](https://commons.wikimedia.org/wiki/File:Back-flyes-with-resistance-bands-1.png).
-- `cuerda-saltar.jpg`: CDC / Debora Cartagena, dominio público. [Fuente](https://commons.wikimedia.org/wiki/File:Exercise_equipment_(rubber_ball,_light-weight_dumbbells,_jump_rope).jpg).
+Las imágenes se descargan y guardan en `Img/productos/commons/`, por lo que la tienda no depende de un servidor externo para mostrarlas. El manifiesto `js/product-photos-data.js` conserva los datos de atribución y licencia de cada imagen.

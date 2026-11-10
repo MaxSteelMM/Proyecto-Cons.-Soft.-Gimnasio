@@ -107,6 +107,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const categoryKey = (category) => (category || '').trim().toLocaleLowerCase('es');
 
     const getImage = (product) => {
+        const productImage = window.GymProductImages?.get(product);
+        if (productImage) return productImage;
+
         const description = `${product.categoria || ''} ${product.nombre}`.toLocaleLowerCase('es');
         if (/ropa|indumentaria|remera|camiseta|legging|calza|short|clothing/.test(description)) {
             return imageAssets.clothing;
@@ -275,6 +278,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const appendImageCredit = (container, image) => {
+        if (!image.source) return;
         const credit = document.createElement('p');
         credit.className = 'image-credit';
         const source = document.createElement('a');
