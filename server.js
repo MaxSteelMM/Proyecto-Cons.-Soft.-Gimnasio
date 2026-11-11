@@ -298,7 +298,7 @@ app.post("/auth/register", async (req, res) => {
     Buffer.byteLength(password, "utf8") > 72
   ) {
     return res.status(400).json({
-      error: "La contraseña debe tener al menos 8 caracteres y no superar los 72 bytes",
+      error: "La contraseña debe tener al menos 8 caracteres",
     });
   }
 
