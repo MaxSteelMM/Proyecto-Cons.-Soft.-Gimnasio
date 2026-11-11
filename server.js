@@ -93,6 +93,32 @@ const requireAdmin = (req, res, next) => {
   next();
 };
 
+const requireClient = (req, res, next) => {
+  if (req.session.role !== "client" || !Number.isInteger(req.session.userId)) {
+    return res.status(401).json({ error: "Iniciá sesión para continuar" });
+  }
+  next();
+};
+
+const startClientSession = (req, res, client) => {
+  req.session.regenerate((error) => {
+    if (error) {
+      console.error("Error al iniciar la sesión del cliente:", error);
+      return res.status(500).json({ error: "No se pudo iniciar la sesión" });
+    }
+
+    req.session.role = "client";
+    req.session.userId = Number(client.id_usuario);
+    req.session.save((saveError) => {
+      if (saveError) {
+        console.error("Error al guardar la sesión del cliente:", saveError);
+        return res.status(500).json({ error: "No se pudo guardar la sesión" });
+      }
+      res.status(200).json({ authenticated: true });
+    });
+  });
+};
+
 const isValidProductId = (id) =>
   /^[1-9]\d*$/.test(id) && Number(id) <= 2147483647;
 
@@ -212,6 +238,163 @@ app.post("/admin/logout", (req, res) => {
     });
     res.status(200).json({ mensaje: "Sesión cerrada" });
   });
+});
+
+// ======================= ACCESO DE CLIENTES =======================
+
+app.get("/auth/session", (req, res) => {
+  if (req.session.role !== "client" || !Number.isInteger(req.session.userId)) {
+    return res.status(200).json({ authenticated: false, user: null });
+  }
+
+  conexion.query(
+    `SELECT id_usuario, nombre, contacto, direccion, fecha_registro, email
+     FROM CLIENTE
+     WHERE id_usuario = ? AND password_hash IS NOT NULL`,
+    [req.session.userId],
+    (error, rows) => {
+      if (error) {
+        console.error("Error al consultar la sesión del cliente:", error);
+        return res.status(500).json({ error: "No se pudo consultar la sesión" });
+      }
+      if (rows.length === 0) {
+        return res.status(200).json({ authenticated: false, user: null });
+      }
+      res.status(200).json({ authenticated: true, user: rows[0] });
+    },
+  );
+});
+
+app.post("/auth/register", async (req, res) => {
+  const { nombre, contacto, direccion, email, password } = req.body || {};
+  const fields = { nombre, contacto, direccion };
+  if (
+    Object.values(fields).some(
+      (value) => typeof value !== "string" || value.trim() === "",
+    ) ||
+    typeof email !== "string" ||
+    typeof password !== "string"
+  ) {
+    return res.status(400).json({ error: "Completá todos los campos obligatorios" });
+  }
+
+  const client = {
+    nombre: nombre.trim(),
+    contacto: contacto.trim(),
+    direccion: direccion.trim(),
+    email: email.trim().toLowerCase(),
+  };
+  if (
+    client.nombre.length > 100 ||
+    client.contacto.length > 100 ||
+    client.direccion.length > 255 ||
+    client.email.length > 100 ||
+    !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(client.email)
+  ) {
+    return res.status(400).json({ error: "Revisá los datos ingresados y el correo electrónico" });
+  }
+  if (
+    password.length < 8 ||
+    Buffer.byteLength(password, "utf8") > 72
+  ) {
+    return res.status(400).json({
+      error: "La contraseña debe tener al menos 8 caracteres y no superar los 72 bytes",
+    });
+  }
+
+  try {
+    const passwordHash = await bcrypt.hash(password, 12);
+    conexion.query(
+      `INSERT INTO CLIENTE (nombre, contacto, direccion, fecha_registro, email, password_hash)
+       VALUES (?, ?, ?, CURDATE(), ?, ?)`,
+      [client.nombre, client.contacto, client.direccion, client.email, passwordHash],
+      (error, result) => {
+        if (error) {
+          if (error.code === "ER_DUP_ENTRY") {
+            return res.status(409).json({ error: "Ya existe una cuenta con ese correo" });
+          }
+          console.error("Error al registrar la cuenta del cliente:", error);
+          return res.status(500).json({ error: "No se pudo crear la cuenta" });
+        }
+        startClientSession(req, res, { id_usuario: result.insertId });
+      },
+    );
+  } catch (error) {
+    console.error("Error al proteger la contraseña del cliente:", error);
+    res.status(500).json({ error: "No se pudo crear la cuenta" });
+  }
+});
+
+app.post("/auth/login", (req, res) => {
+  const { email, password } = req.body || {};
+  if (
+    typeof email !== "string" ||
+    typeof password !== "string" ||
+    email.length > 100 ||
+    password.length > 200
+  ) {
+    return res.status(400).json({ error: "Ingresá un correo y una contraseña válidos" });
+  }
+
+  conexion.query(
+    `SELECT id_usuario, password_hash
+     FROM CLIENTE
+     WHERE email_login = LOWER(?) AND password_hash IS NOT NULL
+     LIMIT 1`,
+    [email.trim()],
+    async (error, rows) => {
+      if (error) {
+        console.error("Error al buscar la cuenta del cliente:", error);
+        return res.status(500).json({ error: "No se pudo validar el acceso" });
+      }
+
+      try {
+        const passwordMatches = rows.length > 0 &&
+          await bcrypt.compare(password, rows[0].password_hash);
+        if (!passwordMatches) {
+          return res.status(401).json({ error: "Correo o contraseña incorrectos" });
+        }
+        startClientSession(req, res, rows[0]);
+      } catch (validationError) {
+        console.error("Error al validar el acceso del cliente:", validationError);
+        res.status(500).json({ error: "No se pudo validar el acceso" });
+      }
+    },
+  );
+});
+
+app.post("/auth/logout", (req, res) => {
+  req.session.destroy((error) => {
+    if (error) {
+      console.error("Error al cerrar la sesión del cliente:", error);
+      return res.status(500).json({ error: "No se pudo cerrar la sesión" });
+    }
+    res.clearCookie("gym-mls.sid", {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+    });
+    res.status(200).json({ mensaje: "Sesión cerrada" });
+  });
+});
+
+app.get("/auth/purchases", requireClient, (req, res) => {
+  conexion.query(
+    `SELECT c.id_compra, c.fecha, p.nombre AS producto, c.cantidad,
+            c.precio_unitario, c.cantidad * c.precio_unitario AS total
+     FROM COMPRA AS c
+     JOIN PRODUCTO AS p ON p.id_producto = c.id_producto
+     WHERE c.id_usuario = ?
+     ORDER BY c.fecha DESC, c.id_compra DESC`,
+    [req.session.userId],
+    (error, rows) => {
+      if (error) {
+        console.error("Error al obtener las compras del cliente:", error);
+        return res.status(500).json({ error: "No se pudo obtener el historial de compras" });
+      }
+      res.status(200).json(rows);
+    },
+  );
 });
 
 // ======================= CLIENTES =======================
@@ -442,7 +625,7 @@ app.delete("/productos/:id", requireAdmin, (req, res) => {
 
 //compra
 app.post("/compras", (req, res) => {
-  const { id_usuario, id_producto, cantidad } = req.body;
+  const { id_usuario, id_producto, cantidad } = req.body || {};
 
   if (
     !Number.isInteger(id_usuario) ||
@@ -455,6 +638,12 @@ app.post("/compras", (req, res) => {
     return res.status(400).json({
       error: "id_usuario, id_producto y cantidad deben ser enteros positivos",
     });
+  }
+  if (
+    req.session.role === "client" &&
+    req.session.userId !== id_usuario
+  ) {
+    return res.status(403).json({ error: "No podés registrar una compra para otra cuenta" });
   }
 
   const consulta = `
@@ -492,6 +681,17 @@ app.post("/compras", (req, res) => {
 
 app.get("/consultas/clientes/:id/compras", (req, res) => {
   const { id } = req.params;
+  if (!/^[1-9]\d*$/.test(id) || Number(id) > 2147483647) {
+    return res.status(400).json({ error: "El ID del cliente no es válido" });
+  }
+  if (
+    req.session.role !== "admin" &&
+    (req.session.role !== "client" || req.session.userId !== Number(id))
+  ) {
+    return res.status(req.session.role === "client" ? 403 : 401).json({
+      error: "No tenés permiso para consultar este historial",
+    });
+  }
 
   const consulta = `
         SELECT c.id_compra, c.fecha, p.nombre AS producto, c.cantidad, c.precio_unitario,
@@ -679,6 +879,48 @@ app.get("/consultas/mensajes-pendientes", (req, res) => {
   });
 });
 
+const ensureClientAuthSchema = async () => {
+  const database = conexion.promise();
+  const [columns] = await database.query(
+    `SELECT COLUMN_NAME
+     FROM information_schema.COLUMNS
+     WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'CLIENTE'`,
+  );
+  const columnNames = new Set(columns.map((column) => column.COLUMN_NAME));
+
+  if (!columnNames.has("password_hash")) {
+    await database.query(
+      "ALTER TABLE CLIENTE ADD COLUMN password_hash VARCHAR(255) NULL",
+    );
+  }
+  if (!columnNames.has("email_login")) {
+    await database.query(
+      `ALTER TABLE CLIENTE
+       ADD COLUMN email_login VARCHAR(100)
+       GENERATED ALWAYS AS (
+         CASE
+           WHEN password_hash IS NULL OR email IS NULL THEN NULL
+           ELSE LOWER(email)
+         END
+       ) STORED`,
+    );
+  }
+
+  const [indexes] = await database.query(
+    `SELECT INDEX_NAME
+     FROM information_schema.STATISTICS
+     WHERE TABLE_SCHEMA = DATABASE()
+       AND TABLE_NAME = 'CLIENTE'
+       AND INDEX_NAME = 'uq_cliente_email_login'
+     LIMIT 1`,
+  );
+  if (indexes.length === 0) {
+    await database.query(
+      "ALTER TABLE CLIENTE ADD UNIQUE KEY uq_cliente_email_login (email_login)",
+    );
+  }
+};
+
 conexion.connect((error) => {
   if (error) {
     console.error(
@@ -688,7 +930,14 @@ conexion.connect((error) => {
     process.exit(1);
   }
 
-  app.listen(PORT, () => {
-    console.log(`servidor escuchando en http://localhost:${PORT}`);
-  });
+  ensureClientAuthSchema()
+    .then(() => {
+      app.listen(PORT, () => {
+        console.log(`servidor escuchando en http://localhost:${PORT}`);
+      });
+    })
+    .catch((schemaError) => {
+      console.error("No se pudo preparar la base para el acceso de clientes:", schemaError);
+      process.exit(1);
+    });
 });

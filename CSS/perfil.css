@@ -12,6 +12,11 @@
     width: calc(100% - 2.5rem);
 }
 
+.profile-card[hidden],
+.profile-card form[hidden] {
+    display: none;
+}
+
 .profile-card .titulo.principal {
     border: 0;
     border-bottom: 1px solid var(--border-color);
@@ -24,11 +29,93 @@
     padding: 0 0 1rem;
 }
 
+.profile-auth-switch {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 1.5rem;
+}
+
+.profile-auth-switch .btn-action {
+    text-transform: none;
+}
+
 .formulario {
     display: grid;
     gap: 1.1rem 1.25rem;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     margin-top: 0;
+}
+
+.profile-message {
+    align-self: center;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    grid-column: 1 / -1;
+    line-height: 1.5;
+    min-height: 1.4em;
+}
+
+.account-heading {
+    align-items: flex-start;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: space-between;
+}
+
+.account-heading .titulo.principal {
+    flex: 1 1 18rem;
+    overflow-wrap: anywhere;
+}
+
+.account-details {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin: 1.5rem 0 2rem;
+}
+
+.account-details div {
+    min-width: 0;
+}
+
+.account-details dt {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.25rem;
+}
+
+.account-details dd {
+    overflow-wrap: anywhere;
+}
+
+.account-history h3 {
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.75rem;
+}
+
+.account-table-wrapper {
+    overflow-x: auto;
+}
+
+.account-table-wrapper table {
+    border-collapse: collapse;
+    min-width: 620px;
+    width: 100%;
+}
+
+.account-table-wrapper th,
+.account-table-wrapper td {
+    border-bottom: 1px solid var(--border-color);
+    padding: 0.75rem;
+    text-align: left;
+}
+
+.account-table-wrapper th {
+    color: var(--text-muted);
+    font-size: 0.85rem;
 }
 
 .form-field {
@@ -74,15 +161,6 @@
     -webkit-text-fill-color: var(--text-main);
     box-shadow: 0 0 0 1000px #151515 inset;
     transition: background-color 9999s ease-out;
-}
-
-#mensaje-formulario {
-    align-self: center;
-    color: var(--text-muted);
-    font-size: 0.9rem;
-    grid-column: 1 / -1;
-    line-height: 1.5;
-    min-height: 1.4em;
 }
 
 .profile-form-actions {
@@ -177,9 +255,13 @@
         grid-template-columns: 1fr;
     }
 
-    #mensaje-formulario,
+    .profile-message,
     .profile-form-actions {
         grid-column: 1;
+    }
+
+    .account-details {
+        grid-template-columns: 1fr;
     }
 
     .profile-form-actions {

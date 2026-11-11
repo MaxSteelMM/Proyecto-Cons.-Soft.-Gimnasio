@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let checkoutBlocked = false;
     let catalogLoadError = '';
     let catalogReady = false;
-    const apiBase = 'http://localhost:3000';
+    const apiBase = `http://${window.location.hostname || 'localhost'}:3000`;
 
     const formatPrice = (price) => new Intl.NumberFormat('es-AR', {
         style: 'currency',
@@ -136,10 +136,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const getPrice = (product) => Number(product.precio);
 
-    const requestJson = async (url, options) => {
+    const requestJson = async (url, options = {}) => {
         let response;
         try {
-            response = await fetch(`${apiBase}${url}`, options);
+            response = await fetch(`${apiBase}${url}`, {
+                ...options,
+                credentials: 'include'
+            });
         } catch (error) {
             error.isNetworkError = true;
             throw error;
@@ -963,37 +966,42 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             if (!pendingCheckout.customerId) {
-                const formData = new FormData(checkoutForm);
-                const delivery = formData.get('entrega');
-                const address = delivery === 'domicilio'
-                    ? `${formData.get('calle')} ${formData.get('numero')}, ${formData.get('ciudad')}, ${formData.get('provincia')} (${formData.get('codigo_postal')})${formData.get('adicional') ? ` · ${formData.get('adicional')}` : ''}`
-                    : 'Retiro en sucursal GYM-MLS · Centro';
-                if (address.length > 255) {
-                    throw new Error('La dirección supera los 255 caracteres permitidos.');
-                }
+                const session = await requestJson('/auth/session');
+                if (session.authenticated && Number.isInteger(Number(session.user?.id_usuario))) {
+                    pendingCheckout.customerId = Number(session.user.id_usuario);
+                } else {
+                    const formData = new FormData(checkoutForm);
+                    const delivery = formData.get('entrega');
+                    const address = delivery === 'domicilio'
+                        ? `${formData.get('calle')} ${formData.get('numero')}, ${formData.get('ciudad')}, ${formData.get('provincia')} (${formData.get('codigo_postal')})${formData.get('adicional') ? ` · ${formData.get('adicional')}` : ''}`
+                        : 'Retiro en sucursal GYM-MLS · Centro';
+                    if (address.length > 255) {
+                        throw new Error('La dirección supera los 255 caracteres permitidos.');
+                    }
 
-                const today = new Date();
-                const registrationDate = [
-                    today.getFullYear(),
-                    String(today.getMonth() + 1).padStart(2, '0'),
-                    String(today.getDate()).padStart(2, '0')
-                ].join('-');
-                const customer = await requestJson('/clientes', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        nombre: `${formData.get('nombre').trim()} ${formData.get('apellido').trim()}`,
-                        contacto: formData.get('telefono').trim(),
-                        direccion: address,
-                        fecha_registro: registrationDate,
-                        email: formData.get('email').trim()
-                    })
-                });
-                if (!Number.isInteger(Number(customer.id_usuario)) || Number(customer.id_usuario) <= 0) {
-                    checkoutBlocked = true;
-                    throw new Error('El servidor no devolvió un identificador de cliente válido.');
+                    const today = new Date();
+                    const registrationDate = [
+                        today.getFullYear(),
+                        String(today.getMonth() + 1).padStart(2, '0'),
+                        String(today.getDate()).padStart(2, '0')
+                    ].join('-');
+                    const customer = await requestJson('/clientes', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            nombre: `${formData.get('nombre').trim()} ${formData.get('apellido').trim()}`,
+                            contacto: formData.get('telefono').trim(),
+                            direccion: address,
+                            fecha_registro: registrationDate,
+                            email: formData.get('email').trim()
+                        })
+                    });
+                    if (!Number.isInteger(Number(customer.id_usuario)) || Number(customer.id_usuario) <= 0) {
+                        checkoutBlocked = true;
+                        throw new Error('El servidor no devolvió un identificador de cliente válido.');
+                    }
+                    pendingCheckout.customerId = Number(customer.id_usuario);
                 }
-                pendingCheckout.customerId = Number(customer.id_usuario);
                 checkoutBack.disabled = true;
                 checkoutCancel.disabled = true;
             }

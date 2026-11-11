@@ -18,7 +18,7 @@ Sitio web del gimnasio con catálogo conectado a MySQL, registro de clientes y c
    ```
 
    Pegá el hash generado en `ADMIN_PASSWORD_HASH`. También configurá `SESSION_SECRET` con un valor aleatorio largo; podés generarlo con `node -e "console.log(require('node:crypto').randomBytes(32).toString('hex'))"`. El archivo `.env` está excluido de Git.
-4. Iniciá la API con `npm start`. El servidor escucha en `http://localhost:3000`.
+4. Iniciá la API con `npm start`. El servidor escucha en `http://localhost:3000` y prepara automáticamente las columnas e índices para las cuentas en bases existentes. El usuario de MySQL configurado necesita permiso para modificar la tabla `CLIENTE`.
 5. Abrí `Index.html` con una extensión de servidor estático de VS Code, como Live Server. La tienda y el perfil consultan la API local en el puerto 3000. Si Live Server usa otros orígenes, agregalos a `FRONTEND_ORIGINS` en `.env`, separados por comas.
 
 La API verifica la conexión a MySQL antes de empezar a escuchar en el puerto 3000. Si falla, revisá el error que muestra la terminal y confirmá que MySQL esté iniciado y que las variables `DB_HOST`, `DB_USER`, `DB_PASSWORD` y `DB_NAME` en `.env` sean correctas.
@@ -27,6 +27,8 @@ La API verifica la conexión a MySQL antes de empezar a escuchar en el puerto 30
 
 - El catálogo, los clientes y las compras se obtienen o guardan en la base de datos existente.
 - El carrito se conserva localmente en el navegador; los pedidos se envían al servidor al confirmarlos.
+- En [Perfil.html](./Perfil.html), los clientes pueden crear una cuenta con correo y contraseña, iniciar y cerrar sesión, y consultar su perfil y sus compras. Las contraseñas se guardan como hashes bcrypt; no hay una contraseña predeterminada. Las compras de clientes anteriores a la creación de una cuenta no se vinculan automáticamente.
+- El checkout sigue disponible para invitados. Si hay una sesión de cliente activa, las compras se asocian a esa cuenta y aparecen en su historial.
 - El checkout registra un cliente y una compra por cada producto. Si una compra falla después de registrar otras, el checkout muestra las referencias recibidas para que puedas revisar el estado antes de reintentar.
 - El panel [Admin.html](./Admin.html) permite iniciar sesión como administrador, agregar productos, editar sus datos o eliminar productos sin compras asociadas. Las rutas de escritura también están protegidas en el servidor.
 - Para eliminar un producto con compras registradas, primero deben conservarse esas compras: el servidor impide su eliminación para no borrar el historial.

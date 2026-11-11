@@ -1,41 +1,195 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const formulario = document.getElementById('formulario');
-    const mensaje = document.getElementById('mensaje-formulario');
-    const submitButton = formulario.querySelector('[type="submit"]');
-    const resetButton = formulario.querySelector('[type="reset"]');
-    const apiBase = 'http://localhost:3000';
+    const apiBase = `http://${window.location.hostname || 'localhost'}:3000`;
+    const authPanel = document.getElementById('auth-panel');
+    const accountPanel = document.getElementById('account-panel');
+    const registrationForm = document.getElementById('registration-form');
+    const loginForm = document.getElementById('login-form');
+    const registrationMessage = document.getElementById('registration-message');
+    const loginMessage = document.getElementById('login-message');
+    const historyMessage = document.getElementById('history-message');
+    const historyTableBody = document.getElementById('history-table-body');
+    const registerTab = document.getElementById('show-register');
+    const loginTab = document.getElementById('show-login');
 
-    formulario.addEventListener('reset', () => {
-        mensaje.textContent = '';
+    const request = async (path, options = {}) => {
+        let response;
+        try {
+            response = await fetch(`${apiBase}${path}`, {
+                ...options,
+                credentials: 'include',
+                headers: {
+                    ...(options.body ? { 'Content-Type': 'application/json' } : {}),
+                    ...options.headers
+                }
+            });
+        } catch {
+            throw new Error('No se pudo conectar con la API. Iniciá el servidor con npm start.');
+        }
+
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok) {
+            throw new Error(result.error || `El servidor respondió ${response.status}.`);
+        }
+        return result;
+    };
+
+    const showForm = (form) => {
+        const registering = form === 'register';
+        registrationForm.hidden = !registering;
+        loginForm.hidden = registering;
+        registerTab.setAttribute('aria-pressed', String(registering));
+        loginTab.setAttribute('aria-pressed', String(!registering));
+        registerTab.classList.toggle('btn-secondary', !registering);
+        loginTab.classList.toggle('btn-secondary', registering);
+        registrationMessage.textContent = '';
+        loginMessage.textContent = '';
+    };
+
+    const displayHistory = (purchases) => {
+        historyTableBody.replaceChildren();
+        if (purchases.length === 0) {
+            const row = document.createElement('tr');
+            const cell = document.createElement('td');
+            cell.colSpan = 5;
+            cell.textContent = 'Todavía no tenés compras registradas.';
+            row.append(cell);
+            historyTableBody.append(row);
+            return;
+        }
+
+        purchases.forEach((purchase) => {
+            const row = document.createElement('tr');
+            const values = [
+                String(purchase.fecha).slice(0, 10),
+                purchase.producto,
+                String(purchase.cantidad),
+                formatPrice(purchase.precio_unitario),
+                formatPrice(purchase.total)
+            ];
+            values.forEach((value) => {
+                const cell = document.createElement('td');
+                cell.textContent = value;
+                row.append(cell);
+            });
+            historyTableBody.append(row);
+        });
+    };
+
+    const formatPrice = (price) => new Intl.NumberFormat('es-AR', {
+        style: 'currency',
+        currency: 'ARS',
+        maximumFractionDigits: 2
+    }).format(Number(price));
+
+    const showAccount = async (user) => {
+        authPanel.hidden = true;
+        accountPanel.hidden = false;
+        document.getElementById('account-title').textContent = `Hola, ${user.nombre}`;
+        document.getElementById('account-email').textContent = user.email || '—';
+        document.getElementById('account-contact').textContent = user.contacto || '—';
+        document.getElementById('account-address').textContent = user.direccion || '—';
+        document.getElementById('account-date').textContent =
+            user.fecha_registro ? String(user.fecha_registro).slice(0, 10) : '—';
+        historyMessage.textContent = 'Cargando historial...';
+        try {
+            const purchases = await request('/auth/purchases');
+            if (!Array.isArray(purchases)) {
+                throw new Error('El servidor devolvió un historial no válido.');
+            }
+            displayHistory(purchases);
+            historyMessage.textContent = '';
+        } catch (error) {
+            historyMessage.textContent = error.message;
+        }
+    };
+
+    const loadSession = async () => {
+        try {
+            const session = await request('/auth/session');
+            if (session.authenticated && session.user) {
+                await showAccount(session.user);
+            }
+        } catch (error) {
+            (loginForm.hidden ? registrationMessage : loginMessage).textContent = error.message;
+        }
+    };
+
+    registerTab.addEventListener('click', () => showForm('register'));
+    loginTab.addEventListener('click', () => showForm('login'));
+
+    registrationForm.addEventListener('reset', () => {
+        registrationMessage.textContent = '';
     });
 
-    formulario.addEventListener('submit', async (event) => {
+    registrationForm.addEventListener('submit', async (event) => {
         event.preventDefault();
-        mensaje.textContent = '';
+        registrationMessage.textContent = '';
+        const submitButton = registrationForm.querySelector('[type="submit"]');
+        const password = document.getElementById('new-password').value;
+        if (password !== document.getElementById('confirm-password').value) {
+            registrationMessage.textContent = 'Las contraseñas no coinciden.';
+            return;
+        }
+
         submitButton.disabled = true;
-        resetButton.disabled = true;
-        const datos = Object.fromEntries(new FormData(formulario).entries());
-
+        const details = Object.fromEntries(new FormData(registrationForm).entries());
         try {
-            const respuesta = await fetch(`${apiBase}/clientes`, {
+            await request('/auth/register', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(datos)
+                body: JSON.stringify(details)
             });
-            const resultado = await respuesta.json().catch(() => ({}));
-
-            if (!respuesta.ok) {
-                throw new Error(resultado.error || 'No se pudo agregar el perfil.');
+            const session = await request('/auth/session');
+            if (!session.authenticated || !session.user) {
+                throw new Error('La cuenta se creó, pero no se pudo iniciar la sesión.');
             }
-
-            formulario.reset();
-            mensaje.textContent = `Perfil registrado correctamente. Número de cliente: ${resultado.id_usuario}.`;
+            registrationForm.reset();
+            await showAccount(session.user);
         } catch (error) {
-            console.error('Error al agregar el perfil:', error);
-            mensaje.textContent = error.message || 'No se pudo conectar con el servidor.';
+            registrationMessage.textContent = error.message;
         } finally {
             submitButton.disabled = false;
-            resetButton.disabled = false;
         }
     });
+
+    loginForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        loginMessage.textContent = '';
+        const submitButton = loginForm.querySelector('[type="submit"]');
+        submitButton.disabled = true;
+        const credentials = Object.fromEntries(new FormData(loginForm).entries());
+        try {
+            await request('/auth/login', {
+                method: 'POST',
+                body: JSON.stringify(credentials)
+            });
+            loginForm.reset();
+            const session = await request('/auth/session');
+            if (!session.authenticated || !session.user) {
+                throw new Error('No se pudo recuperar el perfil de la cuenta.');
+            }
+            await showAccount(session.user);
+        } catch (error) {
+            loginMessage.textContent = error.message;
+        } finally {
+            submitButton.disabled = false;
+        }
+    });
+
+    document.getElementById('logout-button').addEventListener('click', async (event) => {
+        const button = event.currentTarget;
+        button.disabled = true;
+        try {
+            await request('/auth/logout', { method: 'POST' });
+            historyTableBody.replaceChildren();
+            accountPanel.hidden = true;
+            authPanel.hidden = false;
+            showForm('login');
+        } catch (error) {
+            historyMessage.textContent = error.message;
+        } finally {
+            button.disabled = false;
+        }
+    });
+
+    loadSession();
 });

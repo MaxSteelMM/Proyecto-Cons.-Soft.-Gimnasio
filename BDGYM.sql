@@ -18,7 +18,16 @@ CREATE TABLE CLIENTE (
     contacto VARCHAR(100),
     direccion VARCHAR(255),
     fecha_registro DATE ,
-    email VARCHAR(100) 
+    email VARCHAR(100),
+    password_hash VARCHAR(255) NULL,
+    email_login VARCHAR(100)
+        GENERATED ALWAYS AS (
+            CASE
+                WHEN password_hash IS NULL OR email IS NULL THEN NULL
+                ELSE LOWER(email)
+            END
+        ) STORED,
+    UNIQUE KEY uq_cliente_email_login (email_login)
 ) ENGINE=InnoDB;
 
 CREATE TABLE CONSULTA (
